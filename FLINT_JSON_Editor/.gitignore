@@ -86,4 +86,4 @@ typings/
 .webpack/
 
 # Electron-Forge
-out/
+out/flint_json_editor-linux-x64

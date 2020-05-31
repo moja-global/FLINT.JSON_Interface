@@ -2,7 +2,7 @@
   "name": "flint_json_editor",
   "productName": "flint_json_editor",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "FLINT JSON User Interface",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -80,7 +80,6 @@
     "style-loader": "^0.23.1"
   },
   "dependencies": {
-    "electron-is-dev": "^1.2.0",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
