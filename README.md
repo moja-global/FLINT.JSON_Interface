@@ -3,6 +3,15 @@
 
 Google Summer of Code'20 code repository for the project ["Develop FLINT JSON User Interface"](https://summerofcode.withgoogle.com/projects/#5965933887094784)
 
+## Test the development verson
+- Clone this project
+- `cd GSoC.FLINT.JSON_Interface/FLINT_JSON_Editor`
+- Make sure latest `node` and `npm` are installed.
+- `npm install`
+- `npm start`
+## Test a packaged version
+- You can find packaged versions at `FLINT_JSON_Editor/out/make/`
+
 ## How to Get Involved?  
 
 moja global welcomes a wide range of contributions as explained in [Contributing document](https://github.com/moja-global/About-moja-global/blob/master/CONTRIBUTING.md) and in the [About moja-global Wiki](https://github.com/moja-global/.github/wiki).  
