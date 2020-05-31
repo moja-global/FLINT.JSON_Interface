@@ -1,7 +1,7 @@
-# TITLE 
+# FLINT JSON Editor 
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
-Text 
+Google Summer of Code'20 code repository for the project ["Develop FLINT JSON User Interface"](https://summerofcode.withgoogle.com/projects/#5965933887094784)
 
 ## How to Get Involved?  
 
