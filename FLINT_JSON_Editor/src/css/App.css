@@ -1,0 +1,48 @@
+body{
+    background-image: url(../Images/green.jpg);
+    height: 100vh;
+    overflow: hidden;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+/* body,html{
+    height: 100%;
+}  */
+
+#logo{
+    height: 90vh;
+    width: 50%;
+    float: left;
+    display: inline-block;
+}
+
+#navigator{
+    height: 90vh;
+    /* margin-top: 20px; */
+    /* margin-left: 50%; */
+    width: 50%;
+    float: left;
+    display: inline-block;
+    /* overflow-y: scroll; */
+    /* border: 2px solid rgba(118, 184, 228, 0.418); */
+}
+
+#container{
+    display: inline-block;
+    width: 100%;
+}
+
+img{
+    /* margin-top: 20%;
+    margin-left: 20%; */
+    height: 40%;
+    /* width: 50%; */
+}
+
+#auth{
+    margin-left: 90%;
+    height: 30%;
+    width: 30%;
+}   

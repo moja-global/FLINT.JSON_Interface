@@ -76,10 +76,12 @@
     "babel-loader": "^8.1.0",
     "css-loader": "^3.0.0",
     "electron": "9.0.0",
+    "file-loader": "^6.0.0",
     "node-loader": "^0.6.0",
     "style-loader": "^0.23.1"
   },
   "dependencies": {
+    "electron-is-dev": "^1.2.0",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
