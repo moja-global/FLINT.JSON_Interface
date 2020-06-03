@@ -1,12 +1,8 @@
 import React,{Component} from 'react'
 import Auth from './Components/Auth'
+import StartupWizard from './Components/StartupWizard'
 import './css/App.css'
 import Logo from './Images/logo.png'
-// const App = () => (
-//   <div>
-//     <h1>Hello React</h1>
-//   </div>
-// )
 
 class App extends Component{
   render(){
@@ -24,7 +20,7 @@ class App extends Component{
             </div>
 
             <div id="wizard">
-
+              <StartupWizard />
             </div>
           </div>
 	    	</div>

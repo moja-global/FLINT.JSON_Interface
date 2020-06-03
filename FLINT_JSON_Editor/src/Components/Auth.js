@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import gravatar  from '../Images/octocat.png'
 
-class App extends Component{
+class Auth extends Component{
   render(){
     return(
         <img src={gravatar} />
@@ -9,4 +9,4 @@ class App extends Component{
   }
 }
 
-export default App
+export default Auth
