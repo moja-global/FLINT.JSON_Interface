@@ -7,10 +7,6 @@ body{
     background-size: 100% 100%;
 }
 
-/* body,html{
-    height: 100%;
-}  */
-
 #logo{
     height: 90vh;
     width: 40%;
@@ -20,13 +16,9 @@ body{
 
 #navigator{
     height: 90vh;
-    /* margin-top: 20px; */
-    /* margin-left: 50%; */
     width: 60%;
     float: left;
     display: inline-block;
-    /* overflow-y: scroll; */
-    /* border: 2px solid rgba(118, 184, 228, 0.418); */
 }
 
 #container{
@@ -35,17 +27,17 @@ body{
 }
 
 img{
-    /* margin-top: 20%;
-    margin-left: 20%; */
     height: 40%;
-    /* width: 50%; */
 }
 
 #auth{
     margin-left: 90%;
-    height: 30%;
+    height: 25%;
     width: 30%;
 }   
 
+#wizard{
+    /* margin-top: 40px; */
+}
 
 

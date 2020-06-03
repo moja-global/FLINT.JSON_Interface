@@ -26,11 +26,11 @@ export default function CreateJSON(params) {
             <div id="card"><Card name="Create JSON File from Scratch" description="This option will help you to create a JSON File from a basic template"/></div>
             <div id="card"><Card name = "Create JSON File using Interactive editor" description = "This option will help you to create a JSON File, just by choosing values for the keys"/></div>
         </div>
-        <div id="button">
+        {/* <div id="button">
             <ThemeProvider theme={theme}>
                 <Button variant="contained" color="primary" className={classes.margin}>Next ></Button>
             </ThemeProvider>
-        </div>
+        </div> */}
     </div>
     )
 }
