@@ -22,6 +22,7 @@ class App extends Component{
             <div id="wizard">
               <StartupWizard />
             </div>
+            
           </div>
 	    	</div>
       </div>
