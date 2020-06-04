@@ -7,6 +7,10 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import CreateJSON from './CreateJSON';
+import CreateProject from './CreateProject';
+import CreateCFG from './CreateCFG';
+import OpenProject from './OpenProject';
+import OpenFile from './OpenFile';
 import Container from '@material-ui/core/Container';
 import { createMuiTheme, withStyles,  ThemeProvider } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -112,19 +116,19 @@ export default function ScrollableTabsButtonAuto() {
         onChangeIndex={handleChangeIndex}
         style={{height: "25vw",overflowY: "hidden"}}>
         <TabPanel value={value} index={0}>
-          
+          <CreateProject />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <CreateJSON />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          
+          <CreateCFG />
         </TabPanel>
         <TabPanel value={value} index={3}>
-        
+          <OpenProject />
         </TabPanel>
         <TabPanel value={value} index={4}>
-          
+          <OpenFile />
         </TabPanel>
      </SwipeableViews>
      
