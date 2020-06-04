@@ -8,18 +8,23 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import CreateJSON from './CreateJSON';
 import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
+import { createMuiTheme, withStyles,  ThemeProvider } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import { green, purple } from '@material-ui/core/colors';
+import SwipeableViews from 'react-swipeable-views';
+// import Box from '@material-ui/core/Box';
+
+// import '../css/App.css'
+const theme = createMuiTheme({
+  palette: {
+    primary: green,
+  },
+});
 
 // const useStyles = makeStyles((theme) => ({
-//     root: {
-//       display: 'flex',
-//       flexWrap: 'wrap',
-//       '& > *': {
-//         margin: theme.spacing(1),
-//         width: theme.spacing(16),
-//         height: theme.spacing(16),
-//       },
-//     },
+//   margin: {
+//     margin: theme.spacing(1),
+//   }
 // }));
 
 function TabPanel(props) {
@@ -60,14 +65,13 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     width: '100%',
     backgroundColor: theme.palette.background.paper,
-    // display: 'flex',
-    //   flexWrap: 'wrap',
-    //   '& > *': {
-    //     margin: theme.spacing(1),
-    //     width: theme.spacing(100),
-    //     height: theme.spacing(100),
-    // },
   },
+  margin: {
+    margin: theme.spacing(1),
+  },
+  container :{
+
+  }
 }));
 
 export default function ScrollableTabsButtonAuto() {
@@ -78,10 +82,12 @@ export default function ScrollableTabsButtonAuto() {
     setValue(newValue);
   };
 
+  const handleChangeIndex = (index) => {
+    setValue(index);
+  };
+  
   return (
     <div className={classes.root}>
-        {/* <Paper elevation={3}> */}
-        {/* <Container > */}
       <AppBar position="static" color="default">
         <Tabs
           value={value}
@@ -98,24 +104,38 @@ export default function ScrollableTabsButtonAuto() {
           <Tab label="Open Project" {...a11yProps(3)} />
           <Tab label="Open Files" {...a11yProps(4)} />
         </Tabs>
-      </AppBar><Container>
-      <TabPanel value={value} index={0}>
+      </AppBar>
+      
+      <SwipeableViews
+        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        index={value}
+        onChangeIndex={handleChangeIndex}
+        style={{height: "25vw",overflowY: "hidden"}}>
+        <TabPanel value={value} index={0}>
+          
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <CreateJSON />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+        
+        </TabPanel>
+        <TabPanel value={value} index={4}>
+          
+        </TabPanel>
+     </SwipeableViews>
+     
+      
         {/* <CreateJSON /> */}
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <CreateJSON />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        {/* <CreateJSON /> */}
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        {/* <CreateJSON /> */}
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        {/* <CreateJSON /> */}
-      </TabPanel>
-      </Container>
-      {/* </Paper> */}
+      
+      <div id="button" style={{float: "right"}}>
+          <ThemeProvider theme={theme}>
+              <Button variant="contained" color="primary" className={classes.margin}>Next ></Button>
+          </ThemeProvider>
+      </div>
     </div>
   );
 }

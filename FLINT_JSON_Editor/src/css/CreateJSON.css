@@ -6,11 +6,12 @@
 }
 
 #card{
-    height: 80%;
-    width: 40%;
+    /* height: 80%;
+    width: 100%;  */
     float: left;
     display: inline-block;
     padding: 0px 20px 0px 20px;
+    margin-left: 20px;
 }
 
 #button{
