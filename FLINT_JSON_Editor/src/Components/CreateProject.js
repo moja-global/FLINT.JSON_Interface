@@ -35,8 +35,6 @@ const useStyles = makeStyles((theme) => ({
 export default function TitlebarGridList() {
   const classes = useStyles();
   const [selectedValue, setSelectedValue] = React.useState('a');
-  const [dense, setDense] = React.useState(false);
-  const [secondary, setSecondary] = React.useState(false);
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };

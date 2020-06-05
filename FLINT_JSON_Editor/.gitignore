@@ -85,5 +85,10 @@ typings/
 # Webpack
 .webpack/
 
+# Firebase
+.firebase/
+.firebaserc
+firebase.json
+
 # Electron-Forge
 out/
