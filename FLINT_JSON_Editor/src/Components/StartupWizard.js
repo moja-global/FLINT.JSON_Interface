@@ -114,7 +114,7 @@ export default function ScrollableTabsButtonAuto() {
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}
         onChangeIndex={handleChangeIndex}
-        style={{height: "25vw",overflowY: "hidden"}}>
+        style={{height: "25vw"}}>
         <TabPanel value={value} index={0}>
           <CreateProject />
         </TabPanel>

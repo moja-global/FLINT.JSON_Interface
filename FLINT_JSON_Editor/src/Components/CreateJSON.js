@@ -9,16 +9,6 @@ import { green } from '@material-ui/core/colors';
 import Radio from '@material-ui/core/Radio';
 import Tooltip from '@material-ui/core/Tooltip';
 
-const GreenRadio = withStyles({
-  root: {
-    color: green[400],
-    '&$checked': {
-      color: green[600],
-    },
-  },
-  checked: {},
-})((props) => <Radio color="default" {...props} />);
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
