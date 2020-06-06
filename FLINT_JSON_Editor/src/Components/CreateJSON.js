@@ -1,11 +1,10 @@
 import React from 'react';
-import { withStyles,makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import Logo from '../Images/logo.png'
 import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import Radio from '@material-ui/core/Radio';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,17 +32,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const HtmlTooltip = withStyles((theme) => ({
-  tooltip: {
-    backgroundColor: '#99ff99',
-    // color: "white",
-    color: 'rgba(0, 0, 0, 0.87)',
-    maxWidth: 220,
-    fontSize: theme.typography.pxToRem(12),
-    border: '1px solid #dadde9',
-  },
-}))(Tooltip);
-
 export default function TitlebarGridList() {
   const classes = useStyles();
   const [selectedValue, setSelectedValue] = React.useState('a')
@@ -56,18 +44,10 @@ export default function TitlebarGridList() {
 
           <GridListTile style={{padding: "20px"}}>
             <img src={Logo}  />
-            {/* <Tooltip title="This option will help you to create a JSON File from a basic template" aria-label="JSON"> */}
-            <HtmlTooltip
-            title={
-          <React.Fragment>
-            <Typography color="inherit">Create JSON File from Scratch</Typography>
-            <em>{"This option will help you to create a JSON File from a basic template"}</em>
-          </React.Fragment>
-        }
-      >
+            <Tooltip title="This option will help you to create a JSON File from a basic template" aria-label="JSON">
+
             <GridListTileBar
               title="Create JSON File from Scratch"
-              
               subtitle={<span>This option will help you to create a JSON File from a basic template</span>}
               actionIcon={
               <Radio
@@ -79,8 +59,8 @@ export default function TitlebarGridList() {
                 />
               }
             />
-            </HtmlTooltip>
-            {/* </Tooltip> */}
+            </Tooltip>
+      
           </GridListTile>
           <GridListTile style={{padding: "20px"}}>
             <img src={Logo}  />
