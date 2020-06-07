@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -11,13 +12,10 @@ import CreateProject from './CreateProject';
 import CreateCFG from './CreateCFG';
 import OpenProject from './OpenProject';
 import OpenFile from './OpenFile';
-import Container from '@material-ui/core/Container';
 import { createMuiTheme, withStyles,  ThemeProvider } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { green, purple } from '@material-ui/core/colors';
 import SwipeableViews from 'react-swipeable-views';
-// import Box from '@material-ui/core/Box';
-
 // import '../css/App.css'
 const theme = createMuiTheme({
   palette: {
@@ -40,8 +38,7 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`scrollable-auto-tabpanel-${index}`}
       aria-labelledby={`scrollable-auto-tab-${index}`}
-      {...other}
-    >
+      {...other}>
       {value === index && (
         <Box p={3}>
           <Typography>{children}</Typography>
@@ -78,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function ScrollableTabsButtonAuto() {
+export default function ScrollableTabsButtonAuto(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -91,7 +88,7 @@ export default function ScrollableTabsButtonAuto() {
   };
   
   return (
-    <div className={classes.root}>
+    <div className={classes.root} >
       <AppBar position="static" color="default">
         <Tabs
           value={value}
@@ -119,7 +116,7 @@ export default function ScrollableTabsButtonAuto() {
           <CreateProject />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <CreateJSON />
+          <CreateJSON onRadioChange={(val)=>{console.log("StartupWizard#"+val);props.onRadioChange2(val)}}/>
         </TabPanel>
         <TabPanel value={value} index={2}>
           <CreateCFG />
@@ -135,11 +132,12 @@ export default function ScrollableTabsButtonAuto() {
       
         {/* <CreateJSON /> */}
       
-      <div id="button" style={{float: "right"}}>
+      {/* <div id="button" style={{float: "right"}}>
           <ThemeProvider theme={theme}>
               <Button variant="contained" color="primary" className={classes.margin}>Next ></Button>
           </ThemeProvider>
-      </div>
+      </div> */}
     </div>
+    
   );
 }

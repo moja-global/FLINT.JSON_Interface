@@ -32,11 +32,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TitlebarGridList() {
+export default function TitlebarGridList(props) {
+  // console.log(props);
   const classes = useStyles();
   const [selectedValue, setSelectedValue] = React.useState('a')
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
+    props.onRadioChange(event.target.value);
+    console.log("CreateJSON#"+event.target.value);
   };
   return (
     <div className={classes.root}>
@@ -51,11 +54,11 @@ export default function TitlebarGridList() {
               subtitle={<span>This option will help you to create a JSON File from a basic template</span>}
               actionIcon={
               <Radio
-                checked={selectedValue === 'a'}
+                checked={selectedValue === 'ScratchJSONEditor'}
                 onChange={handleChange}
-                value="a"
+                value="ScratchJSONEditor"
                 name="radio-button-demo"
-                inputProps={{ 'aria-label': 'A' }}
+                inputProps={{ 'aria-label': 'ScratchJSONEditor' }}
                 />
               }
             />

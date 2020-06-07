@@ -29,7 +29,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
-import Test from './Components/CreateJSON'
+import Test from './Components/AppComponent'
 // import './css/index.css'
 
 ReactDOM.render(<App />, document.getElementById('root'))
