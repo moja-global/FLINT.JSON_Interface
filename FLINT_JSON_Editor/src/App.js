@@ -33,7 +33,7 @@ export default function App() {
             {/* <div id="button" > */}
               {disp && <Link to={"/"+routing}>
               <ThemeProvider theme={theme}>
-                <Button variant="contained" color="primary" className={classes.margin} style={{float: "right"}}  onClick={()=>{setDisp(!disp)}}>Next ></Button>
+                <Button variant="contained" color="primary" className={classes.margin} style={{float: "right"}}  onClick={()=>{document.body.style.backgroundImage="none";setDisp(!disp);}}>Next ></Button>
               </ThemeProvider>
               </Link>}
             {/* </div> */}

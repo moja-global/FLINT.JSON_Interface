@@ -1,10 +1,11 @@
 body{
-    background-image: url(../Images/green.jpg);
+    /* background-image: url(../Images/green.jpg); */
     height: 100vh;
     overflow: hidden;
     background-position: center;
     background-repeat: no-repeat;
     background-size: 100% 100%;
+    margin: 0px;
 }
 
 #logo{
