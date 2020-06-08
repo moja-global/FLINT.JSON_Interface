@@ -39,7 +39,7 @@ export default function App() {
             {/* </div> */}
       <Switch>
           <Route path="/ScratchJSONEditor">
-            <ScratchJSONEditor />
+            <ScratchJSONEditor onHome={()=>{setDisp(true)}} />
           </Route>
           <Route path="/users">
             {/* <Users /> */}
