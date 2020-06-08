@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ScratchJSONEditor from './Components/ScratchJSONEditor';
 import AppComponent from './Components/AppComponent';
 import ErrorBoundary from './ErrorBoundary';
+import JSONEditor from 'jsoneditor';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -27,6 +28,7 @@ export default function App() {
   const classes = useStyles();
   const [disp,setDisp] = React.useState(true);
   const [routing,setRouting] = React.useState("App");
+  var editor;
     return(
       <Router>
         { disp && <AppComponent onRadioChange3={(val)=>{console.log("App"+val);setRouting(val)}}/> }
@@ -46,7 +48,8 @@ export default function App() {
           </Route>
           <Route path="/">
             {/* <Home /> */}
-          </Route></Switch>
+          </Route>
+      </Switch>
       
     </Router>
     );

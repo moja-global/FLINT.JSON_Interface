@@ -32,7 +32,7 @@ import App from './App'
 import Test from './Components/ScratchJSONEditor'
 // import './css/index.css'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<Test />, document.getElementById('root'))
 
 console.log(
   '👋 This message is being logged by "renderer.js", included via webpack'
