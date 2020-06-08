@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
@@ -15,6 +16,7 @@ import newFile from '../storage/newFileTemplate.json';
 import JSONEditor from 'jsoneditor';
 const dialog = require('electron').remote.dialog;
 import Button from '@material-ui/core/Button';
+import MyDialog from './Dialog';
 
 const useStyles = makeStyles((theme)=>({
   root: {
@@ -63,11 +65,6 @@ function writeFile(fileName){
   });
 }
 
-// var openFileName = "";
-// Create a JSONEditor widget in the "jsonEditor" div
-// var parsedJson;
-
-// Save the content of the editor into a JSON file
 function saveFile() {
   parsedJson = editor.get();
   data = JSON.stringify(parsedJson, null, 2);
@@ -103,12 +100,12 @@ function readFile(filepath){
 }
 
 console.log(newFile);
-// var data = readFile("../storage/newFileTemplate.json"); 
-// editor.set
+
 export default function LabelBottomNavigation(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState('0');
   const [disp,setDisp] = React.useState(true);
+  const [dialogDisp,setDialogDisp] = React.useState(false);
   let history=useHistory();
 
   const handleChange = (event, newValue) => {
@@ -125,13 +122,19 @@ export default function LabelBottomNavigation(props) {
 			  	{!disp && <pre id="tag">Click here to see the JSON tree!</pre>}
 			  </pre>	
 		  </div>
-    
+      
       <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
         <BottomNavigationAction label="New " value="new" icon={<FiberNewIcon />} />
         <BottomNavigationAction label="Open" value="open" icon={<FolderOpenIcon />} onClick={()=>{openFile()}} />
         <BottomNavigationAction label="Save" value="save" icon={<SaveIcon />} onClick={()=>{saveFile()}} />
-        <BottomNavigationAction label="Home" value="home" icon={<HomeIcon />} onClick={()=>{props.onHome(true);history.goBack()}} />
+        <BottomNavigationAction label="Home" value="home" icon={<HomeIcon />} onClick={()=>setDialogDisp(true)}/>
       </BottomNavigation>
+      {dialogDisp && <MyDialog message="Are you sure you want to go back Home? You may have unsaved changes!"
+                heading="Go back Home?"
+                positive="Yes! Take me out!"
+                negative="No! Keep me here!"
+                reply={(ans)=>{if(ans){props.onHome(true);history.goBack();};setDialogDisp(false)}} />}
+        
     </div>
   );
 }
