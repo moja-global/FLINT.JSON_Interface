@@ -11,6 +11,7 @@ import ScratchJSONEditor from './Components/ScratchJSONEditor';
 import AppComponent from './Components/AppComponent';
 import ErrorBoundary from './ErrorBoundary';
 import JSONEditor from 'jsoneditor';
+import bgImg from './Images/green.jpg';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -41,7 +42,7 @@ export default function App() {
             {/* </div> */}
       <Switch>
           <Route path="/ScratchJSONEditor">
-            <ScratchJSONEditor onHome={()=>{setDisp(true)}} />
+            <ScratchJSONEditor onHome={()=>{setDisp(true);document.body.style.backgroundImage=`url(${bgImg})`}} />
           </Route>
           <Route path="/users">
             {/* <Users /> */}
