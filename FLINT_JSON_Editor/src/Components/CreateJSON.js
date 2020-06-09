@@ -6,6 +6,7 @@ import GridListTileBar from '@material-ui/core/GridListTileBar';
 import Logo from '../Images/logo.png'
 import Tooltip from '@material-ui/core/Tooltip';
 import Radio from '@material-ui/core/Radio';
+import ScratchLogo from '../Images/ScratchJSONEditor.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,7 +47,7 @@ export default function TitlebarGridList(props) {
       <GridList cellHeight={300} className={classes.gridList} >
 
           <GridListTile style={{padding: "20px"}}>
-            <img src={Logo}  />
+            <img src={ScratchLogo}  />
             <Tooltip title="This option will help you to create a JSON File from a basic template" aria-label="JSON">
 
             <GridListTileBar

@@ -38,20 +38,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TitlebarGridList() {
   const classes = useStyles();
-  const [selectedValue, setSelectedValue] = React.useState('a');
+  const [selectedValue, setSelectedValue] = React.useState(0);
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
 {
   var temp=[];
+  var i=0;
   for (var x in jsonw)
   {
     var list=[];
     jsonw[x]["files"].forEach(file=>{list.push(<li>{file}</li>)})
   
-  temp.push(<GridListTile style={{padding: "20px"}}>
-  <pre style={{backgroundColor:'#ebebe0',height:"120px"}}>
-    {x}
+    temp.push(<GridListTile style={{padding: "20px"}}>
+      <pre style={{backgroundColor:'#ebebe0',height:"120px"}}>
+      {x}
       <ul type="disc">
         {list}
       </ul>
@@ -62,104 +63,24 @@ export default function TitlebarGridList() {
       subtitle={<span>{jsonw[x]["description"]}</span>}
       actionIcon={
       <Radio
-        checked={selectedValue === 'a'}
+        checked={selectedValue === i.toString()}
         onChange={handleChange}
-        value="a"
+        value={i.toString()}
         name="radio-button-demo"
-        inputProps={{ 'aria-label': 'A' }}
+        inputProps={{ 'aria-label': i.toString() }}
         />
       }
     />
     </Tooltip>
-  </GridListTile>)}
+  </GridListTile>);
+  i++;
+  }
 }
 
   return (
     <div className={classes.root}>
-      {/* {abc} */}
-      <button onClick={()=>readdir1()}>fff</button>
       <GridList cellHeight={300} className={classes.gridList}  >
         {temp}
-          <GridListTile style={{padding: "20px"}}>
-          <pre style={{backgroundColor:'#ebebe0',height:"120px"}}>
-            Standard GCBM Project:
-              <ul type="disc">
-                <li>variables.json</li>
-                <li>localdomain.json</li>
-                <li>modules.json</li>
-              </ul>
-            </pre>
-            <Tooltip title="Helps to create a project consisting of files specific to a standard GCBM Project" aria-label="JSON">
-            <GridListTileBar
-              title="Standard GCBM Project"
-              subtitle={<span>Helps to create a project consisting of files specific to a standard GCBM Project</span>}
-              actionIcon={
-              <Radio
-                checked={selectedValue === 'a'}
-                onChange={handleChange}
-                value="a"
-                name="radio-button-demo"
-                inputProps={{ 'aria-label': 'A' }}
-                />
-              }
-            />
-            </Tooltip>
-          </GridListTile>
-          <GridListTile style={{padding: "20px"}}>
-            <pre style={{backgroundColor:'#ebebe0',height: "120px"}}>
-              GCBM + Peatland project:
-              <ul type="disc">
-                <li>localdomain.json</li>
-                <li>gcbm_variables.json</li>
-                <li>gcbm_modules.json</li>
-                <li>peatland_variables.json</li>
-                <li>peatland_modules.json</li>
-              </ul>
-            </pre>
-            <Tooltip title="Helps to create a project consisting of files specific to a standard GCBM and Peatland Project" aria-label="JSON">
-            <GridListTileBar
-              title="GCBM + Peatland Project"
-              subtitle={<span>Helps to create a project consisting of files specific to a standard GCBM and Peatland Project</span>}
-              actionIcon={
-                <Radio
-                  checked={selectedValue === 'b'}
-                  onChange={handleChange}
-                  value="b"
-                  name="radio-button-demo"
-                  inputProps={{ 'aria-label': 'B' }}
-                />
-              }
-            />
-            </Tooltip>
-          </GridListTile>
-
-          <GridListTile style={{padding: "20px"}}>
-          <pre style={{backgroundColor:'#ebebe0',height:"120px"}}>
-              GCBM + Peatland project:
-              <ul type="disc">
-                <li>localdomain.json</li>
-                <li>gcbm_variables.json</li>
-                <li>gcbm_modules.json</li>
-                <li>peatland_variables.json</li>
-                <li>peatland_modules.json</li>
-              </ul>
-            </pre>
-            <Tooltip title="Helps to create a project consisting of files specific to a standard GCBM and Peatland Project" aria-label="JSON">
-            <GridListTileBar
-              title="GCBM + Peatland Project"
-              subtitle={<span>Helps to create a project consisting of files specific to a standard GCBM and Peatland Project</span>}
-              actionIcon={
-                <Radio
-                  checked={selectedValue === 'c'}
-                  onChange={handleChange}
-                  value="c"
-                  name="radio-button-demo"
-                  inputProps={{ 'aria-label': 'C' }}
-                />
-              }
-            />
-            </Tooltip>
-          </GridListTile>
       </GridList>
     </div>
   );
