@@ -28,6 +28,9 @@ export default function ResponsiveDialog(props) {
         open={open}
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
+        disableBackdropClick
+        disableEscapeKeyDown
+        maxWidth="xs"
       >
         <DialogTitle id="responsive-dialog-title">{props.heading}</DialogTitle>
         <DialogContent>
