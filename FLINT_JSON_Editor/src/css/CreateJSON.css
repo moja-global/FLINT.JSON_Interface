@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200&display=swap');
+
+#container{
+    display: inline-block;
+    width: 100%;
+}
+
+#card{
+    /* height: 80%;
+    width: 100%;  */
+    float: left;
+    display: inline-block;
+    padding: 0px 20px 0px 20px;
+    margin-left: 20px;
+}
+
+#button{
+    /* position: absolute; */
+  right: 0px;
+  float: right;
+}
+
+#body{
+    /* display: none; */
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}

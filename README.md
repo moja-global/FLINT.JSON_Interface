@@ -6,7 +6,7 @@ Google Summer of Code'20 code repository for the project ["Develop FLINT JSON Us
 ## Test the development verson
 - Clone this project
 - `cd GSoC.FLINT.JSON_Interface/FLINT_JSON_Editor`
-- Make sure latest `node` and `npm` are installed.
+- Make sure latest version of `node` and `npm` are installed.
 - `npm install`
 - `npm start`
 ## Test a packaged version

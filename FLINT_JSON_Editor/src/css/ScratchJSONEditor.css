@@ -1,0 +1,29 @@
+@import "../../node_modules/jsoneditor/dist/jsoneditor.min.css";
+
+#jsonEditor {
+    height: 90vh;
+    width: 50%;
+    float: left;
+    display: inline-block;
+}
+
+#jsonViewer{
+    height: 90vh;
+    /* margin-top: 20px; */
+    /* margin-left: 50%; */
+    width: 50%;
+    float: left;
+    display: inline-block;
+    overflow-y: scroll;
+    /* border: 2px solid rgba(118, 184, 228, 0.418); */
+}
+
+#container{
+    display: inline-block;
+    width: 100%;
+}
+
+#init{
+    margin-top: 10%;
+    margin-left: 45%;
+}

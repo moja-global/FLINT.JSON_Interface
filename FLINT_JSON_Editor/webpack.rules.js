@@ -18,7 +18,15 @@ module.exports = [
     test: /\.js$|\.jsx$/,
     exclude: /node_modules/,
     loader: 'babel-loader'
-  }
+  },
+  {
+    test: /\.(png|jpe?g|gif|svg)$/i,
+    use: [
+      {
+        loader: 'file-loader',
+      },
+    ],
+  },
   // Put your webpack loader rules in this array.  This is where you would put
   // your ts-loader configuration for instance:
   /**
