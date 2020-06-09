@@ -1,0 +1,2 @@
+Standard GCBM Project
+Helps to create a project consisting of files specific to a standard GCBM Project

@@ -5,6 +5,8 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import Radio from '@material-ui/core/Radio';
 import Tooltip from '@material-ui/core/Tooltip';
+const folder = "./src/storage/templates/";
+const fs = require("fs");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,6 +34,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function read()
+{
+  let list=[];
+  fs.readdir(folder, (err, files) => {
+    files.forEach(file => {
+      fs.readdir(folder+file,(err1,files1)=>{
+        let ulist=[];
+        files1.forEach(file1=>{
+          if(file1=="metadata.txt")
+          { 
+            console.log(readtxt(folder+file+"/metadata.txt"));
+          }
+          // console.log(file1);
+        })
+      })
+    });
+  });
+}
+
+function readtxt(path)
+{
+  var fs = require('fs');
+  var readline = require('readline');
+  let temp=[];
+  readline.createInterface({
+      input: fs.createReadStream(path),
+      terminal: false
+  }).on('line', function(line) {
+      temp.push(line);
+  });
+  return temp;
+}
+
 export default function TitlebarGridList() {
   const classes = useStyles();
   const [selectedValue, setSelectedValue] = React.useState('a');
@@ -40,6 +75,7 @@ export default function TitlebarGridList() {
   };
   return (
     <div className={classes.root}>
+      <button onClick={()=>read()}>fff</button>
       <GridList cellHeight={300} className={classes.gridList} >
 
           <GridListTile style={{padding: "20px"}}>

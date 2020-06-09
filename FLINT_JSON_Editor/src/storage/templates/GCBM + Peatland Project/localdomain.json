@@ -1,0 +1,26 @@
+{   
+    "Libraries": {
+        "moja.modules.cbm": "external",
+        "moja.modules.zipper": "external",
+        "moja.modules.gdal": "external"
+    },
+    "LocalDomain": {
+        "start_date": "2010/01/01",
+        "end_date": "2020/01/01",
+        "landUnitBuildSuccess": "landUnitBuildSuccess",
+        "simulateLandUnit": "simulateLandUnit",
+        "sequencer_library": "moja.modules.cbm",
+        "sequencer": "CBMSequencer",
+        "timing": "annual",
+        "type": "spatial_tiled",
+        "landscape": {
+            "provider": "RasterTiled",
+            "num_threads": 4,
+            "tiles": [],
+            "x_pixels": 1000,
+            "y_pixels": 1000,
+            "tile_size_x": 1.0,
+            "tile_size_y": 1.0
+        }
+    }
+}

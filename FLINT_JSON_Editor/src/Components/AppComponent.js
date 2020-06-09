@@ -39,14 +39,6 @@ export default function AppComponent(props) {
             <div id="wizard">
               <StartupWizard onRadioChange2={(val1)=>{console.log("AppComponent#"+val1);props.onRadioChange3(val1)}}/>
             </div>
-            
-            {/* <div id="button" style={{float: "right"}}>
-              
-              <ThemeProvider theme={theme}>
-                <Button variant="contained" color="primary" className={classes.margin}  onClick={()=>{}}>Next ></Button>
-              </ThemeProvider>
-              
-            </div> */}
           </div>
 	    	</div>
       </div>
