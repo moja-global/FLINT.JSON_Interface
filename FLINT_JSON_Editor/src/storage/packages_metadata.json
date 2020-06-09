@@ -1,10 +1,20 @@
 {
-    "Standard GCBM project":{
-        "description" : "Helps to create a project consisting of files specific to a standard GCBM Project",
-        "files" : ["variables.json","localdomain.json","modules.json"]
-    },
-    "GCBM + Peatland project":{
-        "description" : "Helps to create a project consisting of files specific to a standard GCBM and Peatland Project",
-        "files": ["localdomain.json","gcbm_variables.json","gcbm_modules.json","peatland_variables.json","peatland_modules.json"]
-    }
+  "Standard GCBM project": {
+    "description": "Helps to create a project consisting of files specific to a standard GCBM Project",
+    "files": [
+      "variables.json",
+      "localdomain.json",
+      "modules.json"
+    ]
+  },
+  "GCBM + Peatland project": {
+    "description": "Helps to create a project consisting of files specific to a standard GCBM and Peatland Project",
+    "files": [
+      "localdomain.json",
+      "gcbm_variables.json",
+      "gcbm_modules.json",
+      "peatland_variables.json",
+      "peatland_modules.json"
+    ]
+  }
 }
