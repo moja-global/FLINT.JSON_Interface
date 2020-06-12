@@ -17,7 +17,7 @@ const createWindow = () => {
       enableRemoteModule: true
     },
   });
-
+  mainWindow.maximize();
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
   console.log(MAIN_WINDOW_WEBPACK_ENTRY);

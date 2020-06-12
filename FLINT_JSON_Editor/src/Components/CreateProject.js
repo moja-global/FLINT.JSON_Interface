@@ -112,10 +112,10 @@ export default function TitlebarGridList() {
     <div className={classes.root}>
       <div style={{display:"inline-flex"}}>
         <form className={classes.root} noValidate autoComplete="off" id="path_input">
-          {/* <Input style={{width:"400px"}} value="" disabled inputProps={{ 'aria-label': 'description' }} /> */}
+          <Input style={{width:"400px"}} value="Please Choose a Path to save your project" disabled inputProps={{ 'aria-label': 'description' }} />
         </form>
         <ThemeProvider theme={theme}>
-          <Button variant="contained" color="primary" className={classes.margin} onClick={()=>{getPath(selectedValue);}}>
+          <Button variant="contained" color="primary" className={classes.margin} onClick={()=>{if(selectedValue)getPath(selectedValue);else dialog.showErrorBox("Choose Project","Please choose a project from our catalog to proceed!");}}>
             Choose Path
           </Button>
         </ThemeProvider>
