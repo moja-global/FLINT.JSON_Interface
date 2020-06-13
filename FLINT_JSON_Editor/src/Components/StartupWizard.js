@@ -16,18 +16,12 @@ import { createMuiTheme, withStyles,  ThemeProvider } from '@material-ui/core/st
 import Button from '@material-ui/core/Button';
 import { green, purple } from '@material-ui/core/colors';
 import SwipeableViews from 'react-swipeable-views';
-// import '../css/App.css'
+
 const theme = createMuiTheme({
   palette: {
     primary: green,
   },
 });
-
-// const useStyles = makeStyles((theme) => ({
-//   margin: {
-//     margin: theme.spacing(1),
-//   }
-// }));
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

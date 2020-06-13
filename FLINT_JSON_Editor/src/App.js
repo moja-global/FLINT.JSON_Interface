@@ -12,6 +12,7 @@ import AppComponent from './Components/AppComponent';
 import ErrorBoundary from './ErrorBoundary';
 import JSONEditor from 'jsoneditor';
 import bgImg from './Images/green.jpg';
+import SnackBar from './Components/SnackBar';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -28,16 +29,20 @@ const theme = createMuiTheme({
 export default function App() {
   const classes = useStyles();
   const [disp,setDisp] = React.useState(true);
-  const [routing,setRouting] = React.useState("App");
+  const [SnackDisp,setSnackDisp] = React.useState(false);
+
   var editor;
     return(
       <div>
-        { disp && <AppComponent onRadioChange3={(val)=>{console.log("App"+val);setRouting(val)}}/> }
-        { disp && 
-          <ThemeProvider theme={theme}>
-            <Button variant="contained" color="primary" className={classes.margin} style={{float: "right"}}  onClick={()=>{document.body.style.backgroundImage="none";setDisp(!disp);}}>Next</Button>
-          </ThemeProvider>
-        }
+        { disp && <AppComponent onRadioChange3={(val)=>{}}/> }
+        
+        { !disp && <div id="AppContainer"></div> }
+
+        <ThemeProvider theme={theme}>
+          <Button variant="contained" color="primary" className={classes.margin} style={{float: "right"}}  onClick={()=>{setSnackDisp(true)}}>Next</Button>
+         </ThemeProvider>
+
+        { SnackDisp && <SnackBar message="Please choose an option!" onComplete={()=>{setSnackDisp(false);console.log("sna")}}/>}
       </div>
     );
 }
