@@ -31,28 +31,14 @@ export default function App() {
   const [routing,setRouting] = React.useState("App");
   var editor;
     return(
-      <Router>
+      <div>
         { disp && <AppComponent onRadioChange3={(val)=>{console.log("App"+val);setRouting(val)}}/> }
-            {/* <div id="button" > */}
-              {disp && <Link to={"/"+routing}>
-              <ThemeProvider theme={theme}>
-                <Button variant="contained" color="primary" className={classes.margin} style={{float: "right"}}  onClick={()=>{document.body.style.backgroundImage="none";setDisp(!disp);}}>Next ></Button>
-              </ThemeProvider>
-              </Link>}
-            {/* </div> */}
-      <Switch>
-          <Route path="/ScratchJSONEditor">
-            <ScratchJSONEditor onHome={()=>{setDisp(true);document.body.style.backgroundImage=`url(${bgImg})`}} />
-          </Route>
-          <Route path="/users">
-            {/* <Users /> */}
-          </Route>
-          <Route path="/">
-            {/* <Home /> */}
-          </Route>
-      </Switch>
-      
-    </Router>
+        { disp && 
+          <ThemeProvider theme={theme}>
+            <Button variant="contained" color="primary" className={classes.margin} style={{float: "right"}}  onClick={()=>{document.body.style.backgroundImage="none";setDisp(!disp);}}>Next</Button>
+          </ThemeProvider>
+        }
+      </div>
     );
 }
 
