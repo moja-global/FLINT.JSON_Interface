@@ -13,6 +13,8 @@ import Button from '@material-ui/core/Button';
 import { green } from '@material-ui/core/colors';
 import Input from '@material-ui/core/Input';
 const { dialog } = require('electron').remote;
+import MyDialog from './Dialog';
+import SnackBar from './SnackBar';
 
 const theme = createMuiTheme({
   palette: {
@@ -60,20 +62,34 @@ function getPath(json_value){
   }).then(result => {
     console.log(result.canceled)
     console.log(result.filePaths)
-    ReactDOM.render(<Input style={{width:"500px"}} value={result.filePaths+"/"+json_value} disabled inputProps={{ 'aria-label': 'description' }} />,document.getElementById("path_input"));
+    if(result.canceled)
+    {
+      dialog.showErrorBox("Path Error", "You haven't chosen a Path! Press OK to continue!");
+      return;
+    }
+    document.getElementById("projectPath").value=result.filePaths+"/"+json_value
+    // ReactDOM.render(<Input id="projectPath" style={{width:"500px"}} value={result.filePaths+"/"+json_value} disabled inputProps={{ 'aria-label': 'description' }} />,document.getElementById("path_input"));
   }).catch(err => {
     console.log(err)
   })
 }
 
+function createProject()
+{
+  console.log("create proj");
+}
 export default function TitlebarGridList() {
   const classes = useStyles();
   const [selectedValue, setSelectedValue] = React.useState(false);
+  const [dialogDisp,setDialogDisp] = React.useState(false);
+  const [SnackDisp, setSnackDisp] = React.useState(false);
+
   const handleChange = (event) => {
+    console.log(selectedValue);
     setSelectedValue(event.target.value);
     console.log(event.target.value);
   };
-{
+
   var temp=[];
   var i=0;
   for (var x in jsonw)
@@ -106,13 +122,20 @@ export default function TitlebarGridList() {
   </GridListTile>);
   i++;
   }
-}
+
+// React.useEffect(()=>{ReactDOM.render(<ThemeProvider theme={theme}>
+//   <Button id="next_btn" variant="contained"  className={classes.margin} style={{float: "right"}} onClick={()=>{if(document.getElementById("projectPath").value)setDialogDisp(true);else setSnackDisp(true)}} >Next</Button>
+// </ThemeProvider>,document.getElementById("buttonContainer"))});
+
+React.useEffect(()=>{if(selectedValue)ReactDOM.render(<ThemeProvider theme={theme}>
+  <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{if(document.getElementById("projectPath").value)setDialogDisp(true);else setSnackDisp(true)}} >Next</Button>
+</ThemeProvider>,document.getElementById("buttonContainer"))},[selectedValue])
 
   return (
     <div className={classes.root}>
       <div style={{display:"inline-flex"}}>
         <form className={classes.root} noValidate autoComplete="off" id="path_input">
-          <Input style={{width:"400px"}} value="Please Choose a Path to save your project" disabled inputProps={{ 'aria-label': 'description' }} />
+          <Input id="projectPath" style={{width:"400px"}} placeholder="Please Choose a Path to save your project" disabled inputProps={{ 'aria-label': 'description' }} />
         </form>
         <ThemeProvider theme={theme}>
           <Button variant="contained" color="primary" className={classes.margin} onClick={()=>{if(selectedValue)getPath(selectedValue);else dialog.showErrorBox("Choose Project","Please choose a project from our catalog to proceed!");}}>
@@ -124,6 +147,15 @@ export default function TitlebarGridList() {
       <GridList cellHeight={300} className={classes.gridList}  >
         {temp}
       </GridList>
+
+      {dialogDisp && <MyDialog message={"Are you sure you want to create "+ selectedValue+"?"}
+                heading="Confirmation for Project"
+                positive="Yes"
+                negative="Cancel"
+                reply={(ans)=>{if(ans){createProject();};setDialogDisp(false)}} />}
+      
+      { SnackDisp && <SnackBar message="Please choose an option!" onComplete={()=>{setSnackDisp(false);console.log("sna")}}/>}
+
     </div>
   );
 }
