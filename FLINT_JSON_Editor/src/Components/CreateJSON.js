@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -7,6 +8,7 @@ import Logo from '../Images/logo.png'
 import Tooltip from '@material-ui/core/Tooltip';
 import Radio from '@material-ui/core/Radio';
 import ScratchLogo from '../Images/ScratchJSONEditor.png';
+import ScratchJSONEditor from './ScratchJSONEditor';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,12 +38,13 @@ const useStyles = makeStyles((theme) => ({
 export default function TitlebarGridList(props) {
   // console.log(props);
   const classes = useStyles();
-  const [selectedValue, setSelectedValue] = React.useState('a')
+  const [selectedValue, setSelectedValue] = React.useState(false)
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
     props.onRadioChange(event.target.value);
     console.log("CreateJSON#"+event.target.value);
   };
+
   return (
     <div className={classes.root}>
       <GridList cellHeight={300} className={classes.gridList} >

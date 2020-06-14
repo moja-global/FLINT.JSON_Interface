@@ -1,4 +1,5 @@
 import React,{Component} from 'react'
+import ReactDOM from 'react-dom';
 import Auth from './Components/Auth'
 import StartupWizard from './Components/StartupWizard'
 import './css/App.css'
@@ -30,17 +31,42 @@ export default function App() {
   const classes = useStyles();
   const [disp,setDisp] = React.useState(true);
   const [SnackDisp,setSnackDisp] = React.useState(false);
+  const [component,setComponent] = React.useState(false);
+  const [dispScratch,setDispScratch] = React.useState(false);
 
-  var editor;
+  if(component)
+  {
+    if(component=="ScratchJSONEditor")
+    {
+      setComponent(false);
+      ReactDOM.render(<ThemeProvider theme={theme}>
+        <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{
+          setDisp(false);
+          document.body.style.backgroundImage='none';
+          setDispScratch(true);
+        }} >Next</Button>
+      </ThemeProvider>,document.getElementById("buttonContainer"));
+    }
+  }
+
+  function resetApp() {
+    setDisp(true);
+    document.body.style.backgroundImage=`url(${bgImg})`;
+    // document.getElementById("AppContainer").innerHTML="";
+  }
+
     return(
       <div>
-        { disp && <AppComponent onRadioChange3={(val)=>{}}/> }
+        { disp && <AppComponent onRadioChange3={(val)=>{setComponent(val)}}/> }
         
-        { !disp && <div id="AppContainer"></div> }
-
-        <ThemeProvider theme={theme}>
-          <Button variant="contained" color="primary" className={classes.margin} style={{float: "right"}}  onClick={()=>{setSnackDisp(true)}}>Next</Button>
-         </ThemeProvider>
+        <div id="AppContainer">
+          { dispScratch && <ScratchJSONEditor onHome={(val)=>{resetApp();setDispScratch(false);}} /> }
+        </div>
+        {disp && <div id="buttonContainer">
+          <ThemeProvider theme={theme}>
+            <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>setSnackDisp(true)} >Next</Button>
+          </ThemeProvider>
+        </div>}
 
         { SnackDisp && <SnackBar message="Please choose an option!" onComplete={()=>{setSnackDisp(false);console.log("sna")}}/>}
       </div>

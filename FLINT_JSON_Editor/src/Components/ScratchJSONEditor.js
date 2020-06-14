@@ -138,7 +138,7 @@ export default function LabelBottomNavigation(props) {
                 heading="Go back Home?"
                 positive="Yes! Take me out!"
                 negative="No! Keep me here!"
-                reply={(ans)=>{if(ans){props.onHome(true);history.goBack();};setDialogDisp(false)}} />}
+                reply={(ans)=>{if(ans){props.onHome("true");};setDialogDisp(false)}} />}
       
       {dialogInit && <MyDialog message="Do you want to load a basic template or just a blank editor?"
                 heading="Initialising Editor!"

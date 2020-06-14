@@ -122,15 +122,6 @@ export default function ScrollableTabsButtonAuto(props) {
           <OpenFile />
         </TabPanel>
      </SwipeableViews>
-     
-      
-        {/* <CreateJSON /> */}
-      
-      {/* <div id="button" style={{float: "right"}}>
-          <ThemeProvider theme={theme}>
-              <Button variant="contained" color="primary" className={classes.margin}>Next ></Button>
-          </ThemeProvider>
-      </div> */}
     </div>
     
   );
