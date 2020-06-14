@@ -77,6 +77,11 @@ function getPath(json_value){
 function createProject()
 {
   console.log("create proj");
+  fs.mkdir(document.getElementById("projectPath").value, { recursive: true }, (err) => {
+    if (err) throw err;
+    fs.readdir('src/storage/templates/Standard GCBM Project/',(err,files)=>{if(err) throw err; console.log(files)});
+  });
+  
 }
 export default function TitlebarGridList() {
   const classes = useStyles();
@@ -122,10 +127,6 @@ export default function TitlebarGridList() {
   </GridListTile>);
   i++;
   }
-
-// React.useEffect(()=>{ReactDOM.render(<ThemeProvider theme={theme}>
-//   <Button id="next_btn" variant="contained"  className={classes.margin} style={{float: "right"}} onClick={()=>{if(document.getElementById("projectPath").value)setDialogDisp(true);else setSnackDisp(true)}} >Next</Button>
-// </ThemeProvider>,document.getElementById("buttonContainer"))});
 
 React.useEffect(()=>{if(selectedValue)ReactDOM.render(<ThemeProvider theme={theme}>
   <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{if(document.getElementById("projectPath").value)setDialogDisp(true);else setSnackDisp(true)}} >Next</Button>
