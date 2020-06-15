@@ -74,12 +74,17 @@ function getPath(json_value){
   })
 }
 
-function createProject()
+function createProject(selectedPath)
 {
   console.log("create proj");
   fs.mkdir(document.getElementById("projectPath").value, { recursive: true }, (err) => {
     if (err) throw err;
-    fs.readdir('src/storage/templates/Standard GCBM Project/',(err,files)=>{if(err) throw err; console.log(files)});
+    fs.readdir('src/storage/templates/'+selectedPath,(err,files)=>{
+      if(err) throw err; 
+      console.log(files);
+      for(var i in files)
+      fs.copyFile('src/storage/templates/' + selectedPath +'/' + files[i],document.getElementById("projectPath").value+"/"+files[i],(err)=>{console.log(err)});
+    });
   });
   
 }
@@ -153,7 +158,7 @@ React.useEffect(()=>{if(selectedValue)ReactDOM.render(<ThemeProvider theme={them
                 heading="Confirmation for Project"
                 positive="Yes"
                 negative="Cancel"
-                reply={(ans)=>{if(ans){createProject();};setDialogDisp(false)}} />}
+                reply={(ans)=>{if(ans){createProject(selectedValue);};setDialogDisp(false)}} />}
       
       { SnackDisp && <SnackBar message="Please choose an option!" onComplete={()=>{setSnackDisp(false);console.log("sna")}}/>}
 
