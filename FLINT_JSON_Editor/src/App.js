@@ -1,17 +1,13 @@
 import React,{Component} from 'react'
-import Auth from './Components/Auth'
-import StartupWizard from './Components/StartupWizard'
+import ReactDOM from 'react-dom';
 import './css/App.css'
-import Logo from './Images/logo.png'
 import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { green } from '@material-ui/core/colors';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ScratchJSONEditor from './Components/ScratchJSONEditor';
 import AppComponent from './Components/AppComponent';
-import ErrorBoundary from './ErrorBoundary';
-import JSONEditor from 'jsoneditor';
 import bgImg from './Images/green.jpg';
+import SnackBar from './Components/SnackBar';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -28,31 +24,46 @@ const theme = createMuiTheme({
 export default function App() {
   const classes = useStyles();
   const [disp,setDisp] = React.useState(true);
-  const [routing,setRouting] = React.useState("App");
-  var editor;
+  const [SnackDisp,setSnackDisp] = React.useState(false);
+  const [component,setComponent] = React.useState(false);
+  const [dispScratch,setDispScratch] = React.useState(false);
+
+  if(component)
+  {
+    if(component=="ScratchJSONEditor")
+    {
+      setComponent(false);
+      ReactDOM.render(<ThemeProvider theme={theme}>
+        <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{
+          setDisp(false);
+          document.body.style.backgroundImage='none';
+          setDispScratch(true);
+        }} >Next</Button>
+      </ThemeProvider>,document.getElementById("buttonContainer"));
+    }
+  }
+
+  function resetApp() {
+    setDisp(true);
+    document.body.style.backgroundImage=`url(${bgImg})`;
+    // document.getElementById("AppContainer").innerHTML="";
+  }
+
     return(
-      <Router>
-        { disp && <AppComponent onRadioChange3={(val)=>{console.log("App"+val);setRouting(val)}}/> }
-            {/* <div id="button" > */}
-              {disp && <Link to={"/"+routing}>
-              <ThemeProvider theme={theme}>
-                <Button variant="contained" color="primary" className={classes.margin} style={{float: "right"}}  onClick={()=>{document.body.style.backgroundImage="none";setDisp(!disp);}}>Next ></Button>
-              </ThemeProvider>
-              </Link>}
-            {/* </div> */}
-      <Switch>
-          <Route path="/ScratchJSONEditor">
-            <ScratchJSONEditor onHome={()=>{setDisp(true);document.body.style.backgroundImage=`url(${bgImg})`}} />
-          </Route>
-          <Route path="/users">
-            {/* <Users /> */}
-          </Route>
-          <Route path="/">
-            {/* <Home /> */}
-          </Route>
-      </Switch>
-      
-    </Router>
+      <div>
+        { disp && <AppComponent onRadioChange3={(val)=>{setComponent(val)}}/> }
+        
+        <div id="AppContainer">
+          { dispScratch && <ScratchJSONEditor onHome={(val)=>{resetApp();setDispScratch(false);}} /> }
+        </div>
+        {disp && <div id="buttonContainer">
+          <ThemeProvider theme={theme}>
+            <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>setSnackDisp(true)} >Next</Button>
+          </ThemeProvider>
+        </div>}
+
+        { SnackDisp && <SnackBar message="Please choose an option!" onComplete={()=>{setSnackDisp(false);console.log("sna")}}/>}
+      </div>
     );
 }
 

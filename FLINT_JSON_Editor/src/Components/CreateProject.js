@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles,createMuiTheme, ThemeProvider  } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -9,7 +9,18 @@ import Tooltip from '@material-ui/core/Tooltip';
 const folder = "./src/storage/templates/";
 const fs = require("fs");
 import jsonw from '../storage/packages_metadata.json';
+import Button from '@material-ui/core/Button';
+import { green } from '@material-ui/core/colors';
+import Input from '@material-ui/core/Input';
+const { dialog } = require('electron').remote;
+import MyDialog from './Dialog';
+import SnackBar from './SnackBar';
 
+const theme = createMuiTheme({
+  palette: {
+    primary: green,
+  },
+});
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -34,15 +45,61 @@ const useStyles = makeStyles((theme) => ({
     bottom: theme.spacing(2),
     right: theme.spacing(3),
   },
+  margin: {
+    margin: theme.spacing(1),
+  },
+  // root: {
+  //   '& > *': {
+  //     margin: theme.spacing(1),
+  //   },
+  // },
 }));
 
+function getPath(json_value){
+  console.log("aa")
+  dialog.showOpenDialog({
+    properties: ['openDirectory']
+  }).then(result => {
+    console.log(result.canceled)
+    console.log(result.filePaths)
+    if(result.canceled)
+    {
+      dialog.showErrorBox("Path Error", "You haven't chosen a Path! Press OK to continue!");
+      return;
+    }
+    document.getElementById("projectPath").value=result.filePaths+"/"+json_value
+    // ReactDOM.render(<Input id="projectPath" style={{width:"500px"}} value={result.filePaths+"/"+json_value} disabled inputProps={{ 'aria-label': 'description' }} />,document.getElementById("path_input"));
+  }).catch(err => {
+    console.log(err)
+  })
+}
+
+function createProject(selectedPath)
+{
+  console.log("create proj");
+  fs.mkdir(document.getElementById("projectPath").value, { recursive: true }, (err) => {
+    if (err) throw err;
+    fs.readdir('src/storage/templates/'+selectedPath,(err,files)=>{
+      if(err) throw err; 
+      console.log(files);
+      for(var i in files)
+      fs.copyFile('src/storage/templates/' + selectedPath +'/' + files[i],document.getElementById("projectPath").value+"/"+files[i],(err)=>{console.log(err)});
+    });
+  });
+  
+}
 export default function TitlebarGridList() {
   const classes = useStyles();
-  const [selectedValue, setSelectedValue] = React.useState(0);
+  const [selectedValue, setSelectedValue] = React.useState(false);
+  const [dialogDisp,setDialogDisp] = React.useState(false);
+  const [SnackDisp, setSnackDisp] = React.useState(false);
+
   const handleChange = (event) => {
+    console.log(selectedValue);
     setSelectedValue(event.target.value);
+    console.log(event.target.value);
   };
-{
+
   var temp=[];
   var i=0;
   for (var x in jsonw)
@@ -63,11 +120,11 @@ export default function TitlebarGridList() {
       subtitle={<span>{jsonw[x]["description"]}</span>}
       actionIcon={
       <Radio
-        checked={selectedValue === i.toString()}
+        checked={selectedValue === x}
         onChange={handleChange}
-        value={i.toString()}
+        value={x}
         name="radio-button-demo"
-        inputProps={{ 'aria-label': i.toString() }}
+        inputProps={{ 'aria-label': x }}
         />
       }
     />
@@ -75,13 +132,36 @@ export default function TitlebarGridList() {
   </GridListTile>);
   i++;
   }
-}
+
+React.useEffect(()=>{if(selectedValue)ReactDOM.render(<ThemeProvider theme={theme}>
+  <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{if(document.getElementById("projectPath").value)setDialogDisp(true);else setSnackDisp(true)}} >Next</Button>
+</ThemeProvider>,document.getElementById("buttonContainer"))},[selectedValue])
 
   return (
     <div className={classes.root}>
+      <div style={{display:"inline-flex"}}>
+        <form className={classes.root} noValidate autoComplete="off" id="path_input">
+          <Input id="projectPath" style={{width:"400px"}} placeholder="Please Choose a Path to save your project" disabled inputProps={{ 'aria-label': 'description' }} />
+        </form>
+        <ThemeProvider theme={theme}>
+          <Button variant="contained" color="primary" className={classes.margin} onClick={()=>{if(selectedValue)getPath(selectedValue);else dialog.showErrorBox("Choose Project","Please choose a project from our catalog to proceed!");}}>
+            Choose Path
+          </Button>
+        </ThemeProvider>
+      </div>
+
       <GridList cellHeight={300} className={classes.gridList}  >
         {temp}
       </GridList>
+
+      {dialogDisp && <MyDialog message={"Are you sure you want to create "+ selectedValue+"?"}
+                heading="Confirmation for Project"
+                positive="Yes"
+                negative="Cancel"
+                reply={(ans)=>{if(ans){createProject(selectedValue);};setDialogDisp(false)}} />}
+      
+      { SnackDisp && <SnackBar message="Please choose an option!" onComplete={()=>{setSnackDisp(false);console.log("sna")}}/>}
+
     </div>
   );
 }
