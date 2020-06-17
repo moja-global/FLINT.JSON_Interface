@@ -41,11 +41,39 @@ function union(a, b) {
   return [...a, ...not(b, a)];
 }
 export default function TransferList() {
+  var peatland_JSON = [
+    'peatland_modules.json', 'standard_gcbm_modules.json',
+    'peatland_output_modules.json', 'standard_gcbm_pools.json',
+    'peatland_pools.json', 'standard_gcbm_provider_config.json',
+    'peatland_variables.json', 'standard_gcbm_spinup.json',
+    'standard_gcbm_internal_variables.json', 'standard_gcbm_variables.json',
+    'standard_gcbm_localdomain.json'
+  ];
+  
+  var standard_JSON = [
+    'standard_gcbm_internal_variables.json', 'standard_gcbm_pools.json',
+    'standard_gcbm_localdomain.json', 'standard_gcbm_provider_config.json',
+    'standard_gcbm_modules.json', 'standard_gcbm_spinup.json',
+    'standard_gcbm_output_modules.json', 'standard_gcbm_variables.json'
+  ];
+  
+  var a_n_partitioning_JSON = [
+    'a_n_partitioning_internal_variables.json', 'standard_gcbm_output_modules.json',
+    'a_n_partitioning_modules.json', 'standard_gcbm_pools.json',
+    'a_n_partitioning_variables.json', 'standard_gcbm_provider_config.json',
+    'standard_gcbm_internal_variables.json', 'standard_gcbm_spinup.json',
+    'standard_gcbm_localdomain.json', 'standard_gcbm_variables.json',
+    'standard_gcbm_modules.json'
+  ]
+  
+  var JSON_array = [...new Set(standard_JSON.concat(a_n_partitioning_JSON).concat(peatland_JSON))];
+  
   const classes = useStyles();
   const [checked, setChecked] = React.useState([]);
-  const [left, setLeft] = React.useState(["internal_variables.json", "modules_output.json", "spinup.json", "localdomain.json", "pools_cbm.json", "variables.json", "modules_cbm.json", "provider_config.json"]);
+  const [left, setLeft] = React.useState(JSON_array);
   const [right, setRight] = React.useState([]);
   React.useEffect(()=>{document.getElementById("next_btn").style.backgroundColor="#4caf50";document.getElementById("next_btn").style.color="rgba(0, 0, 0, 0.87)"})
+
 
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
@@ -129,7 +157,7 @@ console.log(right);
 
   return (
     <Grid container spacing={2} justify="center" alignItems="center" className={classes.root}>
-      <Grid xs={4} item>{customList('Choices', left)}</Grid>
+      <Grid xs={5} item>{customList('Choices', left)}</Grid>
       <Grid item>
         <Grid container direction="column" alignItems="center">
           <Button
@@ -154,7 +182,7 @@ console.log(right);
           </Button>
         </Grid>
       </Grid>
-      <Grid xs={4} item>{customList('Chosen', right)}</Grid>
+      <Grid xs={5} item>{customList('Chosen', right)}</Grid>
     </Grid>
   );
 }
