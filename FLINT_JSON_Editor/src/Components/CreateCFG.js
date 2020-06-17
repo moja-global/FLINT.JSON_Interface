@@ -72,13 +72,11 @@ export default function TransferList() {
   const [checked, setChecked] = React.useState([]);
   const [left, setLeft] = React.useState(JSON_array);
   const [right, setRight] = React.useState([]);
-  React.useEffect(()=>{document.getElementById("next_btn").style.backgroundColor="#4caf50";document.getElementById("next_btn").style.color="rgba(0, 0, 0, 0.87)"})
+  // React.useEffect(()=>{document.getElementById("next_btn").style.backgroundColor="#4caf50";document.getElementById("next_btn").style.color="rgba(0, 0, 0, 0.87)"})
 
 
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
-console.log(left);
-console.log(right);
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];

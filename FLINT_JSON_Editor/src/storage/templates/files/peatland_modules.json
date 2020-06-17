@@ -1,0 +1,54 @@
+{
+    "Modules": {  
+        "MossDisturbanceModule": {
+            "enabled": true,
+            "order": 12,
+            "library": "moja.modules.cbm"
+        },
+        "PeatlandDisturbanceModule": {
+            "enabled": true,
+            "order": 13,
+            "library": "moja.modules.cbm"
+        },   
+        "SmallTreeGrowthModule": {
+            "enabled": true,
+            "order": 61,
+            "library": "moja.modules.cbm"
+        },
+        "PeatlandPrepareModule": {
+            "enabled": true,
+            "order": 91,
+            "library": "moja.modules.cbm"
+        },    
+        "PeatlandGrowthModule": {
+            "enabled": true,
+            "order": 92,
+            "library": "moja.modules.cbm"
+        },
+        "PeatlandTurnoverModule": {
+            "enabled": true,
+            "order": 93,
+            "library": "moja.modules.cbm"
+        },
+        "PeatlandDecayModule": {
+            "enabled": true,
+            "order": 94,
+            "library": "moja.modules.cbm"
+        },    
+        "CBMMossGrowthModule": {
+            "enabled": true,
+            "order": 95,
+            "library": "moja.modules.cbm"
+        },
+        "CBMMossTurnoverModule": {
+            "enabled": true,
+            "order": 96,
+            "library": "moja.modules.cbm"
+        },
+        "CBMMossDecayModule": {
+            "enabled": true,
+            "order": 97,
+            "library": "moja.modules.cbm"
+        }
+    }
+}
