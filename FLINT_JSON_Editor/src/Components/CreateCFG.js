@@ -54,7 +54,12 @@ function union(a, b) {
   return [...a, ...not(b, a)];
 }
 
-function getPath(){
+function getPath(choice){
+  if(choice && document.getElementById("projectName").value=="")
+    {
+      dialog.showErrorBox("Project Error", "You haven't chosen a Project Name! Press OK to continue!");
+      return;
+    }
   dialog.showOpenDialog({
     properties: ['openDirectory']
   }).then(result => {
@@ -65,7 +70,11 @@ function getPath(){
       dialog.showErrorBox("Path Error", "You haven't chosen a Path! Press OK to continue!");
       return;
     }
-    return(result.filePaths);
+    console.log(result.filePaths[0]);
+    if(choice)
+    document.getElementById("path").value=result.filePaths[0]+"/"+document.getElementById("projectName").value;
+    else
+    document.getElementById("path").value=result.filePaths[0];
   }).catch(err => {
     console.log(err)
   })
@@ -149,17 +158,6 @@ export default function TransferList() {
     document.getElementById("path").value="";
   }
 
-  function choosePath()
-  {
-    if(choice && document.getElementById("projectName").value=="")
-    {
-      dialog.showErrorBox("Project Error", "You haven't chosen a Project Name! Press OK to continue!");
-      return;
-    }
-    var path = getPath();
-
-  }
-
   const customList = (title, items) => (
     <Card>
       <CardHeader
@@ -240,11 +238,11 @@ export default function TransferList() {
     </FormGroup>
     <div style={{display:"inline-flex",marginLeft: "20%"}}>
         <form className={classes.root} noValidate autoComplete="off" id="path_input">
-          <Input id="path" style={{width:"400px"}} placeholder="Please Choose a Path to save your project" disabled inputProps={{ 'aria-label': 'description' }} />
           {choice && <Input id="projectName" placeholder="Project Name" inputProps={{ 'aria-label': 'description' }} />}
+          <Input id="path" style={{width:"400px"}} placeholder="Please Choose a Path to save your project" disabled inputProps={{ 'aria-label': 'description' }} />
         </form>
         <ThemeProvider theme={theme}>
-          <Button variant="contained" color="primary" className={classes.margin} onClick={()=>{choosePath();}}>
+          <Button variant="contained" color="primary" className={classes.margin} onClick={()=>{getPath(choice);}}>
             Choose Path
           </Button>
         </ThemeProvider>
