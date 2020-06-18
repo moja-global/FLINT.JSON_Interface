@@ -16,6 +16,7 @@ import Switch from '@material-ui/core/Switch';
 import Input from '@material-ui/core/Input';
 import { green } from '@material-ui/core/colors';
 const { dialog } = require('electron').remote;
+import TextField from '@material-ui/core/TextField';
 
 const theme = createMuiTheme({
   palette: {
@@ -64,8 +65,7 @@ function getPath(){
       dialog.showErrorBox("Path Error", "You haven't chosen a Path! Press OK to continue!");
       return;
     }
-    document.getElementById("path").value=result.filePaths+"/";
-    // ReactDOM.render(<Input id="projectPath" style={{width:"500px"}} value={result.filePaths+"/"+json_value} disabled inputProps={{ 'aria-label': 'description' }} />,document.getElementById("path_input"));
+    return(result.filePaths);
   }).catch(err => {
     console.log(err)
   })
@@ -144,6 +144,22 @@ export default function TransferList() {
     setChecked(not(checked, rightChecked));
   };
 
+  function handleSwitchChange(){
+    setChoice(!choice);
+    document.getElementById("path").value="";
+  }
+
+  function choosePath()
+  {
+    if(choice && document.getElementById("projectName").value=="")
+    {
+      dialog.showErrorBox("Project Error", "You haven't chosen a Project Name! Press OK to continue!");
+      return;
+    }
+    var path = getPath();
+
+  }
+
   const customList = (title, items) => (
     <Card>
       <CardHeader
@@ -218,17 +234,17 @@ export default function TransferList() {
 
     <FormGroup style={{marginLeft: "40%"}}>
         <FormControlLabel 
-          control={<Switch checked={choice} onChange={()=>{setChoice(!choice);document.getElementById("path").value=""}}  name="gilad" />}
+          control={<Switch checked={choice} onChange={()=>{handleSwitchChange()}} />}
           label="Create Project along with CFG File!"
         />
     </FormGroup>
-    
     <div style={{display:"inline-flex",marginLeft: "20%"}}>
         <form className={classes.root} noValidate autoComplete="off" id="path_input">
           <Input id="path" style={{width:"400px"}} placeholder="Please Choose a Path to save your project" disabled inputProps={{ 'aria-label': 'description' }} />
+          {choice && <Input id="projectName" placeholder="Project Name" inputProps={{ 'aria-label': 'description' }} />}
         </form>
         <ThemeProvider theme={theme}>
-          <Button variant="contained" color="primary" className={classes.margin} onClick={()=>{getPath();}}>
+          <Button variant="contained" color="primary" className={classes.margin} onClick={()=>{choosePath();}}>
             Choose Path
           </Button>
         </ThemeProvider>
