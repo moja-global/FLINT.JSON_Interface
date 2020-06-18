@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import Card from '@material-ui/core/Card';
@@ -10,6 +10,17 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';  
+import Input from '@material-ui/core/Input';
+import { green } from '@material-ui/core/colors';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: green,
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,6 +83,7 @@ export default function TransferList() {
   const [checked, setChecked] = React.useState([]);
   const [left, setLeft] = React.useState(JSON_array);
   const [right, setRight] = React.useState([]);
+  const [choice, setChoice] = React.useState(false);
   // React.useEffect(()=>{document.getElementById("next_btn").style.backgroundColor="#4caf50";document.getElementById("next_btn").style.color="rgba(0, 0, 0, 0.87)"})
 
 
@@ -154,6 +166,7 @@ export default function TransferList() {
   );
 
   return (
+    <div>
     <Grid container spacing={2} justify="center" alignItems="center" className={classes.root}>
       <Grid xs={5} item>{customList('Choices', left)}</Grid>
       <Grid item>
@@ -182,5 +195,24 @@ export default function TransferList() {
       </Grid>
       <Grid xs={5} item>{customList('Chosen', right)}</Grid>
     </Grid>
+
+    <FormGroup style={{marginLeft: "40%"}}>
+        <FormControlLabel 
+          control={<Switch checked={choice} onChange={()=>{setChoice(!choice);document.getElementById("path").value=""}}  name="gilad" />}
+          label="Create Project along with CFG File!"
+        />
+    </FormGroup>
+    
+    <div style={{display:"inline-flex",marginLeft: "20%"}}>
+        <form className={classes.root} noValidate autoComplete="off" id="path_input">
+          <Input id="path" style={{width:"400px"}} placeholder="Please Choose a Path to save your project" disabled inputProps={{ 'aria-label': 'description' }} />
+        </form>
+        <ThemeProvider theme={theme}>
+          <Button variant="contained" color="primary" className={classes.margin} onClick={()=>{if(selectedValue)getPath(selectedValue);else dialog.showErrorBox("Choose Project","Please choose a project from our catalog to proceed!");}}>
+            Choose Path
+          </Button>
+        </ThemeProvider>
+    </div>
+  </div>
   );
 }
