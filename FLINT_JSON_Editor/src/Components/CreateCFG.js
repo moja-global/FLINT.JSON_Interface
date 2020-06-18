@@ -15,6 +15,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';  
 import Input from '@material-ui/core/Input';
 import { green } from '@material-ui/core/colors';
+const { dialog } = require('electron').remote;
 
 const theme = createMuiTheme({
   palette: {
@@ -51,6 +52,25 @@ function intersection(a, b) {
 function union(a, b) {
   return [...a, ...not(b, a)];
 }
+
+function getPath(){
+  dialog.showOpenDialog({
+    properties: ['openDirectory']
+  }).then(result => {
+    console.log(result.canceled)
+    console.log(result.filePaths)
+    if(result.canceled)
+    {
+      dialog.showErrorBox("Path Error", "You haven't chosen a Path! Press OK to continue!");
+      return;
+    }
+    document.getElementById("path").value=result.filePaths+"/";
+    // ReactDOM.render(<Input id="projectPath" style={{width:"500px"}} value={result.filePaths+"/"+json_value} disabled inputProps={{ 'aria-label': 'description' }} />,document.getElementById("path_input"));
+  }).catch(err => {
+    console.log(err)
+  })
+}
+
 export default function TransferList() {
   var peatland_JSON = [
     'peatland_modules.json', 'standard_gcbm_modules.json',
@@ -208,7 +228,7 @@ export default function TransferList() {
           <Input id="path" style={{width:"400px"}} placeholder="Please Choose a Path to save your project" disabled inputProps={{ 'aria-label': 'description' }} />
         </form>
         <ThemeProvider theme={theme}>
-          <Button variant="contained" color="primary" className={classes.margin} onClick={()=>{if(selectedValue)getPath(selectedValue);else dialog.showErrorBox("Choose Project","Please choose a project from our catalog to proceed!");}}>
+          <Button variant="contained" color="primary" className={classes.margin} onClick={()=>{getPath();}}>
             Choose Path
           </Button>
         </ThemeProvider>
