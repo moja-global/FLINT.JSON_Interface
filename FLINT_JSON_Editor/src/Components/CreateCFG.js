@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { makeStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
@@ -16,7 +17,7 @@ import Switch from '@material-ui/core/Switch';
 import Input from '@material-ui/core/Input';
 import { green } from '@material-ui/core/colors';
 const { dialog } = require('electron').remote;
-import TextField from '@material-ui/core/TextField';
+const fs = require("fs");
 
 const theme = createMuiTheme({
   palette: {
@@ -54,7 +55,7 @@ function union(a, b) {
   return [...a, ...not(b, a)];
 }
 
-function getPath(choice){
+ function getPath(choice,classes, files){
   if(choice && document.getElementById("projectName").value=="")
     {
       dialog.showErrorBox("Project Error", "You haven't chosen a Project Name! Press OK to continue!");
@@ -75,9 +76,47 @@ function getPath(choice){
     document.getElementById("path").value=result.filePaths[0]+"/"+document.getElementById("projectName").value;
     else
     document.getElementById("path").value=result.filePaths[0];
+    ReactDOM.render(<ThemeProvider theme={theme}>
+      <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{copyFiles(files, choice)}} >Next</Button>
+    </ThemeProvider>,document.getElementById("buttonContainer"));
+    // document.getElementById("next_btn").setAttribute("onClick","console.log('aaaa')");
+    // handleNextChange();
   }).catch(err => {
     console.log(err)
   })
+}
+
+function copyFiles(files, choice)
+{
+  var s=[];
+  for(var i in files)
+  {
+    s+="config="+files[i]+"\n";
+  }
+  var path = document.getElementById("path").value;
+  fs.mkdir(path, { recursive: true }, (err) => {
+    if(err) throwerr;
+  });
+
+  if(choice)
+  {
+    for(var i in files)
+    {
+      fs.copyFile('src/storage/templates/files/'+files[i], path+'/'+files[i], (err) => {
+        if (err) throw err;
+        console.log('source.txt was copied to destination.txt');
+      });
+    }
+    fs.writeFile(path + '/gcbm_config.cfg', s, (err) => {
+      if (err) throw err;
+    });
+  }
+  else
+  {
+    fs.writeFile(path + '/gcbm_config.cfg', s, (err) => {
+      if (err) throw err;
+    });
+  }
 }
 
 export default function TransferList() {
@@ -114,7 +153,6 @@ export default function TransferList() {
   const [right, setRight] = React.useState([]);
   const [choice, setChoice] = React.useState(false);
   // React.useEffect(()=>{document.getElementById("next_btn").style.backgroundColor="#4caf50";document.getElementById("next_btn").style.color="rgba(0, 0, 0, 0.87)"})
-
 
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
@@ -242,7 +280,7 @@ export default function TransferList() {
           <Input id="path" style={{width:"400px"}} placeholder="Please Choose a Path to save your project" disabled inputProps={{ 'aria-label': 'description' }} />
         </form>
         <ThemeProvider theme={theme}>
-          <Button variant="contained" color="primary" className={classes.margin} onClick={()=>{getPath(choice);}}>
+          <Button variant="contained" color="primary" className={classes.margin} onClick={()=>{getPath(choice,classes, right);}}>
             Choose Path
           </Button>
         </ThemeProvider>
