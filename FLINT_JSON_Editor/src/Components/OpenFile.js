@@ -2,10 +2,11 @@ import React from 'react';
 import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
-import TagFacesIcon from '@material-ui/icons/TagFaces';
 import Button from '@material-ui/core/Button';
 import { green } from '@material-ui/core/colors';
 const {dialog} = require('electron').remote;
+const {basename} = require('path');
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,6 +51,7 @@ export default function ChipsArray() {
     dialog.showOpenDialog({
         properties: ['openFile', 'multiSelections']
       }).then(result => {
+        console.log(result);
         console.log(result.canceled)
         console.log(result.filePaths)
         var temp=[];
@@ -75,11 +77,13 @@ export default function ChipsArray() {
         { chipData.map((data) => {
             return (
             <li>
+              <Tooltip title={data}>
                 <Chip
-                label={data}
+                label={basename(data)}
                 onDelete={handleDelete(data)}
                 className={classes.chip}
                 />
+              </Tooltip>
             </li>
             );
         })}
