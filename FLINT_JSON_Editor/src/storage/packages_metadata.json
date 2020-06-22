@@ -1,5 +1,5 @@
 {
-  "standard_JSON": {
+  "standard_gcbm_JSON": {
     "description": "Helps to create a project consisting of files specific to a standard GCBM Project",
     "files": [
       "standard_gcbm_internal_variables.json", "standard_gcbm_pools.json",

@@ -84,6 +84,12 @@ function createProject(selectedPath)
       console.log(files);
       for(var i in files)
       fs.copyFile('src/storage/templates/' + selectedPath +'/' + files[i],document.getElementById("projectPath").value+"/"+files[i],(err)=>{console.log(err)});
+      dialog.showMessageBox({
+        type: "info",
+        title: "Success",
+        message: "Your project has been created",
+        buttons: ["OK"]
+      });
     });
   });
   
@@ -92,7 +98,6 @@ export default function TitlebarGridList() {
   const classes = useStyles();
   const [selectedValue, setSelectedValue] = React.useState(false);
   const [dialogDisp,setDialogDisp] = React.useState(false);
-  const [SnackDisp, setSnackDisp] = React.useState(false);
 
   const handleChange = (event) => {
     console.log(selectedValue);
@@ -134,7 +139,7 @@ export default function TitlebarGridList() {
   }
 
 React.useEffect(()=>{if(selectedValue)ReactDOM.render(<ThemeProvider theme={theme}>
-  <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{if(document.getElementById("projectPath").value)setDialogDisp(true);else setSnackDisp(true)}} >Next</Button>
+  <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{if(document.getElementById("projectPath").value)setDialogDisp(true);else dialog.showErrorBox("Path Error", "You haven't chosen a Path! Press OK to continue!");}} >Next</Button>
 </ThemeProvider>,document.getElementById("buttonContainer"))},[selectedValue])
 
   return (
@@ -159,9 +164,6 @@ React.useEffect(()=>{if(selectedValue)ReactDOM.render(<ThemeProvider theme={them
                 positive="Yes"
                 negative="Cancel"
                 reply={(ans)=>{if(ans){createProject(selectedValue);};setDialogDisp(false)}} />}
-      
-      { SnackDisp && <SnackBar message="Please choose an option!" onComplete={()=>{setSnackDisp(false);console.log("sna")}}/>}
-
     </div>
   );
 }

@@ -49,9 +49,14 @@ export default function App() {
     // document.getElementById("AppContainer").innerHTML="";
   }
 
+  function resetBtn(){
+    ReactDOM.render(<ThemeProvider theme={theme}>
+      <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>setSnackDisp(true)} >Next</Button>
+    </ThemeProvider>,document.getElementById("buttonContainer"));
+  }
     return(
       <div>
-        { disp && <AppComponent onRadioChange3={(val)=>{setComponent(val)}}/> }
+        { disp && <AppComponent onRadioChange3={(val)=>{setComponent(val)}} showSnack2={(val1)=>{resetBtn()}}/> }
         
         <div id="AppContainer">
           { dispScratch && <ScratchJSONEditor onHome={(val)=>{resetApp();setDispScratch(false);}} /> }

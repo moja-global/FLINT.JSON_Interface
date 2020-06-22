@@ -117,6 +117,13 @@ function copyFiles(files, choice)
       if (err) throw err;
     });
   }
+
+  dialog.showMessageBox({
+    type: "info",
+    title: "Success",
+    message: "Your CFG file has been created",
+    buttons: ["OK"]
+  });
 }
 
 export default function TransferList() {
