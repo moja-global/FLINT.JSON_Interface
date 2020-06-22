@@ -3,10 +3,8 @@ import '../css/App.css';
 import Logo from '../Images/logo.png';
 import Auth from './Auth';
 import StartupWizard from './StartupWizard';
-import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
-import { checkPropTypes } from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
     margin: {
@@ -37,7 +35,7 @@ export default function AppComponent(props) {
             </div>
 
             <div id="wizard">
-              <StartupWizard onRadioChange2={(val1)=>{console.log("AppComponent#"+val1);props.onRadioChange3(val1)}}/>
+              <StartupWizard onRadioChange2={(val1)=>{console.log("AppComponent#"+val1);props.onRadioChange3(val1)}} showSnack={(val2)=>{props.showSnack2(val2)}} />
             </div>
           </div>
 	    	</div>

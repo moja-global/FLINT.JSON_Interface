@@ -1,0 +1,657 @@
+{
+    "Modules": {
+        "WriteVariableGeotiff": {
+            "enabled": true,
+            "order": 100,
+            "library": "moja.modules.gdal",
+            "settings": {
+                "items": [
+                    {
+                        "data_name": "Age",
+                        "enabled": true,
+                        "variable_data_type": "Int16",
+                        "on_notification": "OutputStep",
+                        "variable_name": "age"
+                    },
+                    {
+                        "pool_name": [
+                            "SoftwoodMerch",
+                            "SoftwoodStem",
+                            "SoftwoodFoliage",
+                            "SoftwoodOther",
+                            "HardwoodMerch",
+                            "HardwoodStem",
+                            "HardwoodFoliage",
+                            "HardwoodOther",
+                            "WoodyStemsBranchesLive",
+                            "WoodyFoliageLive",
+                            "SedgeFoliageLive",
+                            "FeatherMossLive",
+                            "SphagnumMossLive"
+                        ],
+                        "data_name": "AG_Biomass_C",
+                        "enabled": true,
+                        "variable_data_type": "float",
+                        "on_notification": "OutputStep"
+                    },
+                    {
+                        "pool_name": [
+                            "SoftwoodCoarseRoots",
+                            "SoftwoodFineRoots",
+                            "HardwoodCoarseRoots",
+                            "HardwoodFineRoots",
+                            "WoodyRootsLive",
+                            "SedgeRootsLive"
+                        ],
+                        "data_name": "BG_Biomass",
+                        "enabled": true,
+                        "variable_data_type": "float",
+                        "on_notification": "OutputStep"
+                    },
+                    {
+                        "data_name": "Shrub_Age",
+                        "enabled": true,
+                        "variable_data_type": "Int16",
+                        "on_notification": "OutputStep",
+                        "variable_name": "peatland_shrub_age"
+                    },
+                    {
+                        "pool_name": [
+                            "SoftwoodMerch",
+                            "SoftwoodStem",
+                            "SoftwoodFoliage",
+                            "SoftwoodOther",
+                            "SoftwoodCoarseRoots",
+                            "SoftwoodFineRoots",
+                            "SoftwoodBranchSnag",
+                            "SoftwoodStemSnag",
+                            "HardwoodMerch",
+                            "HardwoodStem",
+                            "HardwoodFoliage",
+                            "HardwoodOther",
+                            "HardwoodCoarseRoots",
+                            "HardwoodFineRoots",
+                            "HardwoodBranchSnag",
+                            "HardwoodStemSnag",
+                            "WoodyStemsBranchesLive",
+                            "WoodyFoliageLive",
+                            "WoodyRootsLive",
+                            "SedgeFoliageLive",
+                            "SedgeRootsLive",
+                            "FeatherMossLive",
+                            "SphagnumMossLive",
+                            "AboveGroundVeryFastSoil",
+                            "AboveGroundFastSoil",
+                            "AboveGroundSlowSoil",
+                            "BelowGroundVeryFastSoil",
+                            "BelowGroundFastSoil",
+                            "BelowGroundSlowSoil",
+                            "MediumSoil",
+                            "WoodyFineDead",
+                            "WoodyCoarseDead",
+                            "WoodyFoliageDead",
+                            "WoodyRootsDead",
+                            "SedgeFoliageDead",
+                            "SedgeRootsDead",
+                            "FeathermossDead",
+                            "Acrotelm_O",
+                            "Acrotelm_A",
+                            "Catotelm_O",
+                            "Catotelm_A"
+                        ],
+                        "data_name": "Total_Ecosystem_C",
+                        "enabled": true,
+                        "variable_data_type": "float",
+                        "on_notification": "OutputStep"
+                    },
+                    {
+                        "pool_name": [
+                            "SoftwoodMerch",
+                            "SoftwoodStem",
+                            "SoftwoodFoliage",
+                            "SoftwoodOther",
+                            "SoftwoodCoarseRoots",
+                            "SoftwoodFineRoots",
+                            "HardwoodMerch",
+                            "HardwoodStem",
+                            "HardwoodFoliage",
+                            "HardwoodOther",
+                            "HardwoodCoarseRoots",
+                            "HardwoodFineRoots",
+                            "WoodyStemsBranchesLive",
+                            "WoodyFoliageLive",
+                            "WoodyRootsLive",
+                            "SedgeFoliageLive",
+                            "SedgeRootsLive",
+                            "FeatherMossLive",
+                            "SphagnumMossLive"
+                        ],
+                        "data_name": "Total_Biomass_C",
+                        "enabled": true,
+                        "variable_data_type": "float",
+                        "on_notification": "OutputStep"
+                    },
+                    {
+                        "pool_name": [
+                            "AboveGroundVeryFastSoil",
+                            "AboveGroundFastSoil",
+                            "AboveGroundSlowSoil",
+                            "BelowGroundVeryFastSoil",
+                            "BelowGroundFastSoil",
+                            "BelowGroundSlowSoil",
+                            "MediumSoil",
+                            "SoftwoodStemSnag",
+                            "SoftwoodBranchSnag",
+                            "HardwoodStemSnag",
+                            "HardwoodBranchSnag",
+                            "WoodyFineDead",
+                            "WoodyCoarseDead",
+                            "WoodyFineDead",
+                            "WoodyRootsDead",
+                            "SedgeFoliageDead",
+                            "SedgeRootsDead",
+                            "FeathermossDead",
+                            "Acrotelm_O",
+                            "Acrotelm_A",
+                            "Catotelm_O",
+                            "Catotelm_A",
+                            "TempPeatlandDecayCarbon"
+                        ],
+                        "data_name": "Dead_Organic_Matter_C",
+                        "enabled": true,
+                        "variable_data_type": "float",
+                        "on_notification": "OutputStep"
+                    },
+                    {
+                        "pool_name": [
+                            "Acrotelm_O",
+                            "Acrotelm_A",
+                            "Catotelm_O",
+                            "Catotelm_A"
+                        ],
+                        "data_name": "Peat",
+                        "enabled": true,
+                        "variable_data_type": "float",
+                        "on_notification": "OutputStep"
+                    },
+                    {
+                        "pool_name": [
+                            "Acrotelm_O",
+                            "Acrotelm_A"
+                        ],
+                        "data_name": "Peat_Acrotelm",
+                        "enabled": true,
+                        "variable_data_type": "double",
+                        "on_notification": "OutputStep",
+                        "nodata_value": -1
+                    },
+                    {
+                        "pool_name": [
+                            "Catotelm_O",
+                            "Catotelm_A"
+                        ],
+                        "data_name": "Peat_Catotelm",
+                        "enabled": true,
+                        "variable_data_type": "float",
+                        "on_notification": "OutputStep"
+                    },
+                    {
+                        "variable_data_type": "float",
+                        "flux": {
+                            "to": [
+                                "SoftwoodMerch",
+                                "SoftwoodStem",
+                                "SoftwoodFoliage",
+                                "SoftwoodOther",
+                                "HardwoodMerch",
+                                "HardwoodStem",
+                                "HardwoodFoliage",
+                                "HardwoodOther",
+                                "WoodyStemsBranchesLive",
+                                "WoodyFoliageLive",
+                                "SedgeFoliageLive",
+                                "FeatherMossLive",
+                                "SphagnumMossLive",
+                                "SoftwoodCoarseRoots",
+                                "SoftwoodFineRoots",
+                                "HardwoodCoarseRoots",
+                                "HardwoodFineRoots",
+                                "WoodyRootsLive",
+                                "SedgeRootsLive"
+                            ],
+                            "from": [
+                                "Atmosphere"
+                            ]
+                        },
+                        "data_name": "NPP",
+                        "enabled": true,
+                        "on_notification": "OutputStep"
+                    },
+                    {
+                        "variable_data_type": "float",
+                        "flux": [
+                            {
+                                "to": [
+                                    "SoftwoodMerch",
+                                    "SoftwoodStem",
+                                    "SoftwoodFoliage",
+                                    "SoftwoodOther",
+                                    "HardwoodMerch",
+                                    "HardwoodStem",
+                                    "HardwoodFoliage",
+                                    "HardwoodOther",
+                                    "WoodyStemsBranchesLive",
+                                    "WoodyFoliageLive",
+                                    "SedgeFoliageLive",
+                                    "FeatherMossLive",
+                                    "SphagnumMossLive",
+                                    "SoftwoodCoarseRoots",
+                                    "SoftwoodFineRoots",
+                                    "HardwoodCoarseRoots",
+                                    "HardwoodFineRoots",
+                                    "WoodyRootsLive",
+                                    "SedgeRootsLive"
+                                ],
+                                "from": [
+                                    "Atmosphere"
+                                ]
+                            },
+                            {
+                                "from": [
+                                    "AboveGroundVeryFastSoil",
+                                    "AboveGroundFastSoil",
+                                    "AboveGroundSlowSoil",
+                                    "BelowGroundVeryFastSoil",
+                                    "BelowGroundFastSoil",
+                                    "BelowGroundSlowSoil",
+                                    "MediumSoil",
+                                    "SoftwoodStemSnag",
+                                    "SoftwoodBranchSnag",
+                                    "HardwoodStemSnag",
+                                    "HardwoodBranchSnag",
+                                    "WoodyFineDead",
+                                    "WoodyCoarseDead",
+                                    "WoodyFineDead",
+                                    "WoodyRootsDead",
+                                    "SedgeFoliageDead",
+                                    "SedgeRootsDead",
+                                    "FeathermossDead",
+                                    "Acrotelm_O",
+                                    "Acrotelm_A",
+                                    "Catotelm_O",
+                                    "Catotelm_A",
+                                    "TempPeatlandDecayCarbon"                                    
+                                ],
+                                "subtract": true,
+                                "flux_source": "annual_process",
+                                "to": [
+                                    "CO2",
+                                    "CH4",
+                                    "CO"
+                                ]
+                            }
+                        ],
+                        "data_name": "NEP",
+                        "enabled": true,
+                        "on_notification": "OutputStep"
+                    },
+                    {
+                        "variable_data_type": "float",
+                        "flux": [
+                            {
+                                "to": [
+                                    "SoftwoodMerch",
+                                    "SoftwoodStem",
+                                    "SoftwoodFoliage",
+                                    "SoftwoodOther",
+                                    "SoftwoodCoarseRoots",
+                                    "SoftwoodFineRoots",
+                                    "HardwoodMerch",
+                                    "HardwoodStem",
+                                    "HardwoodFoliage",
+                                    "HardwoodOther",
+                                    "HardwoodCoarseRoots",
+                                    "HardwoodFineRoots",
+                                    "WoodyStemsBranchesLive",
+                                    "WoodyFoliageLive",
+                                    "WoodyRootsLive",
+                                    "SedgeFoliageLive",
+                                    "SedgeRootsLive",
+                                    "FeatherMossLive",
+                                    "SphagnumMossLive"
+                                ],
+                                "from": [
+                                    "Atmosphere"
+                                ]
+                            },
+                            {
+                                "subtract": true,
+                                "from": [
+                                    "SoftwoodMerch",
+                                    "SoftwoodStem",
+                                    "SoftwoodFoliage",
+                                    "SoftwoodOther",
+                                    "HardwoodMerch",
+                                    "HardwoodStem",
+                                    "HardwoodFoliage",
+                                    "HardwoodOther",
+                                    "WoodyStemsBranchesLive",
+                                    "WoodyFoliageLive",
+                                    "SedgeFoliageLive",
+                                    "FeatherMossLive",
+                                    "SphagnumMossLive",
+                                    "SoftwoodCoarseRoots",
+                                    "SoftwoodFineRoots",
+                                    "HardwoodCoarseRoots",
+                                    "HardwoodFineRoots",
+                                    "WoodyRootsLive",
+                                    "SedgeRootsLive",
+                                    "SoftwoodStemSnag",
+                                    "SoftwoodBranchSnag",
+                                    "HardwoodStemSnag",
+                                    "HardwoodBranchSnag"
+                                ],
+                                "to": [
+                                    "Products"
+                                ],
+                                "flux_source": "disturbance"
+                            },
+                            {
+                                "from": [
+                                    "SoftwoodMerch",
+                                    "SoftwoodStem",
+                                    "SoftwoodFoliage",
+                                    "SoftwoodOther",
+                                    "SoftwoodCoarseRoots",
+                                    "SoftwoodFineRoots",
+                                    "SoftwoodBranchSnag",
+                                    "SoftwoodStemSnag",
+                                    "HardwoodMerch",
+                                    "HardwoodStem",
+                                    "HardwoodFoliage",
+                                    "HardwoodOther",
+                                    "HardwoodCoarseRoots",
+                                    "HardwoodFineRoots",
+                                    "HardwoodBranchSnag",
+                                    "HardwoodStemSnag",
+                                    "WoodyStemsBranchesLive",
+                                    "WoodyFoliageLive",
+                                    "WoodyRootsLive",
+                                    "SedgeFoliageLive",
+                                    "SedgeRootsLive",
+                                    "FeatherMossLive",
+                                    "SphagnumMossLive",
+                                    "AboveGroundVeryFastSoil",
+                                    "AboveGroundFastSoil",
+                                    "AboveGroundSlowSoil",
+                                    "BelowGroundVeryFastSoil",
+                                    "BelowGroundFastSoil",
+                                    "BelowGroundSlowSoil",
+                                    "MediumSoil",
+                                    "WoodyFineDead",
+                                    "WoodyCoarseDead",
+                                    "WoodyFoliageDead",
+                                    "WoodyRootsDead",
+                                    "SedgeFoliageDead",
+                                    "SedgeRootsDead",
+                                    "FeathermossDead",
+                                    "Acrotelm_O",
+                                    "Acrotelm_A",
+                                    "Catotelm_O",
+                                    "Catotelm_A"
+                                ],
+                                "subtract": true,
+                                "to": [
+                                    "CO2",
+                                    "CH4",
+                                    "CO"
+                                ]
+                            }
+                        ],
+                        "data_name": "NBP",
+                        "enabled": true,
+                        "on_notification": "OutputStep"
+                    },
+                    {
+                        "variable_data_type": "float",
+                        "flux": [
+                            {
+                                "to": [
+                                    "SoftwoodMerch",
+                                    "SoftwoodStem",
+                                    "SoftwoodFoliage",
+                                    "SoftwoodOther",
+                                    "SoftwoodCoarseRoots",
+                                    "SoftwoodFineRoots",
+                                    "HardwoodMerch",
+                                    "HardwoodStem",
+                                    "HardwoodFoliage",
+                                    "HardwoodOther",
+                                    "HardwoodCoarseRoots",
+                                    "HardwoodFineRoots",
+                                    "WoodyStemsBranchesLive",
+                                    "WoodyFoliageLive",
+                                    "WoodyRootsLive",
+                                    "SedgeFoliageLive",
+                                    "SedgeRootsLive",
+                                    "FeatherMossLive",
+                                    "SphagnumMossLive"
+                                ],
+                                "subtract": true,
+                                "from": [
+                                    "Atmosphere"
+                                ]
+                            },
+                            {
+                                "from": [
+                                    "AboveGroundVeryFastSoil",
+                                    "AboveGroundFastSoil",
+                                    "AboveGroundSlowSoil",
+                                    "BelowGroundVeryFastSoil",
+                                    "BelowGroundFastSoil",
+                                    "BelowGroundSlowSoil",
+                                    "MediumSoil",
+                                    "SoftwoodStemSnag",
+                                    "SoftwoodBranchSnag",
+                                    "HardwoodStemSnag",
+                                    "HardwoodBranchSnag",
+                                    "WoodyFoliageDead",
+                                    "WoodyCoarseDead",
+                                    "WoodyFineDead",
+                                    "WoodyRootsDead",
+                                    "SedgeFoliageDead",
+                                    "SedgeRootsDead",
+                                    "FeathermossDead",
+                                    "Acrotelm_O",
+                                    "Acrotelm_A",
+                                    "Catotelm_O",
+                                    "Catotelm_A",
+                                    "TempPeatlandDecayCarbon"
+                                ],
+                                "flux_source": "annual_process",
+                                "to": [
+                                    "CO2"
+                                ]
+                            }
+                        ],
+                        "data_name": "NEE_CO2_Emissions",
+                        "enabled": true,
+                        "on_notification": "OutputStep"
+                    },
+                    {
+                        "variable_data_type": "float",
+                        "flux": [
+                            {
+                                "flux_source": "annual_process",
+                                "from": [
+                                    "AboveGroundVeryFastSoil",
+                                    "AboveGroundFastSoil",
+                                    "AboveGroundSlowSoil",
+                                    "BelowGroundVeryFastSoil",
+                                    "BelowGroundFastSoil",
+                                    "BelowGroundSlowSoil",
+                                    "MediumSoil",
+                                    "SoftwoodStemSnag",
+                                    "SoftwoodBranchSnag",
+                                    "HardwoodStemSnag",
+                                    "HardwoodBranchSnag",
+                                    "WoodyFoliageDead",
+                                    "WoodyCoarseDead",
+                                    "WoodyFineDead",
+                                    "WoodyRootsDead",
+                                    "SedgeFoliageDead",
+                                    "SedgeRootsDead",
+                                    "FeathermossDead",
+                                    "Acrotelm_O",
+                                    "Acrotelm_A",
+                                    "Catotelm_O",
+                                    "Catotelm_A",
+                                    "TempPeatlandDecayCarbon"
+                                ],
+                                "to": [
+                                    "CO2",
+                                    "CH4",
+                                    "CO"
+                                ]
+                            }
+                        ],
+                        "data_name": "Decomp_Releases",
+                        "enabled": true,
+                        "on_notification": "OutputStep"
+                    },
+                    {
+                        "variable_data_type": "float",
+                        "flux": [
+                            {
+                                "flux_source": "annual_process",
+                                "from": [
+                                    "SoftwoodMerch",
+                                    "SoftwoodStem",
+                                    "SoftwoodFoliage",
+                                    "SoftwoodOther",
+                                    "SoftwoodCoarseRoots",
+                                    "SoftwoodFineRoots",
+                                    "SoftwoodBranchSnag",
+                                    "SoftwoodStemSnag",
+                                    "HardwoodMerch",
+                                    "HardwoodStem",
+                                    "HardwoodFoliage",
+                                    "HardwoodOther",
+                                    "HardwoodCoarseRoots",
+                                    "HardwoodFineRoots",
+                                    "HardwoodBranchSnag",
+                                    "HardwoodStemSnag",
+                                    "WoodyStemsBranchesLive",
+                                    "WoodyFoliageLive",
+                                    "WoodyRootsLive",
+                                    "SedgeFoliageLive",
+                                    "SedgeRootsLive",
+                                    "FeatherMossLive",
+                                    "SphagnumMossLive",
+                                    "AboveGroundVeryFastSoil",
+                                    "AboveGroundFastSoil",
+                                    "AboveGroundSlowSoil",
+                                    "BelowGroundVeryFastSoil",
+                                    "BelowGroundFastSoil",
+                                    "BelowGroundSlowSoil",
+                                    "MediumSoil",
+                                    "WoodyFineDead",
+                                    "WoodyCoarseDead",
+                                    "WoodyFoliageDead",
+                                    "WoodyRootsDead",
+                                    "SedgeFoliageDead",
+                                    "SedgeRootsDead",
+                                    "FeathermossDead",
+                                    "Acrotelm_O",
+                                    "Acrotelm_A",
+                                    "Catotelm_O",
+                                    "Catotelm_A"
+                                ],
+                                "to": [
+                                    "CO2"
+                                ]
+                            }
+                        ],
+                        "data_name": "CO2_Emission",
+                        "enabled": true,
+                        "on_notification": "OutputStep"
+                    },
+                    {
+                        "variable_data_type": "float",
+                        "flux": [
+                            {
+                                "flux_source": "annual_process",
+                                "from": [
+                                    "SoftwoodMerch",
+                                    "SoftwoodStem",
+                                    "SoftwoodFoliage",
+                                    "SoftwoodOther",
+                                    "SoftwoodCoarseRoots",
+                                    "SoftwoodFineRoots",
+                                    "SoftwoodBranchSnag",
+                                    "SoftwoodStemSnag",
+                                    "HardwoodMerch",
+                                    "HardwoodStem",
+                                    "HardwoodFoliage",
+                                    "HardwoodOther",
+                                    "HardwoodCoarseRoots",
+                                    "HardwoodFineRoots",
+                                    "HardwoodBranchSnag",
+                                    "HardwoodStemSnag",
+                                    "WoodyStemsBranchesLive",
+                                    "WoodyFoliageLive",
+                                    "WoodyRootsLive",
+                                    "SedgeFoliageLive",
+                                    "SedgeRootsLive",
+                                    "FeatherMossLive",
+                                    "SphagnumMossLive",
+                                    "AboveGroundVeryFastSoil",
+                                    "AboveGroundFastSoil",
+                                    "AboveGroundSlowSoil",
+                                    "BelowGroundVeryFastSoil",
+                                    "BelowGroundFastSoil",
+                                    "BelowGroundSlowSoil",
+                                    "MediumSoil",
+                                    "WoodyFineDead",
+                                    "WoodyCoarseDead",
+                                    "WoodyFoliageDead",
+                                    "WoodyRootsDead",
+                                    "SedgeFoliageDead",
+                                    "SedgeRootsDead",
+                                    "FeathermossDead",
+                                    "Acrotelm_O",
+                                    "Acrotelm_A",
+                                    "Catotelm_O",
+                                    "Catotelm_A"
+                                ],
+                                "to": [
+                                    "CH4"
+                                ]
+                            }
+                        ],
+                        "data_name": "CH4_Emission",
+                        "enabled": true,
+                        "on_notification": "OutputStep"
+                    }
+                ],
+                "output_path": "output"
+            }
+        },
+         "CBMAggregatorLandUnitData": {
+            "enabled": true,
+            "order": 110,
+            "library": "moja.modules.cbm",
+            "settings": {
+                "reporting_classifier_set": "reporting_classifiers"
+            }
+        },
+       "CBMAggregatorSQLiteWriter": {
+            "enabled": true,
+            "order": 120,
+            "library": "moja.modules.cbm",
+            "settings": {
+                "databasename": "output\\gcbm_output.db"
+            }
+        }
+    }
+}

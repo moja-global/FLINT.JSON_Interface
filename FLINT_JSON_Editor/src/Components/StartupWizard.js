@@ -13,8 +13,7 @@ import CreateCFG from './CreateCFG';
 import OpenProject from './OpenProject';
 import OpenFile from './OpenFile';
 import { createMuiTheme, withStyles,  ThemeProvider } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import { green, purple } from '@material-ui/core/colors';
+import { green } from '@material-ui/core/colors';
 import SwipeableViews from 'react-swipeable-views';
 
 const theme = createMuiTheme({
@@ -93,11 +92,11 @@ export default function ScrollableTabsButtonAuto(props) {
           scrollButtons="auto"
         //   centered
         >
-          <Tab label="Create Project from Predefined package" {...a11yProps(0)} />
-          <Tab label="Create JSON File" {...a11yProps(1)} />
-          <Tab label="Create CFG File" {...a11yProps(2)} />
-          <Tab label="Open Project" {...a11yProps(3)} />
-          <Tab label="Open Files" {...a11yProps(4)} />
+          <Tab label="Create Project from Predefined package" {...a11yProps(0)} onClick={()=>props.showSnack(true)} />
+          <Tab label="Create JSON File" {...a11yProps(1)} onClick={()=>props.showSnack(true)} />
+          <Tab label="Create CFG File" {...a11yProps(2)} onClick={()=>props.showSnack(true)} />
+          <Tab label="Open Project" {...a11yProps(3)} onClick={()=>props.showSnack(true)} />
+          <Tab label="Open Files" {...a11yProps(4)} onClick={()=>props.showSnack(true)} />
         </Tabs>
       </AppBar>
       

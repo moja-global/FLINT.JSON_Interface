@@ -1,0 +1,19 @@
+{
+    "Providers": {
+        "SQLite": {
+            "path": "..\\input_database\\gcbm_input.db",
+            "type": "SQLite"
+        },
+        "RasterTiled": {
+            "layers": [],
+            "blockLonSize": 0.1,
+            "tileLatSize": 1.0,
+            "tileLonSize": 1.0,
+            "cellLatSize": 0.001,
+            "cellLonSize": 0.001,
+            "blockLatSize": 0.1,
+            "type": "RasterTiledGDAL",
+            "library": "moja.modules.gdal"
+        }
+    }
+}

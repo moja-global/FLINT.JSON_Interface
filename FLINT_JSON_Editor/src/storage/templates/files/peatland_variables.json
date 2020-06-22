@@ -1,0 +1,45 @@
+{
+    "Variables": {
+        "inventory_over_peatland": false,
+        "applied_growth_curve_id": -1,
+        "default_fire_return_interval": 300,
+        "default_last_fire_year": 1700,
+        "default_mean_annual_temperature": -2.0,
+        "default_spinup_drought_class": 300,
+        "default_forward_drought_class": 300,
+        "default_annual_drought_class": 300,        
+        "forest_peatland_leading_species": ["Black Spruce", "Larch", "Tamarack", "Tamarack/larch"],
+        "forest_peatland_growth_curve_id": {
+            "transform": {
+                "type": "SQLQueryTransform",
+                "queryString": "select pgc.growth_curve_id from peatland_forest_growth_curve pgc where pgc.peatland_id = {var:peatlandId}",
+                "library": "internal.flint",
+                "provider": "SQLite"
+            }
+        },        
+        "softwood_yield_table": {
+            "transform": {
+                "type": "SQLQueryTransform",
+                "queryString": "SELECT gcv.age AS age, gcv.merchantable_volume AS merchantable_volume FROM (SELECT CASE WHEN gc.id IS NOT NULL THEN gc.id ELSE -1 END AS growth_curve_component_id FROM growth_curve_component gc INNER JOIN species s ON s.id = gc.species_id INNER JOIN forest_type ft ON ft.id = s.forest_type_id WHERE gc.growth_curve_id = {var:applied_growth_curve_id} AND LOWER(ft.name) LIKE LOWER('Softwood')) AS gc INNER JOIN growth_curve_component_value gcv ON gc.growth_curve_component_id = gcv.growth_curve_component_id",
+                "library": "internal.flint",
+                "provider": "SQLite"
+            }
+        },        
+        "hardwood_yield_table": {
+            "transform": {
+                "queryString": "SELECT gcv.age AS age, gcv.merchantable_volume AS merchantable_volume FROM (SELECT CASE WHEN gc.id IS NOT NULL THEN gc.id ELSE -1 END AS growth_curve_component_id FROM growth_curve_component gc INNER JOIN species s ON s.id = gc.species_id INNER JOIN forest_type ft ON ft.id = s.forest_type_id WHERE gc.growth_curve_id = {var:applied_growth_curve_id} AND LOWER(ft.name) LIKE LOWER('Hardwood')) AS gc INNER JOIN growth_curve_component_value gcv ON gc.growth_curve_component_id = gcv.growth_curve_component_id",
+                "type": "SQLQueryTransform",
+                "library": "internal.flint",
+                "provider": "SQLite"
+            }
+        },
+        "volume_to_biomass_parameters": {
+            "transform": {
+                "queryString": "SELECT ft.name AS forest_type, f.a as a, f.b as b, f.a_nonmerch as a_non_merch, f.b_nonmerch as b_non_merch, f.k_nonmerch as k_non_merch, f.cap_nonmerch as cap_non_merch, f.a_sap as a_sap, f.b_sap as b_sap, f.k_sap as k_sap, f.cap_sap as cap_sap, f.a1 as a1, f.a2 as a2, f.a3 as a3, f.b1 as b1, f.b2 as b2, f.b3 as b3, f.c1 as c1, f.c2 as c2, f.c3 as c3, f.min_volume as min_volume, f.max_volume as max_volume, f.low_stemwood_prop as low_stemwood_prop, f.high_stemwood_prop as high_stemwood_prop, f.low_stembark_prop as low_stembark_prop, f.high_stembark_prop as high_stembark_prop, f.low_branches_prop AS low_branches_prop, f.high_branches_prop as high_branches_prop, f.low_foliage_prop AS low_foliage_prop, f.high_foliage_prop AS high_foliage_prop, sp.sw_top_proportion AS softwood_top_prop, sp.sw_stump_proportion AS softwood_stump_prop, sp.hw_top_proportion AS hardwood_top_prop, sp.hw_stump_proportion AS hardwood_stump_prop, rp.hw_a AS hw_a, rp.hw_b AS hw_b, rp.sw_a AS sw_a, rp.frp_a AS frp_a, rp.frp_b AS frp_b, rp.frp_c AS frp_c FROM vol_to_bio_factor_association fa INNER JOIN vol_to_bio_factor f ON f.id = fa.vol_to_bio_factor_id INNER JOIN species s ON fa.species_id = s.id INNER JOIN growth_curve_component gcc ON s.id = gcc.species_id INNER JOIN forest_type ft ON s.forest_type_id = ft.id INNER JOIN spatial_unit spu ON fa.spatial_unit_id = spu.id INNER JOIN admin_boundary a ON spu.admin_boundary_id = a.id INNER JOIN stump_parameter sp ON a.stump_parameter_id = sp.id INNER JOIN root_parameter rp ON rp.id = fa.root_parameter_id WHERE gcc.growth_curve_id = {var:applied_growth_curve_id} AND spu.id = {var:spatial_unit_id}",
+                "type": "SQLQueryTransform",
+                "library": "internal.flint",
+                "provider": "SQLite"
+            }
+        }
+    }
+}

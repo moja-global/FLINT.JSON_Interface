@@ -1,0 +1,28 @@
+{
+    "Variables": {
+        "disturbance_categories": {
+            "transform": {
+                "queryString": "SELECT dt.name AS disturbance_type, dc.code AS category FROM disturbance_type dt INNER JOIN disturbance_category dc ON dt.disturbance_category_id = dc.id",
+                "type": "SQLQueryTransform",
+                "library": "internal.flint",
+                "provider": "SQLite"
+            }
+        },
+        "recovery_rules": {
+            "transform": {
+                "queryString": "SELECT dt.name AS disturbance_type, COALESCE(spatial_unit_id, -1) AS spu, art.name AS rule_type, value AS rule_value, art.spinup FROM accounting_rule_set ars INNER JOIN accounting_rule ar ON ars.id = ar.accounting_rule_set_id INNER JOIN accounting_rule_type art ON ar.accounting_rule_type_id = art.id INNER JOIN disturbance_type dt ON ars.disturbance_type_id = dt.id",
+                "type": "SQLQueryTransform",
+                "library": "internal.flint",
+                "provider": "SQLite"
+            }
+        },
+        "disturbance_mortality": {
+            "transform": {
+                "queryString": "SELECT disturbance_type, spatial_unit_id AS spu, MAX(mortality) AS mortality FROM (SELECT dt.name AS disturbance_type, spatial_unit_id, SUM(proportion) / 3 AS mortality FROM disturbance_type dt INNER JOIN disturbance_matrix_association dma ON dt.id = dma.disturbance_type_id INNER JOIN disturbance_matrix_value dmv ON dmv.disturbance_matrix_id = dma.disturbance_matrix_id INNER JOIN pool from_pool ON dmv.source_pool_id = from_pool.id WHERE dmv.source_pool_id <> dmv.sink_pool_id AND from_pool.name IN ('SoftwoodMerch', 'SoftwoodFoliage', 'SoftwoodOther') GROUP BY dt.name, spatial_unit_id UNION ALL SELECT dt.name AS disturbance_type, spatial_unit_id, SUM(proportion) / 3 AS mortality FROM disturbance_type dt INNER JOIN disturbance_matrix_association dma ON dt.id = dma.disturbance_type_id INNER JOIN disturbance_matrix_value dmv ON dmv.disturbance_matrix_id = dma.disturbance_matrix_id INNER JOIN pool from_pool ON dmv.source_pool_id = from_pool.id WHERE dmv.source_pool_id <> dmv.sink_pool_id AND from_pool.name IN ('HardwoodMerch', 'HardwoodFoliage', 'HardwoodOther') GROUP BY dt.name, spatial_unit_id) GROUP BY disturbance_type, spatial_unit_id",
+                "type": "SQLQueryTransform",
+                "library": "internal.flint",
+                "provider": "SQLite"
+            }
+        }
+    }
+}
