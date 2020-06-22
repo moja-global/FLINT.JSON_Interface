@@ -143,7 +143,7 @@ export default function TransferList() {
     'standard_gcbm_internal_variables.json', 'standard_gcbm_spinup.json',
     'standard_gcbm_localdomain.json', 'standard_gcbm_variables.json',
     'standard_gcbm_modules.json'
-  ]
+  ];
   
   var JSON_array = [...new Set(standard_JSON.concat(a_n_partitioning_JSON).concat(peatland_JSON))];
   

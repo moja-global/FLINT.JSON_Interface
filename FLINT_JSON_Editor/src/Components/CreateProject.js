@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   gridList: {
-    width: 600,
+    width: 900,
     // height: 1000,
     // backgroundColor:'#ebebe0'
   },
@@ -108,7 +108,7 @@ export default function TitlebarGridList() {
     jsonw[x]["files"].forEach(file=>{list.push(<li>{file}</li>)})
   
     temp.push(<GridListTile style={{padding: "20px"}}>
-      <pre style={{backgroundColor:'#ebebe0',height:"120px"}}>
+      <pre style={{backgroundColor:'#ebebe0',height:"300"}}>
       {x}
       <ul type="disc">
         {list}
@@ -150,7 +150,7 @@ React.useEffect(()=>{if(selectedValue)ReactDOM.render(<ThemeProvider theme={them
         </ThemeProvider>
       </div>
 
-      <GridList cellHeight={300} className={classes.gridList}  >
+      <GridList cellHeight={350} className={classes.gridList}  >
         {temp}
       </GridList>
 

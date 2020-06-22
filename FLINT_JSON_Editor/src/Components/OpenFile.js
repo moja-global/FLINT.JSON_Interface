@@ -44,7 +44,7 @@ export default function ChipsArray() {
   
   console.log(chipData);
   const handleDelete = (chipToDelete) => () => {
-    setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
+    setChipData((chips) => chips.filter((chip) => chip !== chipToDelete));
   };
 
   function selectFiles() {

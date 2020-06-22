@@ -1,27 +1,33 @@
 {
-  "Standard GCBM Project": {
+  "standard_JSON": {
     "description": "Helps to create a project consisting of files specific to a standard GCBM Project",
     "files": [
-      "variables.json",
-      "localdomain.json",
-      "modules.json"
+      "standard_gcbm_internal_variables.json", "standard_gcbm_pools.json",
+      "standard_gcbm_localdomain.json", "standard_gcbm_provider_config.json",
+      "standard_gcbm_modules.json", "standard_gcbm_spinup.json",
+      "standard_gcbm_output_modules.json", "standard_gcbm_variables.json"
     ]
   },
-  "GCBM + Peatland Project": {
+  "peatland_JSON": {
     "description": "Helps to create a project consisting of files specific to a standard GCBM and Peatland Project",
     "files": [
-      "localdomain.json",
-      "gcbm_variables.json",
-      "gcbm_modules.json",
-      "peatland_variables.json",
-      "peatland_modules.json"
+      "peatland_modules.json", "standard_gcbm_modules.json",
+      "peatland_output_modules.json", "standard_gcbm_pools.json",
+      "peatland_pools.json", "standard_gcbm_provider_config.json",
+      "peatland_variables.json", "standard_gcbm_spinup.json",
+      "standard_gcbm_internal_variables.json", "standard_gcbm_variables.json",
+      "standard_gcbm_localdomain.json"
     ]
   },
-    "example project": {
-    "description": "description of project",
-    "files": [
-      "file1.json",
-      "file2.json"
+    "a_n_partitioning_JSON": {
+    "description": "a_n_partitioning_JSON",
+    "files":[
+      "a_n_partitioning_internal_variables.json", "standard_gcbm_output_modules.json",
+      "a_n_partitioning_modules.json", "standard_gcbm_pools.json",
+      "a_n_partitioning_variables.json", "standard_gcbm_provider_config.json",
+      "standard_gcbm_internal_variables.json", "standard_gcbm_spinup.json",
+      "standard_gcbm_localdomain.json", "standard_gcbm_variables.json",
+      "standard_gcbm_modules.json"
     ]
   }
 }
