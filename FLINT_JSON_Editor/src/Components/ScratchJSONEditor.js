@@ -10,7 +10,6 @@ import SaveIcon from '@material-ui/icons/Save';
 import HomeIcon from '@material-ui/icons/Home';
 import "../css/ScratchJSONEditor.css";
 import "../../node_modules/jsoneditor/dist/jsoneditor.min.js";
-import {useHistory} from 'react-router-dom';
 const fs =require('fs');
 import newFile from '../storage/newFileTemplate.json';
 import JSONEditor from 'jsoneditor';
@@ -110,7 +109,6 @@ export default function LabelBottomNavigation(props) {
   const [dialogDisp,setDialogDisp] = React.useState(false);
   const [dialogInit,setDialogInit] = React.useState(true);
   const [dialogNew,setDialogNew] = React.useState(false);
-  let history=useHistory();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

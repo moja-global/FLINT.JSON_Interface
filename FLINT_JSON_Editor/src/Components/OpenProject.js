@@ -64,7 +64,7 @@ export default function ChipsArray() {
             }
             setChipData([...new Set(chipData.concat(temp))]);
             console.log(chipData);
-            setDisp(true);
+            // setDisp(true);
         });
       }).catch(err => {
         console.log(err)
@@ -74,7 +74,7 @@ export default function ChipsArray() {
   return (
     <div>
         <ThemeProvider theme={theme}>
-            <Button variant="contained" color="primary" className={classes.margin} onClick={()=>{selectFiles()}}>Select Files</Button>
+            <Button variant="contained" color="primary" className={classes.margin} onClick={()=>{selectFiles()}}>Select Project</Button>
         </ThemeProvider>
         <Paper component="ul" className={classes.root}>
         { chipData.map((data) => {
