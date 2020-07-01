@@ -61,13 +61,22 @@ function initiateTabs(ans)
       display: ""
     });
     if(map.get(props.files[i]))
-      temp.push(<div id={"tab"+i} style={{display: "none"}}>{ans ? props.files[i]+"template":props.files[i]+"scratch"}</div>);
+      temp.push(<div id={"tab"+i} style={i==0?{display: "block"}:{display: "none"}}>{ans ? props.files[i]+"template":props.files[i]+"scratch"}</div>);
     else
-      temp.push(<div id={"tab"+i} style={{display: "none"}}>{props.files[i]+"scratch"}</div>);
+      temp.push(<div id={"tab"+i} style={i==0?{display: "block"}:{display: "none"}}>{props.files[i]+"scratch"}</div>);
   }
   ReactDOM.render(temp,document.getElementById("TabContainer"));
   setShowTab(true);
   console.log(map);
+}
+
+function displayTab(num)
+{
+  var divs=document.getElementById("TabContainer").getElementsByTagName("div");
+  for(var i=0;i<divs.length;i++)
+  {
+    document.getElementById("tab"+i).style.display=(num==i?"block":"none");
+  }
 }
 
 function moveTab(dragIndex, hoverIndex) {
@@ -83,6 +92,7 @@ function selectTab(selectedIndex, selectedID) {
     active: tab.id === selectedID
   }));
   setTabs(newTabs);
+  displayTab(selectedID);
 }
 
 function closedTab(removedIndex, removedID) {
@@ -90,10 +100,9 @@ function closedTab(removedIndex, removedID) {
       newTabs.splice(removedIndex, 1)
 
       if (tabs[removedIndex].active && newTabs.length !== 0) { // automatically select another tab if needed
-          const newActive = removedIndex === 0
-              ? 0
-              : removedIndex - 1
+          const newActive = (removedIndex === 0 ? 0: removedIndex - 1);
           newTabs[newActive].active = true;
+          console.log(newActive);
       }
   setTabs(newTabs);
 }
