@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import update from 'react-addons-update';
 import Tabs from "react-draggable-tabs";
 import Editor from './ScratchJSONEditor';
@@ -30,6 +31,8 @@ export default function EditorEntry(props) {
 //         display: <div></div>
 //     }]
 );
+
+var map=new Map();
 const [view,setView] = React.useState(false);
 const [dialogDisp, setdialogDisp] = React.useState(false);
 const [notFound, setNotFound] = React.useState([]);
@@ -37,10 +40,8 @@ const [showTab, setShowTab] = React.useState(false);
 fs.readdir('src/storage/templates/files',(err,files)=>{
   if(err) throw err;
   console.log(files);
-  // props.notFound=[];
-  var map=new Map();
   for(var i=0;i<files.length;i++)
-    map.set(files[i],1);
+    map.set(files[i],true);
   for(var i=0;i<props.files.length;i++)
     if(!(map.get(props.files[i])))
       notFound.push(props.files[i]);
@@ -50,6 +51,7 @@ fs.readdir('src/storage/templates/files',(err,files)=>{
 
 function initiateTabs(ans)
 {
+  var temp=[];
   for(var i=0;i<props.files.length;i++)
   {
     tabs.push({
@@ -58,8 +60,14 @@ function initiateTabs(ans)
       active: i==0 ? true : false,
       display: ""
     });
+    if(map.get(props.files[i]))
+      temp.push(<div id={"tab"+i} style={{display: "none"}}>{ans ? props.files[i]+"template":props.files[i]+"scratch"}</div>);
+    else
+      temp.push(<div id={"tab"+i} style={{display: "none"}}>{props.files[i]+"scratch"}</div>);
   }
+  ReactDOM.render(temp,document.getElementById("TabContainer"));
   setShowTab(true);
+  console.log(map);
 }
 
 function moveTab(dragIndex, hoverIndex) {
@@ -75,13 +83,6 @@ function selectTab(selectedIndex, selectedID) {
     active: tab.id === selectedID
   }));
   setTabs(newTabs);
-  // if(selectedID==1)
-  // {document.getElementById("v1").style.display="block";document.getElementById("v2").style.display="none";document.getElementById("v3").style.display="none";}
-  // else if(selectedID==2)
-  // {document.getElementById("v1").style.display="none";document.getElementById("v2").style.display="block";document.getElementById("v3").style.display="none";}
-  // else
-  // {document.getElementById("v1").style.display="none";document.getElementById("v2").style.display="none";document.getElementById("v3").style.display="block";}
-
 }
 
 function closedTab(removedIndex, removedID) {
