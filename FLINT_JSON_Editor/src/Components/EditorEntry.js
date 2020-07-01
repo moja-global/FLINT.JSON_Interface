@@ -11,35 +11,29 @@ export default function EditorEntry(props) {
   props={
     files: ["standard_gcbm_variables.json","standard_gcbm_spinup.json","standard.json"]
   };
-  props.notFound=["aa"];
-  const [tabs,setTabs] = React.useState([
-    {
-        id: 1,
-        content: "Scratch JSoN Editor",
-        active: true,
-        display: <div></div>
-    },
-    {
-        id: 2,
-        content: <span><i className="fa fa-paw" aria-hidden="true"></i> 2nd Tab </span>,
-        display: <div></div>
-    },
-    {
-        id: 3,
-        content: '3rd Tab',
-        display: <div></div>
-    },
-]);
+
+  const [tabs,setTabs] = React.useState([]
+//     [{
+//         id: 1,
+//         content: "Scratch JSoN Editor",
+//         active: true,
+//         display: <div></div>
+//     },
+//     {
+//         id: 2,
+//         content: <span><i className="fa fa-paw" aria-hidden="true"></i> 2nd Tab </span>,
+//         display: <div></div>
+//     },
+//     {
+//         id: 3,
+//         content: '3rd Tab',
+//         display: <div></div>
+//     }]
+);
 const [view,setView] = React.useState(false);
 const [dialogDisp, setdialogDisp] = React.useState(false);
-
-function moveTab(dragIndex, hoverIndex) {
-  let newTabs = [...tabs];
-  newTabs.splice(hoverIndex, 0, newTabs.splice(dragIndex, 1)[0]);
-  setTabs(newTabs);
-}
-
-// console.log(props.files);
+const [notFound, setNotFound] = React.useState([]);
+const [showTab, setShowTab] = React.useState(false);
 fs.readdir('src/storage/templates/files',(err,files)=>{
   if(err) throw err;
   console.log(files);
@@ -49,10 +43,30 @@ fs.readdir('src/storage/templates/files',(err,files)=>{
     map.set(files[i],1);
   for(var i=0;i<props.files.length;i++)
     if(!(map.get(props.files[i])))
-      props.notFound.push(props.files[i]);
-  console.log(props.notFound.length==0);
+      notFound.push(props.files[i]);
+  console.log(notFound.length==0);
   setdialogDisp(true);
 });
+
+function initiateTabs(ans)
+{
+  for(var i=0;i<props.files.length;i++)
+  {
+    tabs.push({
+      id: i,
+      content: props.files[i],
+      active: i==0 ? true : false,
+      display: ""
+    });
+  }
+  setShowTab(true);
+}
+
+function moveTab(dragIndex, hoverIndex) {
+  let newTabs = [...tabs];
+  newTabs.splice(hoverIndex, 0, newTabs.splice(dragIndex, 1)[0]);
+  setTabs(newTabs);
+}
 
 function selectTab(selectedIndex, selectedID) {
   console.log("se "+selectedID);
@@ -61,12 +75,12 @@ function selectTab(selectedIndex, selectedID) {
     active: tab.id === selectedID
   }));
   setTabs(newTabs);
-  if(selectedID==1)
-  {document.getElementById("v1").style.display="block";document.getElementById("v2").style.display="none";document.getElementById("v3").style.display="none";}
-  else if(selectedID==2)
-  {document.getElementById("v1").style.display="none";document.getElementById("v2").style.display="block";document.getElementById("v3").style.display="none";}
-  else
-  {document.getElementById("v1").style.display="none";document.getElementById("v2").style.display="none";document.getElementById("v3").style.display="block";}
+  // if(selectedID==1)
+  // {document.getElementById("v1").style.display="block";document.getElementById("v2").style.display="none";document.getElementById("v3").style.display="none";}
+  // else if(selectedID==2)
+  // {document.getElementById("v1").style.display="none";document.getElementById("v2").style.display="block";document.getElementById("v3").style.display="none";}
+  // else
+  // {document.getElementById("v1").style.display="none";document.getElementById("v2").style.display="none";document.getElementById("v3").style.display="block";}
 
 }
 
@@ -92,26 +106,22 @@ function addTab(){
   setTabs(newTabs);
 }
 
-const activeTab = tabs.filter(tab => tab.active === true);
+// const activeTab = tabs.filter(tab => tab.active === true);
 console.log(tabs);
 document.body.style.backgroundImage='none';
 
 return (
     <div>
-      { dialogDisp && <MyDialog message={props.notFound.length==0 ? "You have chosen "+props.files+" to open in the editor. Choose mode!" : "You have chosen "+props.files+" to open in the editor. Choose mode!(Templates for "+props.notFound+" were not found so they will be automatically opened in ScratchJSONEditor regardless of chosen option)" }
+      { dialogDisp && <MyDialog message={notFound.length==0 ? "You have chosen "+props.files+" to open in the editor. Choose mode!" : "You have chosen "+props.files+" to open in the editor. Choose mode!(Templates for "+notFound+" were not found so they will be automatically opened in ScratchJSONEditor regardless of chosen option)" }
                 heading="JSON Editor"
                 positive="Template Editor"
-                negative="ScratchJSONEditor!"
-                reply={(ans)=>{console.log(ans)}} />}
-      <Tabs moveTab={moveTab} selectTab={selectTab} closeTab={closedTab} tabs={tabs}>
+                negative="Scratch JSON Editor!"
+                reply={(ans)=>{initiateTabs(ans);}} />}
+      { showTab && <Tabs moveTab={moveTab} selectTab={selectTab} closeTab={closedTab} tabs={tabs}>
         <button onClick={addTab}>+</button>
-      </Tabs>
-      <div id="container">
-      <div id="v1" style={{display: "none"}}>view1</div>
-      <div id="v2" style={{display: "none"}}>view2</div> 
-      <div id="v3" style={{display: "none"}}>view3</div> 
-      </div>
-        {activeTab.length !== 0 ? activeTab[0].display : ""}
+      </Tabs>}
+      {/* {activeTab.length !== 0 ? activeTab[0].display : ""}  */}
+      <div id="TabContainer"></div>
     </div>
   );
 }
