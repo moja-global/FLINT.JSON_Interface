@@ -5,8 +5,10 @@ import Tabs from "react-draggable-tabs";
 import Editor from './ScratchJSONEditor';
 const fs = require("fs");
 import MyDialog from './Dialog';
-import { dialog } from 'electron';
+const {dialog} = require('electron').remote;
 import { count } from 'console';
+import { Checkbox } from '@material-ui/core';
+const {basename} = require('path');
 
 export default function EditorEntry(props) {
   // const classes = useStyles();
@@ -118,17 +120,29 @@ function closedTab(removedIndex, removedID) {
   setTabs(newTabs);
 }
 
-function addTab(header){
+function addTab(){
   console.log(newTab);
-  let newTabs = [...tabs];
+  dialog.showOpenDialog({
+    properties: ['openFile']
+  }).then(result => {
+    console.log(result.canceled)
+    console.log(result.filePaths)
+    let newTabs = [...tabs];
       newTabs.push({
           id: newTab,
-          content: header,
+          content: basename(result.filePaths[0]),
           display: "",
           active: newTabs.length==0 ? true : false,
-        })
-  setNewTab(newTab+1);
-  setTabs(newTabs);
+      })
+    setTabs(newTabs);
+    console.log(map);
+    // tabBody.push(<div id={"tab"} >aaaaa</div>);
+    setTabBody([...tabBody, <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?basename(result.filePaths[0])+"template":basename(result.filePaths[0])+"scratch"}</div> ]);
+    // console.log(tabBody);
+    setNewTab(newTab+1);
+    }).catch(err => {
+      console.log(err)
+  });
 }
 
 // const activeTab = tabs.filter(tab => tab.active === true);
