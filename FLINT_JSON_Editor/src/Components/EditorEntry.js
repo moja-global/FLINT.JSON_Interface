@@ -6,6 +6,7 @@ import Editor from './ScratchJSONEditor';
 const fs = require("fs");
 import MyDialog from './Dialog';
 import { dialog } from 'electron';
+import { count } from 'console';
 
 export default function EditorEntry(props) {
   // const classes = useStyles();
@@ -37,6 +38,10 @@ const [view,setView] = React.useState(false);
 const [dialogDisp, setdialogDisp] = React.useState(false);
 const [notFound, setNotFound] = React.useState([]);
 const [showTab, setShowTab] = React.useState(false);
+const [newTab, setNewTab] = React.useState(0);
+const [tabBody, setTabBody] = React.useState([]);
+var countTabs=0;
+
 fs.readdir('src/storage/templates/files',(err,files)=>{
   if(err) throw err;
   console.log(files);
@@ -60,13 +65,19 @@ function initiateTabs(ans)
       active: i==0 ? true : false,
       display: ""
     });
+    // console.log(tabs);
+    // addTab(props.files[i]);
     if(map.get(props.files[i]))
-      temp.push(<div id={"tab"+i} style={i==0?{display: "block"}:{display: "none"}}>{ans ? props.files[i]+"template":props.files[i]+"scratch"}</div>);
+      temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{ans ? props.files[i]+"template":props.files[i]+"scratch"}</div>);
     else
-      temp.push(<div id={"tab"+i} style={i==0?{display: "block"}:{display: "none"}}>{props.files[i]+"scratch"}</div>);
+      temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{props.files[i]+"scratch"}</div>);
+    // setCountTabs(countTabs+1);
+    countTabs+=1;
   }
-  ReactDOM.render(temp,document.getElementById("TabContainer"));
+  // ReactDOM.render(temp,document.getElementById("TabContainer"));
+  setTabBody(temp);
   setShowTab(true);
+  setNewTab(countTabs);
   console.log(map);
 }
 
@@ -107,12 +118,16 @@ function closedTab(removedIndex, removedID) {
   setTabs(newTabs);
 }
 
-function addTab(){
-  let newTabs = [...tabs]
+function addTab(header){
+  console.log(newTab);
+  let newTabs = [...tabs];
       newTabs.push({
-          id: newTabs.length+1,
-          content: 'Cute *',
-      display: <div key={newTabs.length+1}>Cute *</div>})
+          id: newTab,
+          content: header,
+          display: "",
+          active: newTabs.length==0 ? true : false,
+        })
+  setNewTab(newTab+1);
   setTabs(newTabs);
 }
 
@@ -128,10 +143,10 @@ return (
                 negative="Scratch JSON Editor!"
                 reply={(ans)=>{initiateTabs(ans);}} />}
       { showTab && <Tabs moveTab={moveTab} selectTab={selectTab} closeTab={closedTab} tabs={tabs}>
-        <button onClick={addTab}>+</button>
+        <button onClick={()=>{console.log("click");addTab("aa")}}>+</button>
       </Tabs>}
       {/* {activeTab.length !== 0 ? activeTab[0].display : ""}  */}
-      <div id="TabContainer"></div>
+      <div id="TabContainer">{tabBody}</div>
     </div>
   );
 }
