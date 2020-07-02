@@ -6,8 +6,6 @@ import Editor from './ScratchJSONEditor';
 const fs = require("fs");
 import MyDialog from './Dialog';
 const {dialog} = require('electron').remote;
-import { count } from 'console';
-import { Checkbox } from '@material-ui/core';
 const {basename} = require('path');
 
 export default function EditorEntry(props) {
@@ -46,13 +44,13 @@ var countTabs=0;
 
 fs.readdir('src/storage/templates/files',(err,files)=>{
   if(err) throw err;
-  console.log(files);
+  // console.log(files);
   for(var i=0;i<files.length;i++)
     map.set(files[i],true);
   for(var i=0;i<props.files.length;i++)
     if(!(map.get(props.files[i])))
       notFound.push(props.files[i]);
-  console.log(notFound.length==0);
+  // console.log(notFound.length==0);
   setdialogDisp(true);
 });
 
@@ -65,7 +63,8 @@ function initiateTabs(ans)
       id: i,
       content: props.files[i],
       active: i==0 ? true : false,
-      display: ""
+      display: "",
+      tabBody: i
     });
     // console.log(tabs);
     // addTab(props.files[i]);
@@ -80,7 +79,7 @@ function initiateTabs(ans)
   setTabBody(temp);
   setShowTab(true);
   setNewTab(countTabs);
-  console.log(map);
+  // console.log(map);
 }
 
 function displayTab(num)
@@ -99,7 +98,7 @@ function moveTab(dragIndex, hoverIndex) {
 }
 
 function selectTab(selectedIndex, selectedID) {
-  console.log("se "+selectedID);
+  // console.log("se "+selectedID);
   const newTabs = tabs.map(tab => ({
     ...tab,
     active: tab.id === selectedID
@@ -109,33 +108,40 @@ function selectTab(selectedIndex, selectedID) {
 }
 
 function closedTab(removedIndex, removedID) {
-  let newTabs = [...tabs]
-      newTabs.splice(removedIndex, 1)
-
+  let newTabs = [...tabs];
+  // console.log(removedIndex);
+      var temp=newTabs.splice(removedIndex, 1);
+      document.getElementById("tab"+temp[0].tabBody).style.display="none";
+      console.log(temp[0].tabBody);
+      console.log(temp);
       if (tabs[removedIndex].active && newTabs.length !== 0) { // automatically select another tab if needed
           const newActive = (removedIndex === 0 ? 0: removedIndex - 1);
           newTabs[newActive].active = true;
+          console.log(newTabs[newActive].tabBody);
+          // document.getElementById("tab"+temp[0].id).style.display="none";
+          document.getElementById("tab"+newTabs[newActive].tabBody).style.display="block";
           console.log(newActive);
       }
   setTabs(newTabs);
 }
 
 function addTab(){
-  console.log(newTab);
+  // console.log(newTab);
   dialog.showOpenDialog({
     properties: ['openFile']
   }).then(result => {
-    console.log(result.canceled)
-    console.log(result.filePaths)
+  //   console.log(result.canceled)
+  //   console.log(result.filePaths)
     let newTabs = [...tabs];
       newTabs.push({
           id: newTab,
           content: basename(result.filePaths[0]),
           display: "",
           active: newTabs.length==0 ? true : false,
+          tabBody: newTab
       })
     setTabs(newTabs);
-    console.log(map);
+    // console.log(map);
     // tabBody.push(<div id={"tab"} >aaaaa</div>);
     setTabBody([...tabBody, <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?basename(result.filePaths[0])+"template":basename(result.filePaths[0])+"scratch"}</div> ]);
     // console.log(tabBody);
