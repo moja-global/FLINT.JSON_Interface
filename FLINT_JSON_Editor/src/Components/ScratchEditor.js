@@ -55,7 +55,7 @@ function initializeEditor()
 if(props.mode==="new")
   editor.set(newFile);
   else
-  openFile(props.directory[props.id]);
+  openFile(props.path);
 }
 
 function openFile(path){
