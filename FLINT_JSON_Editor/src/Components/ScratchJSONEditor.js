@@ -109,6 +109,10 @@ export default function LabelBottomNavigation(props) {
   const [dialogDisp,setDialogDisp] = React.useState(false);
   const [dialogInit,setDialogInit] = React.useState(true);
   const [dialogNew,setDialogNew] = React.useState(false);
+  // if(props.editor)
+  // {
+  //   setEditorDisp(false);
+  // }
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -125,13 +129,13 @@ export default function LabelBottomNavigation(props) {
 			  </pre>	
 		  </div>
       
-      <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
-        <BottomNavigationAction label="New " value="new" icon={<FiberNewIcon />} onClick={()=>{setDialogNew(true)}}/>
-        <BottomNavigationAction label="Open" value="open" icon={<FolderOpenIcon />} onClick={()=>{openFile()}} />
-        <BottomNavigationAction label="Save" value="save" icon={<SaveIcon />} onClick={()=>{saveFile()}} />
-        <BottomNavigationAction label="Transform" value="transform" icon={<TransformIcon />} onClick={()=>{console.log(editor.get());document.getElementById("jsonViewer").innerHTML=JSON.stringify(editor.get(), null, 2);}} />
-        <BottomNavigationAction label="Home" value="home" icon={<HomeIcon />} onClick={()=>setDialogDisp(true)}/>
-      </BottomNavigation>
+        <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
+          <BottomNavigationAction label="New " value="new" icon={<FiberNewIcon />} onClick={()=>{setDialogNew(true)}}/>
+          <BottomNavigationAction label="Open" value="open" icon={<FolderOpenIcon />} onClick={()=>{openFile()}} />
+          <BottomNavigationAction label="Save" value="save" icon={<SaveIcon />} onClick={()=>{saveFile()}} />
+          <BottomNavigationAction label="Transform" value="transform" icon={<TransformIcon />} onClick={()=>{console.log(editor.get());document.getElementById("jsonViewer").innerHTML=JSON.stringify(editor.get(), null, 2);}} />
+          <BottomNavigationAction label="Home" value="home" icon={<HomeIcon />} onClick={()=>setDialogDisp(true)}/>
+        </BottomNavigation> 
       {dialogDisp && <MyDialog message="Are you sure you want to go back Home? You may have unsaved changes!"
                 heading="Go back Home?"
                 positive="Yes! Take me out!"

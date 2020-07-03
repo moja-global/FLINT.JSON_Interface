@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import update from 'react-addons-update';
 import Tabs from "react-draggable-tabs";
-import Editor from './ScratchJSONEditor';
+import ScratchJSoNEditor from './ScratchEditor';
 const fs = require("fs");
 import MyDialog from './Dialog';
 const {dialog} = require('electron').remote;
@@ -11,27 +11,11 @@ const {basename} = require('path');
 export default function EditorEntry(props) {
   // const classes = useStyles();
   props={
-    files: ["standard_gcbm_variables.json","standard_gcbm_spinup.json","standard.json"]
+    files: ["standard_gcbm_variables.json","standard1.json","standard_gcbm_spinup.json","standard.json"],
+    directory:["/home/abhishek/Desktop/standard_gcbm_JSON/standard_gcbm_variables.json","/home/abhishek/Desktop/standard1.json","/home/abhishek/Desktop/standard_gcbm_JSON/standard_gcbm_spinup.json","/home/abhishek/Desktop/standard.json"]
   };
 
-  const [tabs,setTabs] = React.useState([]
-//     [{
-//         id: 1,
-//         content: "Scratch JSoN Editor",
-//         active: true,
-//         display: <div></div>
-//     },
-//     {
-//         id: 2,
-//         content: <span><i className="fa fa-paw" aria-hidden="true"></i> 2nd Tab </span>,
-//         display: <div></div>
-//     },
-//     {
-//         id: 3,
-//         content: '3rd Tab',
-//         display: <div></div>
-//     }]
-);
+  const [tabs,setTabs] = React.useState([]);
 
 var map=new Map();
 const [view,setView] = React.useState(false);
@@ -69,9 +53,9 @@ function initiateTabs(ans)
     // console.log(tabs);
     // addTab(props.files[i]);
     if(map.get(props.files[i]))
-      temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{ans ? props.files[i]+"template":props.files[i]+"scratch"}</div>);
+      temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{ans ? props.files[i]+"template":<ScratchJSoNEditor Editor="true" path="" mode="open" id={i} />}</div>);
     else
-      temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{props.files[i]+"scratch"}</div>);
+      temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{<ScratchJSoNEditor Editor="true" path="/home/abhishek/Desktop/standard_gcbm_JSON/standard_gcbm_internal_variables.json" mode="open" id={i} />}</div>);
     // setCountTabs(countTabs+1);
     countTabs+=1;
   }
@@ -126,7 +110,7 @@ function closedTab(removedIndex, removedID) {
 }
 
 function addTab(){
-  // console.log(newTab);
+  
   dialog.showOpenDialog({
     properties: ['openFile']
   }).then(result => {
@@ -141,10 +125,24 @@ function addTab(){
           tabBody: newTab
       })
     setTabs(newTabs);
-    // console.log(map);
-    // tabBody.push(<div id={"tab"} >aaaaa</div>);
-    setTabBody([...tabBody, <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?basename(result.filePaths[0])+"template":basename(result.filePaths[0])+"scratch"}</div> ]);
-    // console.log(tabBody);
+
+    <MyDialog message="Choose a type of operation"
+                heading="New Tab"
+                positive="Open File"
+                negative="Create New File"
+                reply={(ans)=>{ans?
+                  setTabBody([...tabBody, 
+                  <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?basename(result.filePaths[0])+"template":<ScratchJSoNEditor Editor="true" path="" mode="open" />}</div>
+                  ])
+                :
+                setTabBody([...tabBody, 
+                  <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?basename(result.filePaths[0])+"template":<ScratchJSoNEditor Editor="true" path="" mode="new" />}</div>
+                  ])}} />  
+
+
+    setTabBody([...tabBody, 
+    <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?basename(result.filePaths[0])+"template":<ScratchJSoNEditor Editor="true" path="" mode="new" />}</div>
+    ]);
     setNewTab(newTab+1);
     }).catch(err => {
       console.log(err)
@@ -163,7 +161,7 @@ return (
                 negative="Scratch JSON Editor!"
                 reply={(ans)=>{initiateTabs(ans);}} />}
       { showTab && <Tabs moveTab={moveTab} selectTab={selectTab} closeTab={closedTab} tabs={tabs}>
-        <button onClick={()=>{console.log("click");addTab("aa")}}>+</button>
+        <button onClick={()=>{addTab("aa")}}>+</button>
       </Tabs>}
       {/* {activeTab.length !== 0 ? activeTab[0].display : ""}  */}
       <div id="TabContainer">{tabBody}</div>
