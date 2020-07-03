@@ -52,7 +52,10 @@ function initializeEditor()
   editor = new JSONEditor(document.getElementById("jsonEditor"+props.id), {});
   // parsedJson;
 //   if(choice)
+if(props.mode==="new")
   editor.set(newFile);
+  else
+  openFile(props.directory[props.id]);
 }
 
 function openFile(path){
