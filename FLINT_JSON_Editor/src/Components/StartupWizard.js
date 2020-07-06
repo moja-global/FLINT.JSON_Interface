@@ -115,7 +115,7 @@ export default function ScrollableTabsButtonAuto(props) {
           <CreateCFG />
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <OpenProject />
+          <OpenProject onHome={(val)=>{console.log(val);}}/>
         </TabPanel>
         <TabPanel value={value} index={4}>
           <OpenFile />

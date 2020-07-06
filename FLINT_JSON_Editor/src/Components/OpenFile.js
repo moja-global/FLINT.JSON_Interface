@@ -7,6 +7,7 @@ import { green } from '@material-ui/core/colors';
 const {dialog} = require('electron').remote;
 const {basename} = require('path');
 import Tooltip from '@material-ui/core/Tooltip';
+import ReactDOM from 'react-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,6 +63,9 @@ export default function ChipsArray() {
         }
         setChipData([...new Set(chipData.concat(temp))]);
         console.log(chipData);
+        ReactDOM.render(<ThemeProvider theme={theme}>
+          <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{console.log("work")}} >Next</Button>
+        </ThemeProvider>,document.getElementById("buttonContainer"));
         // setDisp(true);
       }).catch(err => {
         console.log(err)

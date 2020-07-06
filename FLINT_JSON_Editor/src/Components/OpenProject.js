@@ -8,6 +8,7 @@ const {dialog} = require('electron').remote;
 const {basename} = require('path');
 import Tooltip from '@material-ui/core/Tooltip';
 const fs = require("fs");
+import ReactDOM from 'react-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,7 +34,7 @@ const theme = createMuiTheme({
     },
 });
 
-export default function ChipsArray() {
+export default function ChipsArray(props) {
   const classes = useStyles();
   const [chipData, setChipData] = React.useState([
     // { key: 0, label: 'Angular' },
@@ -65,6 +66,9 @@ export default function ChipsArray() {
             setChipData([...new Set(chipData.concat(temp))]);
             console.log(chipData);
             // setDisp(true);
+            ReactDOM.render(<ThemeProvider theme={theme}>
+              <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{console.log(chipData); props.onHome(temp)}} >Next</Button>
+            </ThemeProvider>,document.getElementById("buttonContainer"));
         });
       }).catch(err => {
         console.log(err)
