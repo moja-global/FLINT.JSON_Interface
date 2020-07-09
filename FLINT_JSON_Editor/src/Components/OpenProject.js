@@ -57,17 +57,17 @@ export default function ChipsArray(props) {
         console.log(result.canceled)
         console.log(result.filePaths)
         fs.readdir(result.filePaths[0],(err,files)=>{
-            var temp=[];
+            var temp=[],temp1=[];//temp1 is for filenames and temp is for the whole path
             for(var i in files)
             {
-                // setChipData([...chipData.concat({key: i,label: result.filePaths[i]})])
-                temp.push(result.filePaths+"/"+files[i]);
+              temp.push(result.filePaths+"/"+files[i]);
+              temp1.push(files[i]);
             }
             setChipData([...new Set(chipData.concat(temp))]);
             console.log(chipData);
             // setDisp(true);
             ReactDOM.render(<ThemeProvider theme={theme}>
-              <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{console.log(chipData); props.onHome(temp)}} >Next</Button>
+              <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{props.onHome(temp,temp1);}} >Next</Button>
             </ThemeProvider>,document.getElementById("buttonContainer"));
         });
       }).catch(err => {

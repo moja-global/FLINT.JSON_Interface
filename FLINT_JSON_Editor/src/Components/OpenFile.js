@@ -33,7 +33,7 @@ const theme = createMuiTheme({
     },
 });
 
-export default function ChipsArray() {
+export default function ChipsArray(props) {
   const classes = useStyles();
   const [chipData, setChipData] = React.useState([
     // { key: 0, label: 'Angular' },
@@ -55,16 +55,16 @@ export default function ChipsArray() {
         console.log(result);
         console.log(result.canceled)
         console.log(result.filePaths)
-        var temp=[];
+        var temp=[],temp1=[];//temp1 is for filenames and temp is for the whole path
         for(var i in result.filePaths)
         {
-            // setChipData([...chipData.concat({key: i,label: result.filePaths[i]})])
-            temp.push(result.filePaths[i]);
+          temp1.push(basename(result.filePaths[i]));
+          temp.push(result.filePaths[i]);
         }
         setChipData([...new Set(chipData.concat(temp))]);
         console.log(chipData);
         ReactDOM.render(<ThemeProvider theme={theme}>
-          <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{console.log("work")}} >Next</Button>
+          <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{props.onHome(temp,temp1)}} >Next</Button>
         </ThemeProvider>,document.getElementById("buttonContainer"));
         // setDisp(true);
       }).catch(err => {
