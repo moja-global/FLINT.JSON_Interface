@@ -43,10 +43,10 @@ export default function ChipsArray(props) {
     // { key: 3, label: 'React' },
     // { key: 4, label: 'Vue.js' },
   ]);
-  // const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
+  const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
   // const [propDirectory,setPropDirectory] = React.useContext(EditorEntryDirectory);
-  // const [propFiles,setPropFiles] = React.useContext(EditorEntryFiles);
-  const [p,sp]=React.useState("aa");
+  const [propFiles,setPropFiles] = React.useContext(EditorEntryFiles);
+  
   console.log(chipData);
   const handleDelete = (chipToDelete) => () => {
     setChipData((chips) => chips.filter((chip) => chip !== chipToDelete));
@@ -68,7 +68,7 @@ export default function ChipsArray(props) {
         setChipData([...new Set(chipData.concat(temp))]);
         console.log(chipData);
         ReactDOM.render(<ThemeProvider theme={theme}>
-          <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{}} >Next</Button>
+          <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{setPropFiles({files: temp1,directory: temp});setDispEditorEntry(true);console.log(dispEditorEntry)}} >Next</Button>
         </ThemeProvider>,document.getElementById("buttonContainer"));
         // setDisp(true);
       }).catch(err => {

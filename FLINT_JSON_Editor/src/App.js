@@ -8,7 +8,7 @@ import ScratchJSONEditor from './Components/ScratchJSONEditor';
 import AppComponent from './Components/AppComponent';
 import bgImg from './Images/green.jpg';
 import SnackBar from './Components/SnackBar';
-import {ToggleEditorEntry} from './Components/ContextManager';
+import {ToggleEditorEntry, EditorEntryFiles, EditorEntryDirectory, EditorEntryFilesProvider} from './Components/ContextManager';
 import EditorEntry from './Components/EditorEntry';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,6 +30,7 @@ export default function App() {
   const [component,setComponent] = React.useState(false);
   const [dispScratch,setDispScratch] = React.useState(false);
   const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
+  const [Files,setFiles]=React.useContext(EditorEntryFiles);
 
   if(component)
   {
@@ -76,8 +77,9 @@ export default function App() {
 
   return(
       <div>
+        
        {
-          dispEditorEntry?<EditorEntry files={React.useContext(EditorEntryFiles)} directory={React.useContext(EditorEntryDirectory)} />: <Comp />
+          dispEditorEntry?<EditorEntry files={Files.files} directory={Files.directory} />: <Comp />
         }
         
       </div>
