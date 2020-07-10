@@ -8,7 +8,7 @@ import ScratchJSONEditor from './Components/ScratchJSONEditor';
 import AppComponent from './Components/AppComponent';
 import bgImg from './Images/green.jpg';
 import SnackBar from './Components/SnackBar';
-import {toggleEditorEntry, EditorEntryDirectory, EditorEntryFiles} from './Components/ContextManager';
+import {ToggleEditorEntry} from './Components/ContextManager';
 import EditorEntry from './Components/EditorEntry';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +29,7 @@ export default function App() {
   const [SnackDisp,setSnackDisp] = React.useState(false);
   const [component,setComponent] = React.useState(false);
   const [dispScratch,setDispScratch] = React.useState(false);
-  const [dispEditorEntry, setDispEditorEntry] = React.useContext(toggleEditorEntry);
+  const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
 
   if(component)
   {
@@ -73,17 +73,14 @@ export default function App() {
 
         { SnackDisp && <SnackBar message="Please choose an option!" onComplete={()=>{setSnackDisp(false);console.log("sna")}}/>}
    </>)}
-    return(
+
+  return(
       <div>
-        <toggleEditorEntry.Provider value={[dispEditorEntry,setDispEditorEntry]}>
-          {dispEditorEntry.disp && <EditorEntry files={React.useContext(EditorEntryFiles)} directory={React.useContext(EditorEntryDirectory)} />}
-          {!dispEditorEntry.disp && <Comp />}
-        </toggleEditorEntry.Provider>
-        
-        
-        
+       {
+          dispEditorEntry?<EditorEntry files={React.useContext(EditorEntryFiles)} directory={React.useContext(EditorEntryDirectory)} />: <Comp />
+        }
         
       </div>
-    );
+  );
 }
 

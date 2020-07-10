@@ -30,9 +30,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import Test from './Components/EditorEntry';
+import {ToggleEditorEntryProvider} from './Components/ContextManager';
 // import './css/index.css'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<ToggleEditorEntryProvider><App /></ToggleEditorEntryProvider>, document.getElementById('root'))
 
 console.log(
   '👋 This message is being logged by "renderer.js", included via webpack'

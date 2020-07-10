@@ -8,6 +8,7 @@ const {dialog} = require('electron').remote;
 const {basename} = require('path');
 import Tooltip from '@material-ui/core/Tooltip';
 import ReactDOM from 'react-dom';
+import {ToggleEditorEntry, EditorEntryDirectory, EditorEntryFiles} from './ContextManager';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,7 +43,10 @@ export default function ChipsArray(props) {
     // { key: 3, label: 'React' },
     // { key: 4, label: 'Vue.js' },
   ]);
-  
+  // const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
+  // const [propDirectory,setPropDirectory] = React.useContext(EditorEntryDirectory);
+  // const [propFiles,setPropFiles] = React.useContext(EditorEntryFiles);
+  const [p,sp]=React.useState("aa");
   console.log(chipData);
   const handleDelete = (chipToDelete) => () => {
     setChipData((chips) => chips.filter((chip) => chip !== chipToDelete));
@@ -64,7 +68,7 @@ export default function ChipsArray(props) {
         setChipData([...new Set(chipData.concat(temp))]);
         console.log(chipData);
         ReactDOM.render(<ThemeProvider theme={theme}>
-          <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{props.onHome(temp,temp1)}} >Next</Button>
+          <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{}} >Next</Button>
         </ThemeProvider>,document.getElementById("buttonContainer"));
         // setDisp(true);
       }).catch(err => {
