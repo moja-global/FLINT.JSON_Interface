@@ -9,6 +9,7 @@ const {basename} = require('path');
 import Tooltip from '@material-ui/core/Tooltip';
 const fs = require("fs");
 import ReactDOM from 'react-dom';
+import {ToggleEditorEntry, EditorEntryFiles} from './ContextManager';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +44,8 @@ export default function ChipsArray(props) {
     // { key: 3, label: 'React' },
     // { key: 4, label: 'Vue.js' },
   ]);
+  const [propFiles,setPropFiles] = React.useContext(EditorEntryFiles);
+  const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
   
   console.log(chipData);
   const handleDelete = (chipToDelete) => () => {
@@ -67,7 +70,7 @@ export default function ChipsArray(props) {
             console.log(chipData);
             // setDisp(true);
             ReactDOM.render(<ThemeProvider theme={theme}>
-              <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{props.onHome(temp,temp1);}} >Next</Button>
+              <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{setPropFiles({files: temp1,directory: temp});setDispEditorEntry(true);console.log(dispEditorEntry)}} >Next</Button>
             </ThemeProvider>,document.getElementById("buttonContainer"));
         });
       }).catch(err => {

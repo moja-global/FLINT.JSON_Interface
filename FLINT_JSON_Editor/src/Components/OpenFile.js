@@ -8,7 +8,7 @@ const {dialog} = require('electron').remote;
 const {basename} = require('path');
 import Tooltip from '@material-ui/core/Tooltip';
 import ReactDOM from 'react-dom';
-import {ToggleEditorEntry, EditorEntryDirectory, EditorEntryFiles} from './ContextManager';
+import {ToggleEditorEntry, EditorEntryFiles} from './ContextManager';
 
 const useStyles = makeStyles((theme) => ({
   root: {
