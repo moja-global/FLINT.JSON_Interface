@@ -8,6 +8,8 @@ const {dialog} = require('electron').remote;
 const {basename} = require('path');
 import Tooltip from '@material-ui/core/Tooltip';
 const fs = require("fs");
+import ReactDOM from 'react-dom';
+import {ToggleEditorEntry, EditorEntryFiles} from './ContextManager';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,7 +35,7 @@ const theme = createMuiTheme({
     },
 });
 
-export default function ChipsArray() {
+export default function ChipsArray(props) {
   const classes = useStyles();
   const [chipData, setChipData] = React.useState([
     // { key: 0, label: 'Angular' },
@@ -42,6 +44,8 @@ export default function ChipsArray() {
     // { key: 3, label: 'React' },
     // { key: 4, label: 'Vue.js' },
   ]);
+  const [propFiles,setPropFiles] = React.useContext(EditorEntryFiles);
+  const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
   
   console.log(chipData);
   const handleDelete = (chipToDelete) => () => {
@@ -56,15 +60,18 @@ export default function ChipsArray() {
         console.log(result.canceled)
         console.log(result.filePaths)
         fs.readdir(result.filePaths[0],(err,files)=>{
-            var temp=[];
+            var temp=[],temp1=[];//temp1 is for filenames and temp is for the whole path
             for(var i in files)
             {
-                // setChipData([...chipData.concat({key: i,label: result.filePaths[i]})])
-                temp.push(result.filePaths+"/"+files[i]);
+              temp.push(result.filePaths+"/"+files[i]);
+              temp1.push(files[i]);
             }
             setChipData([...new Set(chipData.concat(temp))]);
             console.log(chipData);
             // setDisp(true);
+            ReactDOM.render(<ThemeProvider theme={theme}>
+              <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{setPropFiles({files: temp1,directory: temp});setDispEditorEntry(true);console.log(dispEditorEntry)}} >Next</Button>
+            </ThemeProvider>,document.getElementById("buttonContainer"));
         });
       }).catch(err => {
         console.log(err)

@@ -8,6 +8,8 @@ import ScratchJSONEditor from './Components/ScratchJSONEditor';
 import AppComponent from './Components/AppComponent';
 import bgImg from './Images/green.jpg';
 import SnackBar from './Components/SnackBar';
+import {ToggleEditorEntry, EditorEntryFiles, EditorEntryDirectory, EditorEntryFilesProvider} from './Components/ContextManager';
+import EditorEntry from './Components/EditorEntry';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -27,6 +29,8 @@ export default function App() {
   const [SnackDisp,setSnackDisp] = React.useState(false);
   const [component,setComponent] = React.useState(false);
   const [dispScratch,setDispScratch] = React.useState(false);
+  const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
+  const [Files,setFiles]=React.useContext(EditorEntryFiles);
 
   if(component)
   {
@@ -54,9 +58,10 @@ export default function App() {
       <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>setSnackDisp(true)} >Next</Button>
     </ThemeProvider>,document.getElementById("buttonContainer"));
   }
-    return(
-      <div>
-        { disp && <AppComponent onRadioChange3={(val)=>{setComponent(val)}} showSnack2={(val1)=>{resetBtn()}}/> }
+
+  const Comp = () =>{
+    return(<>
+    { disp && <AppComponent onRadioChange3={(val)=>{setComponent(val)}} showSnack2={(val1)=>{resetBtn()}}/> }
         
         <div id="AppContainer">
           { dispScratch && <ScratchJSONEditor onHome={(val)=>{resetApp();setDispScratch(false);}} /> }
@@ -68,7 +73,16 @@ export default function App() {
         </div>}
 
         { SnackDisp && <SnackBar message="Please choose an option!" onComplete={()=>{setSnackDisp(false);console.log("sna")}}/>}
+   </>)}
+
+  return(
+      <div>
+        
+       {
+          dispEditorEntry?<EditorEntry files={Files.files} directory={Files.directory} />: <Comp />
+        }
+        
       </div>
-    );
+  );
 }
 

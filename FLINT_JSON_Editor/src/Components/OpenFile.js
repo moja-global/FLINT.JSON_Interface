@@ -7,6 +7,8 @@ import { green } from '@material-ui/core/colors';
 const {dialog} = require('electron').remote;
 const {basename} = require('path');
 import Tooltip from '@material-ui/core/Tooltip';
+import ReactDOM from 'react-dom';
+import {ToggleEditorEntry, EditorEntryFiles} from './ContextManager';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,7 +34,7 @@ const theme = createMuiTheme({
     },
 });
 
-export default function ChipsArray() {
+export default function ChipsArray(props) {
   const classes = useStyles();
   const [chipData, setChipData] = React.useState([
     // { key: 0, label: 'Angular' },
@@ -41,6 +43,9 @@ export default function ChipsArray() {
     // { key: 3, label: 'React' },
     // { key: 4, label: 'Vue.js' },
   ]);
+  const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
+  // const [propDirectory,setPropDirectory] = React.useContext(EditorEntryDirectory);
+  const [propFiles,setPropFiles] = React.useContext(EditorEntryFiles);
   
   console.log(chipData);
   const handleDelete = (chipToDelete) => () => {
@@ -54,14 +59,17 @@ export default function ChipsArray() {
         console.log(result);
         console.log(result.canceled)
         console.log(result.filePaths)
-        var temp=[];
+        var temp=[],temp1=[];//temp1 is for filenames and temp is for the whole path
         for(var i in result.filePaths)
         {
-            // setChipData([...chipData.concat({key: i,label: result.filePaths[i]})])
-            temp.push(result.filePaths[i]);
+          temp1.push(basename(result.filePaths[i]));
+          temp.push(result.filePaths[i]);
         }
         setChipData([...new Set(chipData.concat(temp))]);
         console.log(chipData);
+        ReactDOM.render(<ThemeProvider theme={theme}>
+          <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{setPropFiles({files: temp1,directory: temp});setDispEditorEntry(true);console.log(dispEditorEntry)}} >Next</Button>
+        </ThemeProvider>,document.getElementById("buttonContainer"));
         // setDisp(true);
       }).catch(err => {
         console.log(err)

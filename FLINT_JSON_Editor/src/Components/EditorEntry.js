@@ -10,10 +10,10 @@ const {basename} = require('path');
 
 export default function EditorEntry(props) {
   // const classes = useStyles();
-  props={
-    files: ["standard_gcbm_variables.json","standard1.json","standard_gcbm_spinup.json","standard.json"],
-    directory:["/home/abhishek/Desktop/standard_gcbm_JSON/standard_gcbm_variables.json","/home/abhishek/Desktop/standard1.json","/home/abhishek/Desktop/standard_gcbm_JSON/standard_gcbm_spinup.json","/home/abhishek/Desktop/standard.json"]
-  };
+  // props={
+  //   files: ["standard_gcbm_variables.json","standard1.json","standard_gcbm_spinup.json","standard.json"],
+  //   directory:["/home/abhishek/Desktop/standard_gcbm_JSON/standard_gcbm_variables.json","/home/abhishek/Desktop/standard1.json","/home/abhishek/Desktop/standard_gcbm_JSON/standard_gcbm_spinup.json","/home/abhishek/Desktop/standard.json"]
+  // };
 
   const [tabs,setTabs] = React.useState([]);
 
@@ -25,7 +25,10 @@ const [showTab, setShowTab] = React.useState(false);
 const [newTab, setNewTab] = React.useState(0);
 const [tabBody, setTabBody] = React.useState([]);
 var countTabs=0;
+var theme=React.createContext({disp: true,changeDisp:()=>{disp=false;}});
+console.log(React.useContext(theme).disp);
 
+setTimeout(()=>{theme.changeDisp;},5000)
 fs.readdir('src/storage/templates/files',(err,files)=>{
   if(err) throw err;
   // console.log(files);
@@ -155,7 +158,7 @@ document.body.style.backgroundImage='none';
 
 return (
     <div>
-      { dialogDisp && <MyDialog message={notFound.length==0 ? "You have chosen "+props.files+" to open in the editor. Choose mode!" : "You have chosen "+props.files+" to open in the editor. Choose mode!(Templates for "+notFound+" were not found so they will be automatically opened in ScratchJSONEditor regardless of chosen option)" }
+      {  React.useContext(theme).disp && <MyDialog message={notFound.length==0 ? "You have chosen "+props.files+" to open in the editor. Choose mode!" : "You have chosen "+props.files+" to open in the editor. Choose mode!(Templates for "+notFound+" were not found so they will be automatically opened in ScratchJSONEditor regardless of chosen option)" }
                 heading="JSON Editor"
                 positive="Template Editor"
                 negative="Scratch JSON Editor!"
