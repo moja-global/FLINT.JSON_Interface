@@ -54,7 +54,8 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 
 The following people are Maintainers Reviewers Ambassadors or Coaches  
 
-<table><tr><td align="center"><a href="http://moja.global"><img src="https://avatars1.githubusercontent.com/u/19564969?v=4" width="100px;" alt="moja global"/><br /><sub><b>moja global</b></sub></a><br /><a href="#projectManagement-moja-global" title="Project Management">📆</a></td></tr></table>  
+<table><tr><td align="center"><a href="http://abhi-blogs.web.app"><img src="https://avatars1.githubusercontent.com/u/36303692?v=4" width="100px;" alt=""/><br /><sub><b>Abhishek Garain</b></sub></a><br /><a href="https://github.com/moja-global/GSoC.FLINT.JSON_Interface/commits?author=abhi211199" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/mfellows"><img src="https://avatars0.githubusercontent.com/u/8548157?v=4" width="100px;" alt=""/><br /><sub><b>Max Fellows</b></sub></a><br /><a href="https://github.com/moja-global/GSoC.FLINT.JSON_Interface/pulls?q=is%3Apr+reviewed-by%3Amfellows" title="Reviewed Pull Requests">👀</a></td>  
 
 **Maintainers** review and accept proposed changes  
 **Reviewers** check proposed changes before they go to the Maintainers  
