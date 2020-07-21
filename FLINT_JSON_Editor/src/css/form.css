@@ -39,7 +39,7 @@
 
 #jsonEditor {
   height: 90vh;
-  width: 60%;
+  width: 70%;
   float: left;
   display: inline-block;
 }
@@ -48,7 +48,7 @@
   height: 90vh;
   /* margin-top: 20px; */
   /* margin-left: 50%; */
-  width: 40%;
+  width: 30%;
   float: left;
   display: inline-block;
   overflow-y: scroll;

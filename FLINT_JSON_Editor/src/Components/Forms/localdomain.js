@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
       },
     paper: {
         marginLeft: "20px",
-        width: "50vw"
+        width: "65vw"
     },
     libraryName: {
         width: "200px",
@@ -142,12 +142,16 @@ export default function LocalDomain(){
                                 id="demo-simple-select"
                                 className={classes.libraryName}
                                 value={inputField.libraryName}
-                                onChange={event => handleChangeLibrary(index, event.target.value, "")}
+                                onChange={event => {if(event.target.value=="other"){handleChangeLibrary(index, event.target.value, "");document.getElementById("other"+index).style.display="block";} else {document.getElementById("other"+index).style.display="none";handleChangeLibrary(index, event.target.value, "")}}}
                                 >
                                 <MenuItem value={"moja.modules.cbm"}>moja.modules.cbm</MenuItem>
                                 <MenuItem value={"moja.modules.zipper"}>moja.modules.zipper</MenuItem>
                                 <MenuItem value={"moja.modules.gdal"}>moja.modules.gdal</MenuItem>
+                                <MenuItem value={"other"}>other</MenuItem>
                             </Select>
+                            </FormControl>
+                            <FormControl className={classes.formControl}>
+                                <div id={"other"+index} style={{display: "none"}}><TextField label="library name" onChange={event => handleChangeLibrary(index, event.target.value, "")} /></div>
                             </FormControl>
                             <FormControl className={classes.formControl}>
                             <InputLabel id="demo-simple-select-label">Library Type</InputLabel>
