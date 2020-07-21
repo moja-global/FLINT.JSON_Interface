@@ -94,6 +94,9 @@
     "react-addons-update": "^15.6.2",
     "react-dom": "^16.13.1",
     "react-draggable-tabs": "^1.0.8",
-    "react-swipeable-views": "^0.13.9"
+    "react-swipeable-views": "^0.13.9",
+    "date-fns": "latest",
+    "@material-ui/pickers": "latest",
+    "@date-io/date-fns": "v1"
   }
 }
