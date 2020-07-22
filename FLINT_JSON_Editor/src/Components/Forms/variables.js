@@ -13,7 +13,7 @@ import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import TextField from '@material-ui/core/TextField';
-import '../App.css';
+import '../../css/form.css';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Accordion from '@material-ui/core/Accordion';
@@ -70,14 +70,15 @@ export default function LocalDomain(){
         {
             disturbance_matrices : {
                 transform: {
-                    queryString: "SELECT dm.id AS disturbance_matrix_id, source_pool.name as source_pool_name, dest_pool.name as dest_pool_name, dv.proportion FROM disturbance_matrix dm INNER JOIN disturbance_matrix_value dv ON dm.id = dv.disturbance_matrix_id INNER JOIN pool source_pool ON dv.source_pool_id = source_pool.id INNER JOIN pool dest_pool ON dv.sink_pool_id = dest_pool.id",
                     type: "SQLQueryTransform",
+                    queryString: "SELECT dm.id AS disturbance_matrix_id, source_pool.name as source_pool_name, dest_pool.name as dest_pool_name, dv.proportion FROM disturbance_matrix dm INNER JOIN disturbance_matrix_value dv ON dm.id = dv.disturbance_matrix_id INNER JOIN pool source_pool ON dv.source_pool_id = source_pool.id INNER JOIN pool dest_pool ON dv.sink_pool_id = dest_pool.id",
                     library: "internal.flint",
                     provider: "SQLite",
                     data_id: "",
+                    vars: ["sss","aa"]
                 }
-            },  
-        }
+            },   
+        },
     )
 
     const [Initial, setInitial] = React.useState({
@@ -120,6 +121,7 @@ export default function LocalDomain(){
     {
         var temp=[];
         for (const [key, value] of Object.entries(Transforms)) {
+            const [disp, setDisp]=React.useState("SQLQueryTransform");
             temp.push(
                 <Accordion>
                     <AccordionSummary
@@ -132,11 +134,7 @@ export default function LocalDomain(){
                     <AccordionDetails>
                     <Typography>
                     <Paper elevation={5} className={classes.paper}>
-                    <FormControl className={classes.formControl}>
-                        queryString
-                        <TextareaAutosize style={{height: "50px", width: "40vw"}}id="filled-basic" label="queryString" variant="filled" defaultValue={value.transform.queryString} onChange={(event)=>handleChange(key, "queryString", event.target.value)} />
-                        {/* <TextareaAutosize aria-label="empty textarea" placeholder="Empty" />; */}
-                    </FormControl><br />
+                    
                     <FormControl className={classes.formControl}>
                         {/* <TextField id="filled-basic" label="Transform Name" variant="filled" defaultValue={value.transform.type} onChange={(event)=>handleChange(key, "type", event.target.value)} /> */}
                         <InputLabel id="demo-simple-select-label">type</InputLabel>
@@ -145,19 +143,36 @@ export default function LocalDomain(){
                                 id="demo-simple-select"
                                 // className={classes.libraryName}
                                 value={value.transform.type}
-                                onChange={(event)=>handleChange(key, "type", event.target.value)}
+                                onChange={(event)=>{setDisp(event.target.value);handleChange(key, "type", event.target.value)}}
                                 >
                                 <MenuItem value={"SQLQueryTransform"}>SQLQueryTransform</MenuItem>
                                 <MenuItem value={"LocationIdxFromFlintDataTransform"}>LocationIdxFromFlintDataTransform</MenuItem>
+                                <MenuItem value={"CompositeTransform"}>CompositeTransform</MenuItem>
+                                <MenuItem value={"other"}>other</MenuItem>
                             </Select>
                     </FormControl>
-                    <FormControl className={classes.formControl}>
-                        <TextField id="filled-basic" label="library" variant="filled" defaultValue={value.transform.library} onChange={(event)=>handleChange(key, "library", event.target.value)} />
-                    </FormControl>
-                    <FormControl className={classes.formControl}>
+
+                    {disp=="SQLQueryTransform" && <FormControl className={classes.formControl}>
+                        queryString
+                        <TextareaAutosize style={{height: "50px", width: "40vw"}}id="filled-basic" label="queryString" variant="filled" defaultValue={value.transform.queryString} onChange={(event)=>handleChange(key, "queryString", event.target.value)} />
+                    </FormControl>}<br />
+
+                    {(disp=="LocationIdxFromFlintDataTransform" || disp=="SQLQueryTransform" || disp=="CompositeTransform") && <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="library" variant="filled" disabled defaultValue={value.transform.library} onChange={(event)=>handleChange(key, "library", event.target.value)} />
+                    </FormControl>}
+
+                    {(disp=="LocationIdxFromFlintDataTransform" || disp=="SQLQueryTransform") && <FormControl className={classes.formControl}>
                         <TextField id="filled-basic" label="provider" variant="filled" defaultValue={value.transform.provider} onChange={(event)=>handleChange(key, "provider", event.target.value)} />
-                    </FormControl>
-                
+                    </FormControl>}
+
+                    {disp=="LocationIdxFromFlintDataTransform" && <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="data_id" variant="filled" defaultValue={value.transform.data_id} onChange={(event)=>handleChange(key, "data_id", event.target.value)} />
+                    </FormControl>}
+
+                    {disp=="CompositeTransform" && <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="vars" placeholder="comma seperate array elements" variant="filled" defaultValue={value.transform.vars} onChange={(event)=>handleChange(key, "vars", event.target.value)} />
+                    </FormControl>}
+
                     </Paper>
                     </Typography>
                     </AccordionDetails>
@@ -169,6 +184,9 @@ export default function LocalDomain(){
     function handleChange(key, type, value)
     {
         const temp={...Transforms};
+        if(type=="vars")
+        temp[key]["transform"][type]=value.split(',');
+        else
         temp[key]["transform"][type]=value;
         setTransforms(temp);
         console.log(Transforms);

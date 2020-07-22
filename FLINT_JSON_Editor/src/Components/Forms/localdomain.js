@@ -91,8 +91,8 @@ export default function LocalDomain(){
         temp1["LocalDomain"]=LocalDomain;
         console.log(JSON.stringify(temp1));
         setTempLibrary(temp1);
+
     },[Libraries, LocalDomain]);
-    // useEffect(()=>console.log(LocalDomain),[LocalDomain]);
 
     function handleChangeLibrary(index, libraryName, libraryType)
     {
@@ -166,7 +166,7 @@ export default function LocalDomain(){
                                 <MenuItem value={"external"}>external</MenuItem>
                             </Select>
                             </FormControl>
-                            <IconButton color="primary" aria-label="add library" style={{marginTop: "10px"}} onClick={()=>deleteLibrary(index)}>
+                            <IconButton color="primary" aria-label="add library" style={{marginTop: "10px"}} onClick={()=>{document.getElementById("other"+index).style.display="none";deleteLibrary(index)}}>
                                 <CancelIcon />
                             </IconButton>
                         </div>
