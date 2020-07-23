@@ -116,20 +116,22 @@ export default function LocalDomain(){
         slow_ag_to_bg_mixing_rate : 0.006,
     }); 
     
-    // const [tempJSON, setTempJSON] = React.useState({});
+    const [tempJSON, setTempJSON] = React.useState({});
 
-    // useEffect(()=>{
-    //     const temp={};
-    //     for (const [key, value] of Object.entries(Initial))
-    //     {
-    //         temp[key]=value;
-    //     }
-    //     for (const [key, value] of Object.entries(Transforms))
-    //     {
-    //         temp[key]=value;
-    //     }
-    //     setTempJSON(temp);
-    // },[Initial, Transforms]);
+    useEffect(()=>{
+        const temp={};
+        for (const [key, value] of Object.entries(Initial))
+        {
+            temp[key]=value;
+        }
+        // for (const [key, value] of Object.entries(Transforms))
+        Transforms.map((inputfield)=>
+        {
+            // temp[key]=value;
+            temp[inputfield.key]=inputfield.value;
+        })
+        setTempJSON(temp);
+    },[Initial, Transforms]);
 
     // useEffect(()=>console.log(Initial),[Initial])
 
@@ -188,26 +190,28 @@ export default function LocalDomain(){
     function addTransform(){
         const temp=[...Transforms];
         temp.push({
-            key: "aaaa",
+            key: "",
             value: {
                 transform: {
-                type: "CompositeTransform",
-                queryString: "SELECT dm.id AS disturbance_matrix_id, source_pool.name as source_pool_name, dest_pool.name as dest_pool_name, dv.proportion FROM disturbance_matrix dm INNER JOIN disturbance_matrix_value dv ON dm.id = dv.disturbance_matrix_id INNER JOIN pool source_pool ON dv.source_pool_id = source_pool.id INNER JOIN pool dest_pool ON dv.sink_pool_id = dest_pool.id",
+                type: "",
+                queryString: "",
                 library: "internal.flint",
-                provider: "SQLite",
+                provider: "",
                 data_id: "",
-                vars: ["sss","aa"],
-                custom: [
-                    {
-                        key: "abc",
-                        value: "def"
-                    }
-                ]
+                vars: [],
+                custom: []
             }
         }
     })
     setTransforms(temp); 
 }
+
+    function deleteTransform(index)
+    {
+        const temp=[...Transforms];
+        temp.splice(index,1);
+        setTransforms(temp);
+    }
 
     return(
         <div id="container">
@@ -271,8 +275,13 @@ export default function LocalDomain(){
                                 aria-controls="panel1a-content"
                                 id="panel1a-header"
                                 >
-                                <Typography className={classes.heading}>Transform Name: 
-                                <TextField id="filled-basic" label="Name" variant="filled" defaultValue={inputfield.key} onChange={(event)=>handleChange(index, "key", event.target.value)} />
+                                <FormControlLabel
+                                control={<IconButton color="primary" aria-label="add library" style={{marginTop: "10px"}} onClick={()=>{deleteTransform(index)}}>
+                                <CancelIcon />
+                                </IconButton>}
+                                />
+                                <Typography className={classes.heading}>
+                                <TextField id="filled-basic" label="Transform Name: " defaultValue={inputfield.key} onChange={(event)=>handleChange(index, "key", event.target.value)} />
                                 </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
@@ -360,7 +369,7 @@ export default function LocalDomain(){
 
 
             <div id="jsonViewer"><pre>
-          {/* {JSON.stringify(tempJSON, null, 2)} */}
+          {JSON.stringify(tempJSON, null, 2)}
         </pre></div>
         </div>
     );
