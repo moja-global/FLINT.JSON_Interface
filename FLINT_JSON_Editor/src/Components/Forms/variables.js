@@ -274,7 +274,7 @@ export default function LocalDomain(){
                 </Paper>
                         
                 <h1>Transforms:</h1>
-                    {/* {getTransformsUI()} */}
+                    
                     {
                         // const [disp, setDisp]=React.useState("SQLQueryTransform");
                         TransformsDup.map((inputfield, index) => (
