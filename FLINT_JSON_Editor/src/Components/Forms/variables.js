@@ -102,6 +102,7 @@ export default function LocalDomain(){
             }
         }
     ]);
+    const [TransformsDup, setTransformsDup] = React.useState(Transforms);
 
     const [Initial, setInitial] = React.useState({
         enable_peatland : false,
@@ -152,6 +153,7 @@ export default function LocalDomain(){
         else
         temp[index].value.transform[type]=value;
         setTransforms(temp);
+        setTransformsDup(temp);
         console.log(Transforms);
     }
 
@@ -163,18 +165,20 @@ export default function LocalDomain(){
             value:""
         });
         setTransforms(temp);
+        setTransformsDup(temp);
         console.log(Transforms[index].value.transform.custom);
     }
 
-    // function deleteField(index, index1)
-    // {
-    //     console.log(index);
-    //     const temp=[...Transforms];
-    //     temp[index].value.transform.custom.splice(index1,1);
-    //     // console.log
-    //     setTransforms(temp);
-    //     console.log(Transforms[index].value.transform.custom);
-    // }
+    function deleteField(index, index1)
+    {
+        console.log(index);
+        const temp=[...Transforms];
+        temp[index].value.transform.custom.splice(index1,1);
+        // console.log
+        setTransforms(temp);
+        document.getElementById("transform"+index+index1).style.display="none";
+        console.log(Transforms[index].value.transform.custom);
+    }
 
     function handleChangeField(index, index1, params, value) {
         const temp=[...Transforms];
@@ -184,6 +188,7 @@ export default function LocalDomain(){
         //     temp[key].transform.custom[index].value=value;
         temp[index].value.transform.custom[index1][params]=value;
         setTransforms(temp);
+        setTransformsDup(temp);
         console.log(Transforms[index].value.transform.custom);
     }
 
@@ -204,6 +209,8 @@ export default function LocalDomain(){
         }
     })
     setTransforms(temp); 
+    setTransformsDup(temp);
+
 }
 
     function deleteTransform(index)
@@ -211,6 +218,8 @@ export default function LocalDomain(){
         const temp=[...Transforms];
         temp.splice(index,1);
         setTransforms(temp);
+        // setTransformsDup(temp);
+        document.getElementById("transform"+index).style.display="none";
     }
 
     return(
@@ -268,14 +277,15 @@ export default function LocalDomain(){
                     {/* {getTransformsUI()} */}
                     {
                         // const [disp, setDisp]=React.useState("SQLQueryTransform");
-                        Transforms.map((inputfield, index) => (
-                            <Accordion>
+                        TransformsDup.map((inputfield, index) => (
+                            <Accordion id={"transform"+index}>
                                 <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1a-content"
                                 id="panel1a-header"
                                 >
                                 <FormControlLabel
+                                onClick={()=>deleteTransform(index)}
                                 control={<IconButton color="primary" aria-label="add library" style={{marginTop: "10px"}} onClick={()=>{deleteTransform(index)}}>
                                 <CancelIcon />
                                 </IconButton>}
@@ -326,11 +336,11 @@ export default function LocalDomain(){
                                     <TextField id="filled-basic" label="vars" placeholder="comma seperated array elements" variant="filled" defaultValue={inputfield.value.transform.vars} onChange={(event)=>handleChange(index, "vars", event.target.value)} />
                                 </FormControl>}
                                 
-                                {inputfield.value.transform.custom.map((inputfield1, index1)=>(
+                                {TransformsDup[index].value.transform.custom.map((inputfield1, index1)=>(
                                     
                                     
                                     // return(
-                                    <div>
+                                    <div id={"transform"+index+index1}>
                                     <Paper elevation={5} className={classes.paper1}>
                                     <TextField
                                       className={classes.input}
