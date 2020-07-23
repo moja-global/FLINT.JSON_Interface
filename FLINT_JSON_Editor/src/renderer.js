@@ -29,7 +29,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import App from './App';
-import Test from './Components/Forms/variables';
+import Test from './Components/Forms/pools';
 import {ToggleEditorEntryProvider,EditorEntryFilesProvider} from './Components/ContextManager';
 // import './css/index.css'
 
