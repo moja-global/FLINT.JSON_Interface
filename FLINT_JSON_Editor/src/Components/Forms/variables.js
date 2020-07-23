@@ -22,7 +22,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -60,26 +60,48 @@ const useStyles = makeStyles((theme) => ({
     },
     libraryType: {
         width: "200px",
-    }
+    },
+    divider: {
+        height: 28,
+        margin: 4,
+    },
+    input: {
+        marginLeft: theme.spacing(1),
+        flex: 1,
+    },
+    paper1: {
+        padding: '2px 4px',
+        display: 'flex',
+        alignItems: 'center',
+        width: 400,
+      },
 }));
 
 export default function LocalDomain(){
     const classes = useStyles();
+    const [open, setOpen] = React.useState(true);
 
-    const [Transforms, setTransforms] = React.useState(
+    const [Transforms, setTransforms] = React.useState([
         {
-            disturbance_matrices : {
+            key: "disturbance matrices",
+            value: {
                 transform: {
                     type: "SQLQueryTransform",
                     queryString: "SELECT dm.id AS disturbance_matrix_id, source_pool.name as source_pool_name, dest_pool.name as dest_pool_name, dv.proportion FROM disturbance_matrix dm INNER JOIN disturbance_matrix_value dv ON dm.id = dv.disturbance_matrix_id INNER JOIN pool source_pool ON dv.source_pool_id = source_pool.id INNER JOIN pool dest_pool ON dv.sink_pool_id = dest_pool.id",
                     library: "internal.flint",
                     provider: "SQLite",
                     data_id: "",
-                    vars: ["sss","aa"]
+                    vars: ["sss","aa"],
+                    custom: [
+                        {
+                            key: "abc",
+                            value: "def"
+                        }
+                    ]
                 }
-            },   
-        },
-    )
+            }
+        }
+    ]);
 
     const [Initial, setInitial] = React.useState({
         enable_peatland : false,
@@ -94,22 +116,23 @@ export default function LocalDomain(){
         slow_ag_to_bg_mixing_rate : 0.006,
     }); 
     
-    const [tempJSON, setTempJSON] = React.useState({});
+    // const [tempJSON, setTempJSON] = React.useState({});
 
-    useEffect(()=>{
-        const temp={};
-        for (const [key, value] of Object.entries(Initial))
-        {
-            temp[key]=value;
-        }
-        for (const [key, value] of Object.entries(Transforms))
-        {
-            temp[key]=value;
-        }
-        setTempJSON(temp);
-    },[Initial, Transforms]);
+    // useEffect(()=>{
+    //     const temp={};
+    //     for (const [key, value] of Object.entries(Initial))
+    //     {
+    //         temp[key]=value;
+    //     }
+    //     for (const [key, value] of Object.entries(Transforms))
+    //     {
+    //         temp[key]=value;
+    //     }
+    //     setTempJSON(temp);
+    // },[Initial, Transforms]);
 
-    useEffect(()=>console.log(Initial),[Initial])
+    // useEffect(()=>console.log(Initial),[Initial])
+
     function handleChangeInitial(key, value)
     {
         const temp = {...Initial};
@@ -117,80 +140,74 @@ export default function LocalDomain(){
         setInitial(temp);
     }
 
-    const getTransformsUI = () => 
+    function handleChange(index, type, value)
     {
-        var temp=[];
-        for (const [key, value] of Object.entries(Transforms)) {
-            const [disp, setDisp]=React.useState("SQLQueryTransform");
-            temp.push(
-                <Accordion>
-                    <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                    >
-                    <Typography className={classes.heading}>Transform Name: {key}</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                    <Typography>
-                    <Paper elevation={5} className={classes.paper}>
-                    
-                    <FormControl className={classes.formControl}>
-                        {/* <TextField id="filled-basic" label="Transform Name" variant="filled" defaultValue={value.transform.type} onChange={(event)=>handleChange(key, "type", event.target.value)} /> */}
-                        <InputLabel id="demo-simple-select-label">type</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                // className={classes.libraryName}
-                                value={value.transform.type}
-                                onChange={(event)=>{setDisp(event.target.value);handleChange(key, "type", event.target.value)}}
-                                >
-                                <MenuItem value={"SQLQueryTransform"}>SQLQueryTransform</MenuItem>
-                                <MenuItem value={"LocationIdxFromFlintDataTransform"}>LocationIdxFromFlintDataTransform</MenuItem>
-                                <MenuItem value={"CompositeTransform"}>CompositeTransform</MenuItem>
-                                <MenuItem value={"other"}>other</MenuItem>
-                            </Select>
-                    </FormControl>
-
-                    {disp=="SQLQueryTransform" && <FormControl className={classes.formControl}>
-                        queryString
-                        <TextareaAutosize style={{height: "50px", width: "40vw"}}id="filled-basic" label="queryString" variant="filled" defaultValue={value.transform.queryString} onChange={(event)=>handleChange(key, "queryString", event.target.value)} />
-                    </FormControl>}<br />
-
-                    {(disp=="LocationIdxFromFlintDataTransform" || disp=="SQLQueryTransform" || disp=="CompositeTransform") && <FormControl className={classes.formControl}>
-                        <TextField id="filled-basic" label="library" variant="filled" disabled defaultValue={value.transform.library} onChange={(event)=>handleChange(key, "library", event.target.value)} />
-                    </FormControl>}
-
-                    {(disp=="LocationIdxFromFlintDataTransform" || disp=="SQLQueryTransform") && <FormControl className={classes.formControl}>
-                        <TextField id="filled-basic" label="provider" variant="filled" defaultValue={value.transform.provider} onChange={(event)=>handleChange(key, "provider", event.target.value)} />
-                    </FormControl>}
-
-                    {disp=="LocationIdxFromFlintDataTransform" && <FormControl className={classes.formControl}>
-                        <TextField id="filled-basic" label="data_id" variant="filled" defaultValue={value.transform.data_id} onChange={(event)=>handleChange(key, "data_id", event.target.value)} />
-                    </FormControl>}
-
-                    {disp=="CompositeTransform" && <FormControl className={classes.formControl}>
-                        <TextField id="filled-basic" label="vars" placeholder="comma seperate array elements" variant="filled" defaultValue={value.transform.vars} onChange={(event)=>handleChange(key, "vars", event.target.value)} />
-                    </FormControl>}
-
-                    </Paper>
-                    </Typography>
-                    </AccordionDetails>
-                </Accordion>
-             )}
-            return temp;
-    }
-
-    function handleChange(key, type, value)
-    {
-        const temp={...Transforms};
+        const temp=[...Transforms];
         if(type=="vars")
-        temp[key]["transform"][type]=value.split(',');
+        temp[index].value.transform[type]=value.split(',');
+        else if(type=="key")
+        temp[index].key=value;
         else
-        temp[key]["transform"][type]=value;
+        temp[index].value.transform[type]=value;
         setTransforms(temp);
         console.log(Transforms);
     }
+
+    function addField(index)
+    {
+        const temp=[...Transforms];
+        temp[index].value.transform.custom.push({
+            key:"",
+            value:""
+        });
+        setTransforms(temp);
+        console.log(Transforms[index].value.transform.custom);
+    }
+
+    // function deleteField(index, index1)
+    // {
+    //     console.log(index);
+    //     const temp=[...Transforms];
+    //     temp[index].value.transform.custom.splice(index1,1);
+    //     // console.log
+    //     setTransforms(temp);
+    //     console.log(Transforms[index].value.transform.custom);
+    // }
+
+    function handleChangeField(index, index1, params, value) {
+        const temp=[...Transforms];
+        // if(params=="key")
+        //     temp[key].transform.custom[index].key=value;
+        // else
+        //     temp[key].transform.custom[index].value=value;
+        temp[index].value.transform.custom[index1][params]=value;
+        setTransforms(temp);
+        console.log(Transforms[index].value.transform.custom);
+    }
+
+    function addTransform(){
+        const temp=[...Transforms];
+        temp.push({
+            key: "aaaa",
+            value: {
+                transform: {
+                type: "CompositeTransform",
+                queryString: "SELECT dm.id AS disturbance_matrix_id, source_pool.name as source_pool_name, dest_pool.name as dest_pool_name, dv.proportion FROM disturbance_matrix dm INNER JOIN disturbance_matrix_value dv ON dm.id = dv.disturbance_matrix_id INNER JOIN pool source_pool ON dv.source_pool_id = source_pool.id INNER JOIN pool dest_pool ON dv.sink_pool_id = dest_pool.id",
+                library: "internal.flint",
+                provider: "SQLite",
+                data_id: "",
+                vars: ["sss","aa"],
+                custom: [
+                    {
+                        key: "abc",
+                        value: "def"
+                    }
+                ]
+            }
+        }
+    })
+    setTransforms(temp); 
+}
 
     return(
         <div id="container">
@@ -242,17 +259,108 @@ export default function LocalDomain(){
                         <TextField id="filled-basic" label="slow_ag_to_bg_mixing_rate" variant="filled" defaultValue={Initial.slow_ag_to_bg_mixing_rate} onChange={event => handleChangeInitial("slow_ag_to_bg_mixing_rate",event.target.value)} />
                     </FormControl>
                 </Paper>
-
+                        
                 <h1>Transforms:</h1>
-                    {getTransformsUI()}
-                    {/* <IconButton color="primary" aria-label="add library" style={{marginLeft: "16vw"}} onClick={()=>{addTransform()}}>
+                    {/* {getTransformsUI()} */}
+                    {
+                        // const [disp, setDisp]=React.useState("SQLQueryTransform");
+                        Transforms.map((inputfield, index) => (
+                            <Accordion>
+                                <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
+                                >
+                                <Typography className={classes.heading}>Transform Name: 
+                                <TextField id="filled-basic" label="Name" variant="filled" defaultValue={inputfield.key} onChange={(event)=>handleChange(index, "key", event.target.value)} />
+                                </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                <Typography>
+                                <Paper elevation={5} className={classes.paper}>
+                                
+                                <FormControl className={classes.formControl}>
+                                    {/* <TextField id="filled-basic" label="Transform Name" variant="filled" defaultValue={value.transform.type} onChange={(event)=>handleChange(key, "type", event.target.value)} /> */}
+                                    <InputLabel id="demo-simple-select-label">type</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            // className={classes.libraryName}
+                                            value={inputfield.value.transform.type}
+                                            onChange={(event)=>{handleChange(index, "type", event.target.value)}}
+                                            >
+                                            <MenuItem value={"SQLQueryTransform"}>SQLQueryTransform</MenuItem>
+                                            <MenuItem value={"LocationIdxFromFlintDataTransform"}>LocationIdxFromFlintDataTransform</MenuItem>
+                                            <MenuItem value={"CompositeTransform"}>CompositeTransform</MenuItem>
+                                            <MenuItem value={"other"}>other</MenuItem>
+                                        </Select>
+                                </FormControl>
+            
+                                {inputfield.value.transform.type=="SQLQueryTransform" && <FormControl className={classes.formControl}>
+                                    queryString
+                                    <TextareaAutosize style={{height: "50px", width: "40vw"}} id="filled-basic" label="queryString" variant="filled" defaultValue={inputfield.value.transform.queryString} onChange={(event)=>handleChange(index, "queryString", event.target.value)} />
+                                </FormControl>}<br />
+            
+                                {(inputfield.value.transform.type=="LocationIdxFromFlintDataTransform" || inputfield.value.transform.type=="SQLQueryTransform" || inputfield.value.transform.type=="CompositeTransform") && <FormControl className={classes.formControl}>
+                                    <TextField id="filled-basic" label="library" variant="filled" disabled defaultValue={inputfield.value.transform.library} onChange={(event)=>handleChange(index, "library", event.target.value)} />
+                                </FormControl>}
+            
+                                {(inputfield.value.transform.type=="LocationIdxFromFlintDataTransform" || inputfield.value.transform.type=="SQLQueryTransform") && <FormControl className={classes.formControl}>
+                                    <TextField id="filled-basic" label="provider" variant="filled" defaultValue={inputfield.value.transform.provider} onChange={(event)=>handleChange(index, "provider", event.target.value)} />
+                                </FormControl>}
+            
+                                {inputfield.value.transform.type=="LocationIdxFromFlintDataTransform" && <FormControl className={classes.formControl}>
+                                    <TextField id="filled-basic" label="data_id" variant="filled" defaultValue={inputfield.value.transform.data_id} onChange={(event)=>handleChange(index, "data_id", event.target.value)} />
+                                </FormControl>}
+            
+                                {inputfield.value.transform.type=="CompositeTransform" && <FormControl className={classes.formControl}>
+                                    <TextField id="filled-basic" label="vars" placeholder="comma seperated array elements" variant="filled" defaultValue={inputfield.value.transform.vars} onChange={(event)=>handleChange(index, "vars", event.target.value)} />
+                                </FormControl>}
+                                
+                                {inputfield.value.transform.custom.map((inputfield1, index1)=>(
+                                    
+                                    
+                                    // return(
+                                    <div>
+                                    <Paper elevation={5} className={classes.paper1}>
+                                    <TextField
+                                      className={classes.input}
+                                      label="key"
+                                      defaultValue={inputfield1.key}
+                                      onChange={(event)=>handleChangeField(index, index1, "key", event.target.value)}
+                                    />
+                                    <TextField
+                                      className={classes.input}
+                                      label="value"
+                                      defaultValue={inputfield1.value}
+                                      onChange={(event)=>handleChangeField(index, index1, "value", event.target.value)}
+                                    />
+                                    <Divider className={classes.divider} orientation="vertical" />
+                                    {/* <IconButton color="primary" className={classes.iconButton} aria-label="directions" onClick={()=>{console.log(index);deleteField(index, index1)}}>
+                                        <CancelIcon />
+                                    </IconButton> */}
+                                  </Paper>
+                                  </div>
+                                ))
+                                } 
+                                <IconButton color="primary" aria-label="add library" style={{marginLeft: "16vw"}} onClick={()=>addField(index)}>
+                                    <AddCircleIcon />
+                                </IconButton>
+                                </Paper>
+                                </Typography>
+                                </AccordionDetails>
+                            </Accordion>
+                        ))}
+
+                    <IconButton color="primary" aria-label="add library" style={{marginLeft: "16vw"}} onClick={()=>addTransform()}>
                         <AddCircleIcon />
-                    </IconButton> */}
+                    </IconButton>
+                    
             </div>
 
 
             <div id="jsonViewer"><pre>
-          {JSON.stringify(tempJSON, null, 2)}
+          {/* {JSON.stringify(tempJSON, null, 2)} */}
         </pre></div>
         </div>
     );
