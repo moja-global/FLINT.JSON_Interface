@@ -141,8 +141,8 @@ export default function LocalDomain(){
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 className={classes.libraryName}
-                                value={inputField.libraryName}
-                                onChange={event => {if(event.target.value=="other"){handleChangeLibrary(index, event.target.value, "");document.getElementById("other"+index).style.display="block";} else {document.getElementById("other"+index).style.display="none";handleChangeLibrary(index, event.target.value, "")}}}
+                                value={(inputField.libraryName=="" || inputField.libraryName=="moja.modules.cbm" || inputField.libraryName=="moja.modules.zipper" || inputField.libraryName=="moja.modules.gdal")?inputField.libraryName : "other"}
+                                onChange={event => {if(event.target.value=="other"){handleChangeLibrary(index, event.target.value, "");document.getElementById("other"+index).style.display="block";document.getElementById("other-val"+index).value=""} else {document.getElementById("other"+index).style.display="none";handleChangeLibrary(index, event.target.value, "")}}}
                                 >
                                 <MenuItem value={"moja.modules.cbm"}>moja.modules.cbm</MenuItem>
                                 <MenuItem value={"moja.modules.zipper"}>moja.modules.zipper</MenuItem>
@@ -151,7 +151,7 @@ export default function LocalDomain(){
                             </Select>
                             </FormControl>
                             <FormControl className={classes.formControl}>
-                                <div id={"other"+index} style={{display: "none"}}><TextField label="library name" onChange={event => handleChangeLibrary(index, event.target.value, "")} /></div>
+                                <div id={"other"+index} style={{display: "none"}}><TextField id={"other-val"+index} label="library name" onChange={event => handleChangeLibrary(index, event.target.value, "")} /></div>
                             </FormControl>
                             <FormControl className={classes.formControl}>
                             <InputLabel id="demo-simple-select-label">Library Type</InputLabel>

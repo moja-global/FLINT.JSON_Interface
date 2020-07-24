@@ -129,7 +129,48 @@ export default function LocalDomain(){
         Transforms.map((inputfield)=>
         {
             // temp[key]=value;
-            temp[inputfield.key]=inputfield.value;
+            // temp[inputfield.key]=inputfield.value;
+            const temp1={}
+            if(inputfield.value.transform.type=="SQLQueryTransform")
+                {
+                    temp1["type"]=inputfield.value.transform.type;
+                    temp1["queryString"]=inputfield.value.transform.queryString;
+                    temp1["library"]=inputfield.value.transform.library;
+                    temp1["provider"]=inputfield.value.transform.provider;
+                    inputfield.value.transform.custom.map(field=>{
+                        temp1[field.key]=field.value;
+                    })
+                    const temp2={};
+                    temp2["transform"]=temp1;
+                    temp[inputfield.key]=temp2;
+                }
+            else if(inputfield.value.transform.type=="LocationIdxFromFlintDataTransform")
+                {
+                    temp1["type"]=inputfield.value.transform.type;
+                    temp1["data_id"]=inputfield.value.transform.data_id;
+                    temp1["library"]=inputfield.value.transform.library;
+                    temp1["provider"]=inputfield.value.transform.provider;
+                    inputfield.value.transform.custom.map(field=>{
+                        temp1[field.key]=field.value;
+                    })
+                    const temp2={};
+                    temp2["transform"]=temp1;
+                    temp[inputfield.key]=temp2;
+                }
+            else if(inputfield.value.transform.type=="CompositeTransform")
+                {
+                    temp1["type"]=inputfield.value.transform.type;
+                    temp1["library"]=inputfield.value.transform.library;
+                    temp1["vars"]=inputfield.value.transform.vars;
+                    inputfield.value.transform.custom.map(field=>{
+                        temp1[field.key]=field.value;
+                    })
+                    const temp2={};
+                    temp2["transform"]=temp1;
+                    temp[inputfield.key]=temp2;
+                }
+            else
+                temp[inputfield.key]=inputfield.value;
         })
         setTempJSON(temp);
     },[Initial, Transforms]);
