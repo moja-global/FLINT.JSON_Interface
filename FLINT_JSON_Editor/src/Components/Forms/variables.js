@@ -170,7 +170,14 @@ export default function LocalDomain(){
                     temp[inputfield.key]=temp2;
                 }
             else
-                temp[inputfield.key]=inputfield.value;
+                {
+                    const temp2={}, temp1={};
+                    inputfield.value.transform.custom.map(field=>{
+                        temp1[field.key]=field.value;
+                    })
+                    temp2["transform"]=temp1;
+                    temp[inputfield.key]=temp2;
+                }
         })
         setTempJSON(temp);
     },[Initial, Transforms]);
