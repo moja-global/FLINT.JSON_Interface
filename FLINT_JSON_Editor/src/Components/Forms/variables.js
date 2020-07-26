@@ -94,15 +94,14 @@ export default function LocalDomain(){
                     vars: ["sss","aa"],
                     custom: [
                         {
-                            key: "abc",
-                            value: "def"
+                            key: "",
+                            value: ""
                         }
                     ]
                 }
             }
         }
     ]);
-    const [TransformsDup, setTransformsDup] = React.useState(Transforms);
 
     const [Initial, setInitial] = React.useState({
         enable_peatland : false,
@@ -120,6 +119,7 @@ export default function LocalDomain(){
     const [tempJSON, setTempJSON] = React.useState({});
 
     useEffect(()=>{
+        console.log("aa");
         const temp={};
         for (const [key, value] of Object.entries(Initial))
         {
@@ -201,7 +201,6 @@ export default function LocalDomain(){
         else
         temp[index].value.transform[type]=value;
         setTransforms(temp);
-        setTransformsDup(temp);
         console.log(Transforms);
     }
 
@@ -213,7 +212,6 @@ export default function LocalDomain(){
             value:""
         });
         setTransforms(temp);
-        setTransformsDup(temp);
         console.log(Transforms[index].value.transform.custom);
     }
 
@@ -224,7 +222,7 @@ export default function LocalDomain(){
         temp[index].value.transform.custom.splice(index1,1);
         // console.log
         setTransforms(temp);
-        document.getElementById("transform"+index+index1).style.display="none";
+        // document.getElementById("transform"+index+index1).style.display="none";
         console.log(Transforms[index].value.transform.custom);
     }
 
@@ -236,7 +234,6 @@ export default function LocalDomain(){
         //     temp[key].transform.custom[index].value=value;
         temp[index].value.transform.custom[index1][params]=value;
         setTransforms(temp);
-        setTransformsDup(temp);
         console.log(Transforms[index].value.transform.custom);
     }
 
@@ -252,13 +249,14 @@ export default function LocalDomain(){
                 provider: "",
                 data_id: "",
                 vars: [],
-                custom: []
+                custom: [
+                    {key: "",
+                    value: ""}
+                ]
             }
         }
     })
     setTransforms(temp); 
-    setTransformsDup(temp);
-
 }
 
     function deleteTransform(index)
@@ -267,7 +265,7 @@ export default function LocalDomain(){
         temp.splice(index,1);
         setTransforms(temp);
         // setTransformsDup(temp);
-        document.getElementById("transform"+index).style.display="none";
+        // document.getElementById("transform"+index).style.display="none";
     }
 
     return(
@@ -325,7 +323,7 @@ export default function LocalDomain(){
                     
                     {
                         // const [disp, setDisp]=React.useState("SQLQueryTransform");
-                        TransformsDup.map((inputfield, index) => (
+                        Transforms.map((inputfield, index) => (
                             <Accordion id={"transform"+index}>
                                 <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
@@ -339,7 +337,7 @@ export default function LocalDomain(){
                                 </IconButton>}
                                 />
                                 <Typography className={classes.heading}>
-                                <TextField id="filled-basic" label="Transform Name: " defaultValue={inputfield.key} onChange={(event)=>handleChange(index, "key", event.target.value)} />
+                                <TextField id="filled-basic" label="Transform Name: " value={inputfield.key} onChange={(event)=>handleChange(index, "key", event.target.value)} />
                                 </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
@@ -384,7 +382,7 @@ export default function LocalDomain(){
                                     <TextField id="filled-basic" label="vars" placeholder="comma seperated array elements" variant="filled" defaultValue={inputfield.value.transform.vars} onChange={(event)=>handleChange(index, "vars", event.target.value)} />
                                 </FormControl>}
                                 
-                                {TransformsDup[index].value.transform.custom.map((inputfield1, index1)=>(
+                                {inputfield.value.transform.custom.map((inputfield1, index1)=>(
                                     
                                     
                                     // return(
@@ -393,19 +391,19 @@ export default function LocalDomain(){
                                     <TextField
                                       className={classes.input}
                                       label="key"
-                                      defaultValue={inputfield1.key}
+                                      value={inputfield1.key}
                                       onChange={(event)=>handleChangeField(index, index1, "key", event.target.value)}
                                     />
                                     <TextField
                                       className={classes.input}
                                       label="value"
-                                      defaultValue={inputfield1.value}
+                                      value={inputfield1.value}
                                       onChange={(event)=>handleChangeField(index, index1, "value", event.target.value)}
                                     />
                                     <Divider className={classes.divider} orientation="vertical" />
-                                    {/* <IconButton color="primary" className={classes.iconButton} aria-label="directions" onClick={()=>{console.log(index);deleteField(index, index1)}}>
+                                    <IconButton color="primary" className={classes.iconButton} aria-label="directions" onClick={()=>{console.log(index);deleteField(index, index1)}}>
                                         <CancelIcon />
-                                    </IconButton> */}
+                                    </IconButton>
                                   </Paper>
                                   </div>
                                 ))

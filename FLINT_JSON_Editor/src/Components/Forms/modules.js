@@ -68,7 +68,7 @@ export default function Pools(){
             },
         },
     ]);
-    const [ModulesDup, setModulesDup] = React.useState(Modules);
+    // const [ModulesDup, setModulesDup] = React.useState(Modules);
     const [tempLibrary, setTempLibrary] = React.useState({});
 
     useEffect(()=>{
@@ -88,7 +88,7 @@ export default function Pools(){
         else
         temp[index].value[type]=value;
         setModules(temp);
-        setModulesDup(temp);
+        // setModulesDup(temp);
         console.log(Modules);
     }
 
@@ -107,7 +107,7 @@ export default function Pools(){
             },
         },);
         setModules(temp);
-        setModulesDup(temp);
+        // setModulesDup(temp);
         console.log(Modules);
     }
 
@@ -118,7 +118,7 @@ export default function Pools(){
         temp.splice(index,1);
         setModules(temp);
         console.log(temp);
-        document.getElementById("modules"+index).style.display="none";
+        // document.getElementById("modules"+index).style.display="none";
     }
     
     return(
@@ -126,7 +126,7 @@ export default function Pools(){
             <div id="jsonEditor">
                 <h1>Modules:</h1>
                 {
-                        ModulesDup.map((inputfield, index) => (
+                        Modules.map((inputfield, index) => (
                             <Accordion id={"modules"+index}>
                                 <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
@@ -140,7 +140,7 @@ export default function Pools(){
                                 </IconButton>}
                                 />
                                 <Typography className={classes.heading}>
-                                <TextField id="filled-basic" label="Module Name: " defaultValue={inputfield.key} onChange={(event)=>handleChange(index, "key", event.target.value)} />
+                                <TextField id="filled-basic" label="Module Name: " value={inputfield.key} onChange={(event)=>handleChange(index, "key", event.target.value)} />
                                 </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
@@ -159,11 +159,11 @@ export default function Pools(){
             
                                 <FormControl className={classes.formControl}>
                                     order
-                                    <TextField id="filled-basic" label="order" variant="filled" defaultValue={inputfield.value.order} onChange={(event)=>handleChange(index, "order", event.target.value)} />
+                                    <TextField id="filled-basic" label="order" variant="filled" value={inputfield.value.order} onChange={(event)=>handleChange(index, "order", event.target.value)} />
                                 </FormControl>
                                 <FormControl className={classes.formControl}>
                                     library
-                                    <TextField id="filled-basic" label="library" variant="filled" defaultValue={inputfield.value.library} onChange={(event)=>handleChange(index, "library", event.target.value)} />
+                                    <TextField id="filled-basic" label="library" variant="filled" value={inputfield.value.library} onChange={(event)=>handleChange(index, "library", event.target.value)} />
                                 </FormControl>
                                 
     
