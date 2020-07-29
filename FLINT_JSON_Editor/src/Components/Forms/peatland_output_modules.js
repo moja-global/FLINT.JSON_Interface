@@ -123,12 +123,14 @@ export default function Pools(){
         //       }
         // ))
         temp["WriteVariableGeotiff"]={};
+        temp["WriteVariableGeotiff"]["library"]=Peatland.library;
+        temp["WriteVariableGeotiff"]["enabled"]=Peatland.enabled;
+        temp["WriteVariableGeotiff"]["order"]=Peatland.order;
         temp["WriteVariableGeotiff"]["settings"]={};
         temp["WriteVariableGeotiff"]["settings"]["items"]=PeatlandItems;
-        temp["WriteVariableGeotiff"]["library"]=PeatlandItems.library;
-        temp["WriteVariableGeotiff"]["enabled"]=PeatlandItems.enabled;
-        temp["WriteVariableGeotiff"]["order"]=PeatlandItems.order;
-        setTempLibrary(temp);
+        const temp1={};
+        temp1["Modules"]=temp;
+        setTempLibrary(temp1);
     },[PeatlandItems, Peatland]);
 
     useEffect(()=>console.log(Peatland),[Peatland]);
@@ -187,7 +189,7 @@ export default function Pools(){
                     <FormControlLabel className={classes.formControl} label = "enabled" control=
                         {<Switch
                             checked={Peatland.enabled}
-                            onChange={(event)=>handleChange("enabled", event.target.value)}
+                            onChange={(event)=>handleChange("enabled", event.target.checked)}
                             color="primary"
                             name="checkedB"
                             inputProps={{ 'aria-label': 'primary checkbox' }}
@@ -237,7 +239,7 @@ export default function Pools(){
                             <FormControlLabel className={classes.formControl} label = "enabled" control=
                                 {<Switch
                                     checked={inputfield.enabled}
-                                    onChange={event => handleChangeItem(index, "enabled",event.target.value)}
+                                    onChange={event => handleChangeItem(index, "enabled",event.target.checked)}
                                     color="primary"
                                     name="checkedB"
                                     inputProps={{ 'aria-label': 'primary checkbox' }}
