@@ -18,6 +18,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Typography from '@material-ui/core/Typography';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -72,7 +74,8 @@ export default function Pools(){
             "flux": {
                 "to": [],
                 "from": []
-            }
+            },
+            "item_type": ""
         },
         {
             "pool_name": [
@@ -97,37 +100,54 @@ export default function Pools(){
             "flux": {
                 "to": [],
                 "from": []
-            }
+            },
+            "item_type": ""
         },
     ])
     const [tempLibrary, setTempLibrary] = React.useState({});
+    // const [PeatlandItemsDup,setPeatlandItemsDup]=React.useState(PeatlandItems);
 
     useEffect(()=>{
+        console.log("aaa");
         const temp={};
-        // PeatlandItems.map(inputfield =>(
-        //     for (const [key, value] of Object.entries(PeatlandItems)) {
-        //         if(PeatlandItems.data_name!="")
-        //         temp["data_name"]=value;
-        //         else if(PeatlandItems.enabled!="")
-        //         temp["enabled"]=value;
-        //         else if(PeatlandItems.variable_data_type!="")
-        //         temp["variable_data_type"]=value;
-        //         else if(PeatlandItems.variable_name!="")
-        //         temp["variable_name"]=value;
-        //         else if(PeatlandItems.on_notification!="")
-        //         temp["on_notification"]=value;
-        //         else if(PeatlandItems.flux!="")
-        //         temp["flux"]=value;
-        //         else if(PeatlandItems.pool_name!="")
-        //         temp["pool_name"]=value;
-        //       }
-        // ))
+        // setPeatlandItemsDup(PeatlandItems);
+        const temp2=JSON.parse(JSON.stringify(PeatlandItems));
+        PeatlandItems.map((inputfield,index) =>{
+            if(inputfield.item_type=="variable_name")
+            {
+                delete temp2[index].flux;
+                delete temp2[index].pool_name;
+                // delete temp2[index].item_type;
+                // temp2[index].item_type="aaaaaa";
+                console.log(PeatlandItems);
+            }
+            else if(inputfield.item_type=="pool_name")
+            {
+                delete temp2[index].flux;
+                delete temp2[index].variable_name;
+                // delete temp2[index].item_type;
+                // temp2[index].item_type="aaaaaa";
+
+                console.log(PeatlandItems);
+
+            }
+            else if(inputfield.item_type=="flux")
+            {
+                delete temp2[index].variable_name;
+                delete temp2[index].pool_name;
+                // delete temp2[index].item_type;
+                // temp2[index].item_type="aaaaaa";
+
+                console.log(PeatlandItems);
+            }
+            delete temp2[index].item_type;
+        });
         temp["WriteVariableGeotiff"]={};
         temp["WriteVariableGeotiff"]["library"]=Peatland.library;
         temp["WriteVariableGeotiff"]["enabled"]=Peatland.enabled;
         temp["WriteVariableGeotiff"]["order"]=Peatland.order;
         temp["WriteVariableGeotiff"]["settings"]={};
-        temp["WriteVariableGeotiff"]["settings"]["items"]=PeatlandItems;
+        temp["WriteVariableGeotiff"]["settings"]["items"]=temp2;
         const temp1={};
         temp1["Modules"]=temp;
         setTempLibrary(temp1);
@@ -177,7 +197,8 @@ export default function Pools(){
             "flux": {
                 "to": [],
                 "from": []
-            }
+            },
+            "item_type": ""
         },)
         setPeatlandItems(temp);
     }
@@ -233,9 +254,7 @@ export default function Pools(){
                             <FormControl className={classes.formControl}>
                                 <TextField id="filled-basic" label="on_notification" variant="filled" value={inputfield.on_notification || ""} onChange={(event) => handleChangeItem(index, "on_notification",event.target.value)} />
                             </FormControl>
-                            <FormControl className={classes.formControl}>
-                                <TextField id="filled-basic" label="variable_name" variant="filled" value={inputfield.variable_name || ""} onChange={(event) => handleChangeItem(index, "variable_name",event.target.value)} />
-                            </FormControl>
+                            
                             <FormControlLabel className={classes.formControl} label = "enabled" control=
                                 {<Switch
                                     checked={inputfield.enabled}
@@ -245,19 +264,33 @@ export default function Pools(){
                                     inputProps={{ 'aria-label': 'primary checkbox' }}
                                 />}
                             />
-                            <FormControl className={classes.formControl}>pool_name
-                                {/* <TextField id="filled-basic" label="pool_name" placeholder="comma seperated array elements" variant="filled" value={inputfield.pool_name || ""} onChange={(event) => handleChangeItem(index, "pool_name",event.target.value)} /> */}
+                            <FormControl className={classes.formControl}>
+                                    <InputLabel id="demo-simple-select-label">Item Type</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            // className={classes.libraryName}
+                                            value={inputfield.item_type}
+                                            onChange={(event)=>{handleChangeItem(index, "item_type", event.target.value)}}
+                                            >
+                                            <MenuItem value={""}></MenuItem>
+                                            <MenuItem value={"variable_name"}>variable_name</MenuItem>
+                                            <MenuItem value={"pool_name"}>pool_name</MenuItem>
+                                            <MenuItem value={"flux"}>flux</MenuItem>
+                                        </Select>
+                            </FormControl>
+                            {inputfield.item_type=="variable_name" &&<FormControl className={classes.formControl}>
+                                <TextField id="filled-basic" label="variable_name" variant="filled" value={inputfield.variable_name || ""} onChange={(event) => handleChangeItem(index, "variable_name",event.target.value)} />
+                            </FormControl>}
+                            {inputfield.item_type=="pool_name" && <FormControl className={classes.formControl}>pool_name
                                 <TextareaAutosize style={{height: "50px", width: "40vw"}} id="filled-basic" placeholder="comma seperated array elements" label="pool_name" variant="filled" value={inputfield.pool_name || ""} onChange={(event) => handleChangeItem(index, "pool_name",event.target.value)} />
-                            </FormControl>
-                            <FormControl className={classes.formControl}>flux: to[]
-                                {/* <TextField id="filled-basic" label="flux: to[]" placeholder="comma seperated array elements" variant="filled" value={inputfield.flux.to || ""} onChange={(event) => handleChangeItem(index, "to",event.target.value)} /> */}
+                            </FormControl>}
+                            {inputfield.item_type=="flux" && <FormControl className={classes.formControl}>flux: to[]
                                 <TextareaAutosize style={{height: "50px", width: "40vw"}} id="filled-basic" placeholder="comma seperated array elements" label="flux: to[]" variant="filled" value={inputfield.flux.to || ""} onChange={(event) => handleChangeItem(index, "to",event.target.value)} />
-                            </FormControl>
-                            <FormControl className={classes.formControl}>lux: from[]
-                                {/* <TextField id="filled-basic" label="flux: from[]" placeholder="comma seperated array elements" variant="filled" value={inputfield.flux.from || ""} onChange={(event) => handleChangeItem(index, "from",event.target.value)} /> */}
+                            </FormControl>}
+                            {inputfield.item_type=="flux" && <FormControl className={classes.formControl}>flux: from[]
                                 <TextareaAutosize style={{height: "50px", width: "40vw"}} id="filled-basic" placeholder="comma seperated array elements" label="flux: from[]" variant="filled" value={inputfield.flux.from || ""} onChange={(event) => handleChangeItem(index, "from",event.target.value)} />
-                            </FormControl>
-                            {/* </Paper> */}
+                            </FormControl>}
                         </Paper>
                         </AccordionDetails>
                         </Accordion>
