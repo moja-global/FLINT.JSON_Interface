@@ -7,6 +7,11 @@ const fs = require("fs");
 import MyDialog from './Dialog';
 const {dialog} = require('electron').remote;
 const {basename} = require('path');
+import Variables from './Forms/variables';
+import LocalDomain from './Forms/localdomain';
+import Pools from './Forms/pools';
+import Modules from './Forms/modules';
+import Peatland from './Forms/peatland_output_modules';
 
 export default function EditorEntry(props) {
   // const classes = useStyles();
@@ -40,7 +45,19 @@ fs.readdir('src/storage/templates/files',(err,files)=>{
   // console.log(notFound.length==0);
   setdialogDisp(true);
 });
-
+function fetchComp(file)
+{
+  if(file=="standard_gcbm_localdomain.json")
+  return <LocalDomain />;
+  else if(file=="peatland_variables.json"||file=="standard_gcbm_variables.json"||file=="a_n_partitioning_variables.json"||file=="standard_gcbm_internal_variables.json"||file=="a_n_partitioning_internal_variables.json")
+  return <Variables />;
+  else if(file=="peatland_modules.json"||file=="standard_gcbm_modules.json"||file=="a_n_partitioning_modules.json"||file=="standard_gcbm_output_modules.json")
+  return <Modules />;
+  else if(file=="peatland_pools.json"||file=="standard_gcbm_pools.json")
+  return <Pools />;
+  else if(file=="peatland_output_modules.json")
+  return <Peatland />
+}
 function initiateTabs(ans)
 {
   var temp=[];
@@ -56,7 +73,7 @@ function initiateTabs(ans)
     // console.log(tabs);
     // addTab(props.files[i]);
     if(map.get(props.files[i]))
-      temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{ans ? props.files[i]+"template":<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" id={i} />}</div>);
+      temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{ans ? fetchComp(props.files[i]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" id={i} />}</div>);
     else
       temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" id={i} />}</div>);
     // setCountTabs(countTabs+1);
