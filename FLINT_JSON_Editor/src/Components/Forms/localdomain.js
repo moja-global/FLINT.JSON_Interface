@@ -49,9 +49,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function LocalDomain(){
+export default function LocalDomain(props){
     const classes = useStyles();
-
+    console.log(props.json.LocalDomain);
     const [Libraries, setLibraries] = React.useState([
         {
             libraryName : "moja.modules.cbm",

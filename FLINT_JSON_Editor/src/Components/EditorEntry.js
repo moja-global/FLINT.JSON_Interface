@@ -45,18 +45,21 @@ fs.readdir('src/storage/templates/files',(err,files)=>{
   // console.log(notFound.length==0);
   setdialogDisp(true);
 });
-function fetchComp(file)
+
+function fetchComp(file, directory)
 {
+  const data= JSON.parse(fs.readFileSync(directory, "utf8"));
+  console.log(data);
   if(file=="standard_gcbm_localdomain.json")
-  return <LocalDomain />;
+  return <LocalDomain json={data} />;
   else if(file=="peatland_variables.json"||file=="standard_gcbm_variables.json"||file=="a_n_partitioning_variables.json"||file=="standard_gcbm_internal_variables.json"||file=="a_n_partitioning_internal_variables.json")
-  return <Variables />;
+  return <Variables json={data} />;
   else if(file=="peatland_modules.json"||file=="standard_gcbm_modules.json"||file=="a_n_partitioning_modules.json"||file=="standard_gcbm_output_modules.json")
-  return <Modules />;
+  return <Modules json={data} />;
   else if(file=="peatland_pools.json"||file=="standard_gcbm_pools.json")
-  return <Pools />;
+  return <Pools json={data} />;
   else if(file=="peatland_output_modules.json")
-  return <Peatland />
+  return <Peatland json={data} />
 }
 function initiateTabs(ans)
 {
@@ -73,7 +76,7 @@ function initiateTabs(ans)
     // console.log(tabs);
     // addTab(props.files[i]);
     if(map.get(props.files[i]))
-      temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{ans ? fetchComp(props.files[i]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" id={i} />}</div>);
+      temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{ans ? fetchComp(props.files[i],props.directory[i]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" id={i} />}</div>);
     else
       temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" id={i} />}</div>);
     // setCountTabs(countTabs+1);
