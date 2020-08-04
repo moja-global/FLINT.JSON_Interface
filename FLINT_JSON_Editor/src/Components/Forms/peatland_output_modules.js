@@ -55,55 +55,56 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Pools(){
+export default function peatland(props){
     const classes = useStyles();
-
+    console.log(props.json==undefined)
     const [Peatland, setPeatland] = React.useState({
-            "enabled": true,
-            "order": 100,
-            "library": "moja.modules.gdal",
+            "enabled": props.json!=undefined ?  props.json.Modules.WriteVariableGeotiff.enabled : false,
+            "order": props.json!=undefined ? props.json.Modules.WriteVariableGeotiff.order : "",
+            "library": props.json!=undefined ? props.json.Modules.WriteVariableGeotiff.library : "",
     });
 
-    const [PeatlandItems,setPeatlandItems] = React.useState([
-        {
-            "data_name": "Age",
-            "enabled": true,
-            "variable_data_type": "Int16",
-            "on_notification": "OutputStep",
-            "variable_name": "age",
-            "flux": {
-                "to": [],
-                "from": []
-            },
-            "item_type": ""
-        },
-        {
-            "pool_name": [
-                "SoftwoodMerch",
-                "SoftwoodStem",
-                "SoftwoodFoliage",
-                "SoftwoodOther",
-                "HardwoodMerch",
-                "HardwoodStem",
-                "HardwoodFoliage",
-                "HardwoodOther",
-                "WoodyStemsBranchesLive",
-                "WoodyFoliageLive",
-                "SedgeFoliageLive",
-                "FeatherMossLive",
-                "SphagnumMossLive"
-            ],
-            "data_name": "AG_Biomass_C",
-            "enabled": true,
-            "variable_data_type": "float",
-            "on_notification": "OutputStep",
-            "flux": {
-                "to": [],
-                "from": []
-            },
-            "item_type": ""
-        },
-    ])
+    const [PeatlandItems,setPeatlandItems] = React.useState(
+        // [{
+        //     "data_name": "Age",
+        //     "enabled": true,
+        //     "variable_data_type": "Int16",
+        //     "on_notification": "OutputStep",
+        //     "variable_name": "age",
+        //     "flux": {
+        //         "to": [],
+        //         "from": []
+        //     },
+        //     "item_type": ""
+        // },
+        // {
+        //     "pool_name": [
+        //         "SoftwoodMerch",
+        //         "SoftwoodStem",
+        //         "SoftwoodFoliage",
+        //         "SoftwoodOther",
+        //         "HardwoodMerch",
+        //         "HardwoodStem",
+        //         "HardwoodFoliage",
+        //         "HardwoodOther",
+        //         "WoodyStemsBranchesLive",
+        //         "WoodyFoliageLive",
+        //         "SedgeFoliageLive",
+        //         "FeatherMossLive",
+        //         "SphagnumMossLive"
+        //     ],
+        //     "data_name": "AG_Biomass_C",
+        //     "enabled": true,
+        //     "variable_data_type": "float",
+        //     "on_notification": "OutputStep",
+        //     "flux": {
+        //         "to": [],
+        //         "from": []
+        //     },
+        //     "item_type": ""
+        // },]
+        props.json!=undefined? [...props.json.Modules.WriteVariableGeotiff.settings.items] : []
+    )
     const [tempLibrary, setTempLibrary] = React.useState({});
     // const [PeatlandItemsDup,setPeatlandItemsDup]=React.useState(PeatlandItems);
 
@@ -168,10 +169,15 @@ export default function Pools(){
         const temp=[...PeatlandItems];
         if(key=="pool_name")
         temp[index][key]=value.split(',');
-        else if(key=="to")
-        temp[index].flux[key]=value.split(',');
-        else if(key=="from")
-        temp[index].flux[key]=value.split(',');
+        else if(key=="to"||key=="from")
+        {
+            if(temp[index].flux==undefined)
+            temp[index]["flux"]={
+                "to":[],
+                "from":[]
+            }
+            temp[index].flux[key]=value.split(',');
+        }
         else
         temp[index][key]=value;
         setPeatlandItems(temp);
@@ -286,10 +292,10 @@ export default function Pools(){
                                 <TextareaAutosize style={{height: "50px", width: "40vw"}} id="filled-basic" placeholder="comma seperated array elements" label="pool_name" variant="filled" value={inputfield.pool_name || ""} onChange={(event) => handleChangeItem(index, "pool_name",event.target.value)} />
                             </FormControl>}
                             {inputfield.item_type=="flux" && <FormControl className={classes.formControl}>flux: to[]
-                                <TextareaAutosize style={{height: "50px", width: "40vw"}} id="filled-basic" placeholder="comma seperated array elements" label="flux: to[]" variant="filled" value={inputfield.flux.to || ""} onChange={(event) => handleChangeItem(index, "to",event.target.value)} />
+                                <TextareaAutosize style={{height: "50px", width: "40vw"}} id="filled-basic" placeholder="comma seperated array elements" label="flux: to[]" variant="filled" value={inputfield.flux!=undefined ? inputfield.flux.to :  ""} onChange={(event) => handleChangeItem(index, "to",event.target.value)} />
                             </FormControl>}
                             {inputfield.item_type=="flux" && <FormControl className={classes.formControl}>flux: from[]
-                                <TextareaAutosize style={{height: "50px", width: "40vw"}} id="filled-basic" placeholder="comma seperated array elements" label="flux: from[]" variant="filled" value={inputfield.flux.from || ""} onChange={(event) => handleChangeItem(index, "from",event.target.value)} />
+                                <TextareaAutosize style={{height: "50px", width: "40vw"}} id="filled-basic" placeholder="comma seperated array elements" label="flux: from[]" variant="filled" value={inputfield.flux!=undefined ? inputfield.flux.from :  ""} onChange={(event) => handleChangeItem(index, "from",event.target.value)} />
                             </FormControl>}
                         </Paper>
                         </AccordionDetails>
