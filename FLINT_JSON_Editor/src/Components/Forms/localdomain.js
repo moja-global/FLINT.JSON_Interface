@@ -52,35 +52,54 @@ const useStyles = makeStyles((theme) => ({
 export default function LocalDomain(props){
     const classes = useStyles();
     console.log(props.json.LocalDomain);
-    const [Libraries, setLibraries] = React.useState([
-        {
-            libraryName : "moja.modules.cbm",
-            libraryType: "external"
-        },
-        {
-            libraryName : "",
-            libraryType: ""
-        }
-    ]);
-    const [LocalDomain, setLocalDomain] = React.useState({
-        start_date : new Date('2014-08-18T21:11:54'),
-        end_date : new Date('2014-08-19T21:11:54'),
-        landUnitBuildSuccess: "landUnitBuildSuccess",
-        simulateLandUnit: "simulateLandUnit",
-        sequencer_library: "moja.modules.cbm",
-        sequencer: "CBMSequencer",
-        timing: "annual",
-        type: "spatial_tiled",
-        landscape: {
-            "provider": "RasterTiled",
-            "num_threads": 4,
-            "tiles": [],
-            "x_pixels": 1000,
-            "y_pixels": 1000,
-            "tile_size_x": 1.0,
-            "tile_size_y": 1.0
-        }
-    }); 
+
+    const [Libraries, setLibraries] = React.useState(
+    //     [{
+    //         libraryName : "moja.modules.cbm",
+    //         libraryType: "external"
+    //     },
+    //     {
+    //         libraryName : "",
+    //         libraryType: ""
+    //     }
+    // ]
+    getLibraries()
+    );
+    
+function getLibraries(){
+    const tempL=[];
+    for (const [key, value] of Object.entries(props.json.Libraries)) {
+        tempL.push(
+            {
+                libraryName: key,
+                libraryType: value
+            }
+        )
+    }
+    return tempL;
+}
+
+    const [LocalDomain, setLocalDomain] = React.useState(
+    //     {
+    //     start_date : new Date('2014-08-18T21:11:54'),
+    //     end_date : new Date('2014-08-19T21:11:54'),
+    //     landUnitBuildSuccess: "landUnitBuildSuccess",
+    //     simulateLandUnit: "simulateLandUnit",
+    //     sequencer_library: "moja.modules.cbm",
+    //     sequencer: "CBMSequencer",
+    //     timing: "annual",
+    //     type: "spatial_tiled",
+    //     landscape: {
+    //         "provider": "RasterTiled",
+    //         "num_threads": 4,
+    //         "tiles": [],
+    //         "x_pixels": 1000,
+    //         "y_pixels": 1000,
+    //         "tile_size_x": 1.0,
+    //         "tile_size_y": 1.0
+    //     }
+    props.json.LocalDomain
+    ); 
     const [tempLibrary, setTempLibrary] = React.useState({});
 
     useEffect(()=>{console.log(Libraries);

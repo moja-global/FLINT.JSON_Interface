@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
       },
 }));
 
-export default function LocalDomain(){
+export default function Variables(props){
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
 
@@ -101,25 +101,65 @@ export default function LocalDomain(){
                 }
             }
         }
+        , ...fetchData(2)
     ]);
 
-    const [Initial, setInitial] = React.useState({
-        enable_peatland : false,
-        enable_moss : false,
-        admin_boundary : "British Columbia",
-        eco_boundary : "Taiga Plains",
-        initial_age : 0,
-        initial_historic_land_class : "FL",
-        initial_current_land_class : "FL",
-        age_class_range : 20,
-        age_maximum : 300,
-        slow_ag_to_bg_mixing_rate : 0.006,
-    }); 
-    
+    // const [Transforms, setTransforms] = React.useState(fetchData(2));
+    //console.log(Transforms);
+    const [Initial, setInitial] = React.useState(
+        // {
+        // enable_peatland : false,
+        // enable_moss : false,
+        // admin_boundary : "British Columbia",
+        // eco_boundary : "Taiga Plains",
+        // initial_age : 0,
+        // initial_historic_land_class : "FL",
+        // initial_current_land_class : "FL",
+        // age_class_range : 20,
+        // age_maximum : 300,
+        // slow_ag_to_bg_mixing_rate : 0.006,
+        // }
+        // props.json.
+        fetchData(1)
+    // }
+    ); 
+    // fetchData(2);
+        function fetchData(type)
+        {
+            //1 for initial values and 2 for transforms
+            if(type==1)
+            {
+                const temp={};
+                for (const [key, value] of Object.entries(props.json.Variables)) {
+                    if(typeof(value)!="object"||Array.isArray(value))
+                    temp[key]=value;
+                }
+                return temp;
+            }
+            else if(type==2)
+            {
+                const temp=[];
+                for (const [key, value] of Object.entries(props.json.Variables)) {
+                    if(typeof(value)=="object"&&!Array.isArray(value))
+                    {
+                        const temp1=value;
+                        temp1.transform.custom=[{key: "aa", value: "ab"}];
+                        temp.push(
+                            {
+                                key: key,
+                                value: temp1
+                            }
+                        )
+                    }
+                }
+                return temp;
+            }
+        }
+        // console.log(typeof(props.json.Variables.forest_peatland_leading_species));
     const [tempJSON, setTempJSON] = React.useState({});
 
     useEffect(()=>{
-        console.log("aa");
+       // console.log("aa");
         const temp={};
         for (const [key, value] of Object.entries(Initial))
         {
@@ -182,7 +222,7 @@ export default function LocalDomain(){
         setTempJSON(temp);
     },[Initial, Transforms]);
 
-    // useEffect(()=>console.log(Initial),[Initial])
+    useEffect(()=>console.log(Transforms),[Transforms])
 
     function handleChangeInitial(key, value)
     {
@@ -201,7 +241,7 @@ export default function LocalDomain(){
         else
         temp[index].value.transform[type]=value;
         setTransforms(temp);
-        console.log(Transforms);
+       // console.log(Transforms);
     }
 
     function addField(index)
@@ -211,19 +251,20 @@ export default function LocalDomain(){
             key:"",
             value:""
         });
+        console.log(temp);
         setTransforms(temp);
-        console.log(Transforms[index].value.transform.custom);
+      //  console.log(Transforms[index].value.transform.custom);
     }
 
     function deleteField(index, index1)
     {
-        console.log(index);
+       // console.log(index);
         const temp=[...Transforms];
         temp[index].value.transform.custom.splice(index1,1);
         // console.log
         setTransforms(temp);
         // document.getElementById("transform"+index+index1).style.display="none";
-        console.log(Transforms[index].value.transform.custom);
+      //  console.log(Transforms[index].value.transform.custom);
     }
 
     function handleChangeField(index, index1, params, value) {
@@ -234,7 +275,7 @@ export default function LocalDomain(){
         //     temp[key].transform.custom[index].value=value;
         temp[index].value.transform.custom[index1][params]=value;
         setTransforms(temp);
-        console.log(Transforms[index].value.transform.custom);
+      //  console.log(Transforms[index].value.transform.custom);
     }
 
     function addTransform(){
@@ -276,7 +317,7 @@ export default function LocalDomain(){
 
                     <FormControlLabel className={classes.formControl} label = "enable_peatland" control=
                     {<Switch
-                        checked={Initial.enable_peatland}
+                        checked={Initial.enable_peatland || false}
                         onChange={event => handleChangeInitial("enable_peatland", event.target.checked)}
                         color="primary"
                         name="checkedB"
@@ -285,11 +326,20 @@ export default function LocalDomain(){
                     />
                     <FormControlLabel className={classes.formControl} label = "enable_moss" control=
                     {<Switch
-                        checked={Initial.enable_moss}
+                        checked={Initial.enable_moss || false}
                         onChange={event => handleChangeInitial("enable_moss", event.target.checked)}
                         color="primary"
                         name="checkedB"
                         label="aa"
+                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                    />}
+                    />
+                    <FormControlLabel className={classes.formControl} label = "inventory_over_peatland" control=
+                    {<Switch
+                        checked={Initial.inventory_over_peatland || false}
+                        onChange={event => handleChangeInitial("inventory_over_peatland", event.target.checked)}
+                        color="primary"
+                        name="checkedB"
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     />}
                     />
@@ -316,6 +366,31 @@ export default function LocalDomain(){
                     </FormControl>
                     <FormControl className={classes.formControl}>
                         <TextField id="filled-basic" label="slow_ag_to_bg_mixing_rate" variant="filled" defaultValue={Initial.slow_ag_to_bg_mixing_rate} onChange={event => handleChangeInitial("slow_ag_to_bg_mixing_rate",event.target.value)} />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="applied_growth_curve_id" variant="filled" defaultValue={Initial.applied_growth_curve_id} onChange={event => handleChangeInitial("applied_growth_curve_id",event.target.value)} />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="default_fire_return_interval" variant="filled" defaultValue={Initial.default_fire_return_interval} onChange={event => handleChangeInitial("default_fire_return_interval",event.target.value)} />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="default_last_fire_year" variant="filled" defaultValue={Initial.default_last_fire_year} onChange={event => handleChangeInitial("default_last_fire_year",event.target.value)} />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="default_mean_annual_temperature" variant="filled" defaultValue={Initial.default_mean_annual_temperature} onChange={event => handleChangeInitial("default_mean_annual_temperature",event.target.value)} />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="default_spinup_drought_class" variant="filled" defaultValue={Initial.default_spinup_drought_class} onChange={event => handleChangeInitial("default_spinup_drought_class",event.target.value)} />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="default_forward_drought_class" variant="filled" defaultValue={Initial.default_forward_drought_class} onChange={event => handleChangeInitial("default_forward_drought_class",event.target.value)} />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="default_annual_drought_class" variant="filled" defaultValue={Initial.default_annual_drought_class} onChange={event => handleChangeInitial("default_annual_drought_class",event.target.value)} />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                    forest_peatland_leading_species
+                        <TextareaAutosize style={{height: "50px", width: "40vw"}} id="filled-basic" label="forest_peatland_leading_species" variant="filled" defaultValue={Initial.forest_peatland_leading_species || ""} onChange={(event)=>handleChangeInitial("forest_peatland_leading_species",event.target.value)} />
                     </FormControl>
                 </Paper>
                         
@@ -382,7 +457,7 @@ export default function LocalDomain(){
                                     <TextField id="filled-basic" label="vars" placeholder="comma seperated array elements" variant="filled" defaultValue={inputfield.value.transform.vars} onChange={(event)=>handleChange(index, "vars", event.target.value)} />
                                 </FormControl>}
                                 
-                                {inputfield.value.transform.custom.map((inputfield1, index1)=>(
+                                {inputfield.value.transform.custom && inputfield.value.transform.custom.map((inputfield1, index1)=>(
                                     
                                     
                                     // return(
@@ -408,7 +483,7 @@ export default function LocalDomain(){
                                   </div>
                                 ))
                                 } 
-                                <IconButton color="primary" aria-label="add library" style={{marginLeft: "16vw"}} onClick={()=>addField(index)}>
+                                <IconButton color="primary" aria-label="add library" style={{marginLeft: "16vw"}} onClick={()=>{console.log("1");addField(index)}}>
                                     <AddCircleIcon />
                                 </IconButton>
                                 </Paper>
