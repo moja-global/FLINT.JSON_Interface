@@ -52,21 +52,22 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Pools(){
+export default function Modules(props){
     const classes = useStyles();
 
     const [Modules, setModules] = React.useState([
-        {
-            key: "CBMDisturbanceListener",
-            value: {
-            "enabled": true,
-            "order": 20,
-            "library": "moja.modules.cbm",
-            "settings": {
-                "vars": []
-                }
-            },
-        },
+        // {
+        //     key: "CBMDisturbanceListener",
+        //     value: {
+        //     "enabled": true,
+        //     "order": 20,
+        //     "library": "moja.modules.cbm",
+        //     "settings": {
+        //         "vars": []
+        //         }
+        //     },
+        // },
+        ...fetchJSON()
     ]);
     // const [ModulesDup, setModulesDup] = React.useState(Modules);
     const [tempLibrary, setTempLibrary] = React.useState({});
@@ -101,9 +102,9 @@ export default function Pools(){
             "enabled": true,
             "order": 0,
             "library": "moja.modules.cbm",
-            "settings": {
-                "vars": []
-                }
+            // "settings": {
+            //     "vars": []
+            //     }
             },
         },);
         setModules(temp);
@@ -121,6 +122,19 @@ export default function Pools(){
         // document.getElementById("modules"+index).style.display="none";
     }
     
+    function fetchJSON()
+    {
+        const temp=[];
+        if(props.json!=undefined)
+        for (const [key, value] of Object.entries(props.json.Modules)) {
+            temp.push({
+                key: key,
+                value: value
+            })
+        }
+        return temp;
+    }
+
     return(
         <div id="container">
             <div id="jsonEditor">
