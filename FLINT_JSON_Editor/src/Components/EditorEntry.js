@@ -155,16 +155,16 @@ function addTab(){
                 negative="Create New File"
                 reply={(ans)=>{ans?
                   setTabBody([...tabBody, 
-                  <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?basename(result.filePaths[0])+"template":<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" />}</div>
+                  <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?fetchComp(basename(result.filePaths[0]),result.filePaths[0]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" />}</div>
                   ])
                 :
                 setTabBody([...tabBody, 
-                  <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?basename(result.filePaths[0])+"template":<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="new" />}</div>
+                  <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?fetchComp(basename(result.filePaths[0]),result.filePaths[0]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="new" />}</div>
                   ])}} />  
 
 
     setTabBody([...tabBody, 
-    <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?basename(result.filePaths[0])+"template":<ScratchJSoNEditor Editor="true" path="" mode="new" />}</div>
+    <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?fetchComp(basename(result.filePaths[0]),result.filePaths[0]):<ScratchJSoNEditor Editor="true" path="" mode="new" />}</div>
     ]);
     setNewTab(newTab+1);
     }).catch(err => {
@@ -185,7 +185,7 @@ return (
                 reply={(ans)=>{initiateTabs(ans);}} />}
       { showTab && <Tabs moveTab={moveTab} selectTab={selectTab} closeTab={closedTab} tabs={tabs}>
         <button onClick={()=>{
-          // addTab()
+          addTab()
           }}>+</button>
       </Tabs>}
       {/* {activeTab.length !== 0 ? activeTab[0].display : ""}  */}
