@@ -75,55 +75,59 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Modules(){
+export default function Modules(props){
     const classes = useStyles();
     var editor;
     const [Modules, setModules] = React.useState([
-        {
-            key: "CBMDisturbanceListener",
-            value: {
-            "enabled": true,
-            "order": 20,
-            "library": "moja.modules.cbm",
-            "settings": [
-                {
-                    key: "vars",
-                    value: ["aaa","bbb"]
-                },
-                {
-                    key: "extra_decay_removals",
-                    value: false
-                },
-                {
-                    key: "ex1",
-                    value: {
-                        "key1": "val1",
-                        "key2": "val2"
-                        },
-                },
-                {
-                    key: "ex2",
-                    value: "val2"
-                }
-            ]
-            },
-        },
+        // {
+        //     key: "CBMDisturbanceListener",
+        //     value: {
+        //     "enabled": true,
+        //     "order": 20,
+        //     "library": "moja.modules.cbm",
+        //     "settings": [
+        //         {
+        //             key: "vars",
+        //             value: ["aaa","bbb"]
+        //         },
+        //         {
+        //             key: "extra_decay_removals",
+        //             value: false
+        //         },
+        //         {
+        //             key: "ex1",
+        //             value: {
+        //                 "key1": "val1",
+        //                 "key2": "val2"
+        //                 },
+        //         },
+        //         {
+        //             key: "ex2",
+        //             value: "val2"
+        //         }
+        //     ]
+        //     },
+        // },
+        ...fetchData()
     ]);
+    
     // const [ModulesDup, setModulesDup] = React.useState(Modules);
     const [tempLibrary, setTempLibrary] = React.useState({});
     useEffect(()=>{
+        console.log(Modules)
         var temp={};
         Modules.map(inp => {
             temp[inp.key]=inp.value;
             const temp1={};
+            if(temp[inp.key]["settings"]!=undefined){
             temp[inp.key]["settings"].map(input=>temp1[input.key]=input.value);
             temp=JSON.parse(JSON.stringify(temp));//trick to avoid reference errors
-            temp[inp.key]["settings"]=temp1;
-            console.log(temp1);
+            temp[inp.key]["settings"]=temp1;}
+            // console.log(temp1);
         });
         const temp1={};
         temp1["Modules"]=temp;
-        console.log(JSON.stringify(temp1));
+        // console.log(JSON.stringify(temp1));
         setTempLibrary(temp1);
     },[Modules]);
 
@@ -136,7 +140,7 @@ export default function Modules(){
         temp[index].value[type]=value;
         setModules(temp);
         // setModulesDup(temp);
-        console.log(Modules);
+        // console.log(Modules);
     }
 
     function addModules()
@@ -158,16 +162,16 @@ export default function Modules(){
         },);
         setModules(temp);
         // setModulesDup(temp);
-        console.log(Modules);
+        // console.log(Modules);
     }
 
     function deleteModule(index)
     {
-        console.log(index);
+        // console.log(index);
         const temp = [...Modules];
         temp.splice(index,1);
         setModules(temp);
-        console.log(temp);
+        // console.log(temp);
         // document.getElementById("modules"+index).style.display="none";
     }
     
@@ -228,11 +232,49 @@ export default function Modules(){
     function addSettings(index)
     {
         const temp=[...Modules];
+        console.log(temp[index].value)
+        if(temp[index].value.settings==undefined)
+        temp[index].value["settings"]=[];
+        // temp[index].value.settings=[{
+        //     "key": "hh",
+        //     "value": "gg"
+        // }];
         temp[index].value.settings.push({
             key: "",
             value: ""
-        })
+        });
         setModules(temp);
+    }
+
+    function fetchData()
+    {
+        const temp=[];
+        // console.log(props.json.Modules)
+        if(props.json!=undefined)
+        for (const [key, value] of Object.entries(props.json.Modules))
+        {
+            // console.log(key+" "+value)
+            const temp1=[];
+            var temp2=value;
+            if(value["settings"]!=undefined){
+                for(const[key1,value1] of Object.entries(value.settings))
+                {
+                    temp1.push({
+                        "key": key1,
+                        "value": value1
+                    })
+                }
+                temp2=JSON.parse(JSON.stringify(value));
+                temp2["settings"]=temp1;
+            }
+            
+            temp.push({
+                "key": key,
+                "value": temp2
+            });
+        }
+        // console.log(temp)    
+        return temp;
     }
 
     return(
@@ -281,7 +323,7 @@ export default function Modules(){
                                 {/* <Paper elevation={5} className={classes.paper}> */}
                                     <h1>settings</h1>
                                     {
-                                        inputfield.value.settings.map((inp,idx)=>(
+                                        inputfield.value.settings? inputfield.value.settings.map((inp,idx)=>(
                                             <div><Paper elevation={5} >
                                                 <FormControl className={classes.formControl}>
                                                     <TextField id="filled-basic" label="key" variant="filled" value={inp.key} onChange={(event)=>handleChangeSettings(index, idx, "key", event.target.value)} />
@@ -326,7 +368,7 @@ export default function Modules(){
                                             </Paper>
                                             <br />
                                             </div>
-                                        ))
+                                        )) : ""
                                         
                                     }
                                     <IconButton color="primary" aria-label="add library" style={{marginLeft: "16vw"}} onClick={()=>addSettings(index)}>
