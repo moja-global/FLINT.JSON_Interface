@@ -30,6 +30,8 @@ import JSONEditor from 'jsoneditor';
 import "jsoneditor/dist/jsoneditor.min.js";
 import List from '@material-ui/core/List';
 import "jsoneditor/dist/jsoneditor.min.css";
+const {Menu} = require('electron').remote;
+const MenuItem1=require('electron').remote.MenuItem;
 const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -275,6 +277,11 @@ export default function Modules(props){
         }
         // console.log(temp)    
         return temp;
+    }
+
+    const save = ()=>
+    {
+        console.log("save from modules");
     }
 
     return(

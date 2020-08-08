@@ -12,6 +12,11 @@ import LocalDomain from './Forms/localdomain';
 import Pools from './Forms/pools';
 import Modules from './Forms/modules';
 import Peatland from './Forms/peatland_output_modules';
+import { Titlebar, Color } from 'custom-electron-titlebar'
+import { WebContents } from 'electron';
+// new Titlebar({
+// 	backgroundColor: Color.fromHex('#ECECEC')
+// });
 
 export default function EditorEntry(props) {
   // const classes = useStyles();
@@ -95,6 +100,8 @@ function displayTab(num)
   for(var i=0;i<divs.length;i++)
   {
     document.getElementById("tab"+i).style.display=(num==i?"block":"none");
+    if(num==i){const titlebar=new Titlebar();titlebar.updateTitle(props.directory[i]+",FLINT");
+    titlebar.dispose();}
   }
 }
 

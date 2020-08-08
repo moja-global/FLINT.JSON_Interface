@@ -6,7 +6,7 @@ const isDev = require('electron-is-dev');
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
 }
-
+var dupWin;
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -17,6 +17,7 @@ const createWindow = () => {
       enableRemoteModule: true
     },
   });
+  dupWin=mainWindow;
   mainWindow.maximize();
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
@@ -94,7 +95,7 @@ const template = [
       {
         label: '',
         accelerator: 'CmdOrCtrl+P',
-        click: () => { console.log('time to print stuff') }
+        click: () => { console.log(dupWin.webContents.getTitle()) }
       },
       { role: 'undo' },
       { role: 'redo' },
@@ -152,6 +153,11 @@ const template = [
       ])
     ]
   },
+  {
+    label: 'Save',
+    accelerator: 'Ctrl+S',
+    click: () => { console.log('time to print stuff') }
+  }
   // {
   //   role: 'help',
   //   submenu: [

@@ -34,8 +34,8 @@ import {ToggleEditorEntryProvider,EditorEntryFilesProvider} from './Components/C
 // import './css/index.css'
 
 ReactDOM.render(
-//<ToggleEditorEntryProvider><EditorEntryFilesProvider><App /></EditorEntryFilesProvider></ToggleEditorEntryProvider>  
-<Test />
+<ToggleEditorEntryProvider><EditorEntryFilesProvider><App /></EditorEntryFilesProvider></ToggleEditorEntryProvider>  
+//<Test />
 , document.getElementById('root'))
 
 console.log(
