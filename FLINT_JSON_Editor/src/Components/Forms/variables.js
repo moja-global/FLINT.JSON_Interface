@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
+import MenuItem1 from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Paper from '@material-ui/core/Paper';
@@ -23,6 +23,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Divider from '@material-ui/core/Divider';
+const {Menu, MenuItem} = require('electron').remote;
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -78,6 +79,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Variables(props){
+
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
 
@@ -104,8 +106,6 @@ export default function Variables(props){
         , ...fetchData(2)
     ]);
 
-    // const [Transforms, setTransforms] = React.useState(fetchData(2));
-    //console.log(Transforms);
     const [Initial, setInitial] = React.useState(
         // {
         // enable_peatland : false,
@@ -130,6 +130,7 @@ export default function Variables(props){
             if(type==1)
             {
                 const temp={};
+                if(props.json!=undefined)
                 for (const [key, value] of Object.entries(props.json.Variables)) {
                     if(typeof(value)!="object"||Array.isArray(value))
                     temp[key]=value;
@@ -139,6 +140,7 @@ export default function Variables(props){
             else if(type==2)
             {
                 const temp=[];
+                if(props.json!=undefined)
                 for (const [key, value] of Object.entries(props.json.Variables)) {
                     if(typeof(value)=="object"&&!Array.isArray(value))
                     {
@@ -222,7 +224,11 @@ export default function Variables(props){
         setTempJSON(temp);
     },[Initial, Transforms]);
 
-    useEffect(()=>console.log(Transforms),[Transforms])
+    useEffect(()=>{
+    const template=[...Menu.getApplicationMenu().items,{ label: 'Save', accelerator: 'Ctrl+S',click: () => save() }];
+    const menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu);
+    },[Transforms])
 
     function handleChangeInitial(key, value)
     {
@@ -308,6 +314,13 @@ export default function Variables(props){
         // setTransformsDup(temp);
         // document.getElementById("transform"+index).style.display="none";
     }
+
+    const save = ()=>
+    {
+        console.log("save");
+    }
+
+    
 
     return(
         <div id="container">
@@ -429,10 +442,10 @@ export default function Variables(props){
                                             value={inputfield.value.transform.type}
                                             onChange={(event)=>{handleChange(index, "type", event.target.value)}}
                                             >
-                                            <MenuItem value={"SQLQueryTransform"}>SQLQueryTransform</MenuItem>
-                                            <MenuItem value={"LocationIdxFromFlintDataTransform"}>LocationIdxFromFlintDataTransform</MenuItem>
-                                            <MenuItem value={"CompositeTransform"}>CompositeTransform</MenuItem>
-                                            <MenuItem value={"other"}>other</MenuItem>
+                                            <MenuItem1 value={"SQLQueryTransform"}>SQLQueryTransform</MenuItem1>
+                                            <MenuItem1 value={"LocationIdxFromFlintDataTransform"}>LocationIdxFromFlintDataTransform</MenuItem1>
+                                            <MenuItem1 value={"CompositeTransform"}>CompositeTransform</MenuItem1>
+                                            <MenuItem1 value={"other"}>other</MenuItem1>
                                         </Select>
                                 </FormControl>
             
