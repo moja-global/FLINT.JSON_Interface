@@ -30,8 +30,8 @@ import JSONEditor from 'jsoneditor';
 import "jsoneditor/dist/jsoneditor.min.js";
 import List from '@material-ui/core/List';
 import "jsoneditor/dist/jsoneditor.min.css";
-const {Menu} = require('electron').remote;
-const MenuItem1=require('electron').remote.MenuItem;
+const { ipcRenderer } = require('electron');
+
 const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -78,6 +78,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function Modules(props){
+    
+    ipcRenderer.on('title-reply', (event, arg) => {
+        if(arg==props.directory)
+        save();
+      })
+
     const classes = useStyles();
     var editor;
     const [Modules, setModules] = React.useState([

@@ -10,6 +10,9 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import '../../css/form.css';
 import ReactDOM from 'react-dom';
+const { ipcRenderer } = require('electron');
+const fs = require('fs');
+
 const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -45,6 +48,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Pools(props){
+
+    ipcRenderer.on('title-reply', (event, arg) => {
+        console.log(arg+" "+props.directory);
+        if(arg==props.directory)
+        save();
+      })
+
     const classes = useStyles();
 
     // const [Pools, setPools] = React.useState([
@@ -115,6 +125,20 @@ export default function Pools(props){
             })
         }
         return temp;
+    }
+
+    const save = ()=>
+    {
+        console.log("save from pools");
+        fs.writeFile(props.directory, JSON.stringify(tempLibrary,null,2), function (err) {
+            if(err){
+              alert("An error occurred creating the file " + err.message);
+          }
+          else{
+            console.log("save");
+            // dialog.showMessageBoxSync({type: "info",title: "Saved!", message: props.directory+" saved successfully!", buttons: ["OK"]});
+          }
+          });
     }
 
     return(

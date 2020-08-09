@@ -23,7 +23,9 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Divider from '@material-ui/core/Divider';
-const {Menu} = require('electron').remote;
+const { dialog } = require('electron').remote;
+const { ipcRenderer } = require('electron');
+const fs = require('fs');
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -80,6 +82,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Variables(props){
 
+    ipcRenderer.on('title-reply', (event, arg) => {
+        if(arg==props.directory)
+        save();
+      })
+      
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
 
@@ -220,8 +227,10 @@ export default function Variables(props){
                     temp2["transform"]=temp1;
                     temp[inputfield.key]=temp2;
                 }
-        })
-        setTempJSON(temp);
+        });
+        const temp1={};
+        temp1["Variables"]=temp;
+        setTempJSON(temp1);
     },[Initial, Transforms]);
     
     function handleChangeInitial(key, value)
@@ -312,6 +321,15 @@ export default function Variables(props){
     const save = ()=>
     {
         console.log("save from variables");
+        fs.writeFile(props.directory, JSON.stringify(tempJSON, null, 2), function (err) {
+            if(err){
+              alert("An error occurred creating the file " + err.message);
+          }
+          else{
+            console.log("save");
+            // dialog.showMessageBoxSync({type: "info",title: "Saved!", message: props.directory+" saved successfully!", buttons: ["OK"]});
+          }
+          });
     }
 
     

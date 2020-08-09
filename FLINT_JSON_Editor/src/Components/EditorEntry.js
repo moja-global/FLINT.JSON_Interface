@@ -27,11 +27,6 @@ title.push({
 const menu = Menu.buildFromTemplate(title);
 Menu.setApplicationMenu(menu);
 
-ipcRenderer.on('title-reply', (event, arg) => {
-    console.log(arg) // prints "pong"
-  })
-  
-
 export default function EditorEntry(props) {
 
 const [tabs,setTabs] = React.useState([]);
@@ -65,15 +60,15 @@ function fetchComp(file, directory)
   const data= JSON.parse(fs.readFileSync(directory, "utf8"));
   console.log(data);
   if(file=="standard_gcbm_localdomain.json")
-  return <LocalDomain json={data} />;
+  return <LocalDomain json={data} directory={directory} />;
   else if(file=="peatland_variables.json"||file=="standard_gcbm_variables.json"||file=="a_n_partitioning_variables.json"||file=="standard_gcbm_internal_variables.json"||file=="a_n_partitioning_internal_variables.json")
-  return <Variables json={data} />;
-  else if(file=="peatland_modules.json"||file=="standard_gcbm_modules.json"||file=="a_n_partitioning_modules.json"||file=="standard_gcbm_output_modules.json")
-  return <Modules json={data} />;
+  return <Variables json={data} directory={directory} />;
+  else if(file=="peatland_modules.json"||file=="standard_gcbm_modules.json"||file=="a_n_partitioning_modules.json")
+  return <Modules json={data} directory={directory} />;
   else if(file=="peatland_pools.json"||file=="standard_gcbm_pools.json")
-  return <Pools json={data} />;
-  else if(file=="peatland_output_modules.json")
-  return <Peatland json={data} />
+  return <Pools json={data} directory={directory} />;
+  else if(file=="peatland_output_modules.json"||file=="standard_gcbm_output_modules.json")
+  return <Peatland json={data} directory={directory} />
 }
 function initiateTabs(ans)
 {
@@ -169,19 +164,20 @@ function addTab(){
           tabBody: newTab
       })
     setTabs(newTabs);
-
-    <MyDialog message="Choose a type of operation"
-                heading="New Tab"
-                positive="Open File"
-                negative="Create New File"
-                reply={(ans)=>{ans?
-                  setTabBody([...tabBody, 
-                  <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?fetchComp(basename(result.filePaths[0]),result.filePaths[0]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" />}</div>
-                  ])
-                :
-                setTabBody([...tabBody, 
-                  <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?fetchComp(basename(result.filePaths[0]),result.filePaths[0]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="new" />}</div>
-                  ])}} />  
+    props.directory.push(result.filePaths[0]);
+    setCustomDisp(true);
+    // <MyDialog message="Choose a type of operation"
+    //             heading="New Tab"
+    //             positive="Open File"
+    //             negative="Create New File"
+    //             reply={(ans)=>{ans?
+    //               setTabBody([...tabBody, 
+    //               <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?fetchComp(basename(result.filePaths[0]),result.filePaths[0]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" />}</div>
+    //               ])
+    //             :
+    //             setTabBody([...tabBody, 
+    //               <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?fetchComp(basename(result.filePaths[0]),result.filePaths[0]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="new" />}</div>
+    //               ])}} />  
 
 
     setTabBody([...tabBody, 
