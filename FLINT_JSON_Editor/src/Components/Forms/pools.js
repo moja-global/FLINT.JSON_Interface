@@ -12,6 +12,12 @@ import '../../css/form.css';
 import ReactDOM from 'react-dom';
 const { ipcRenderer } = require('electron');
 const fs = require('fs');
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -67,6 +73,20 @@ export default function Pools(props){
     //         poolValue: "0.0"
     //     }
     // ]);
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickSnack = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+      };
+
     const [Pools, setPools] = React.useState([...fetchJSON()]);
 
     // const [PoolsDup, setPoolsDup] = React.useState(Pools);
@@ -130,15 +150,8 @@ export default function Pools(props){
     const save = ()=>
     {
         console.log("save from pools");
-        fs.writeFile(props.directory, JSON.stringify(tempLibrary,null,2), function (err) {
-            if(err){
-              alert("An error occurred creating the file " + err.message);
-          }
-          else{
-            console.log("save");
-            // dialog.showMessageBoxSync({type: "info",title: "Saved!", message: props.directory+" saved successfully!", buttons: ["OK"]});
-          }
-          });
+        fs.writeFileSync(props.directory, JSON.stringify(tempLibrary, null, 2),{encoding: "utf-8"});
+        handleClickSnack();
     }
 
     return(
@@ -174,6 +187,13 @@ export default function Pools(props){
            <div id="jsonViewer"><pre>
           {JSON.stringify(tempLibrary, null, 2)}
         </pre></div>
+
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+            {props.directory+" Saved Successfully!"}
+        </Alert>
+        </Snackbar>
+
         </div>
     );
 }

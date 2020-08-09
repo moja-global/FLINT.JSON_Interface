@@ -31,6 +31,13 @@ import "jsoneditor/dist/jsoneditor.min.js";
 import List from '@material-ui/core/List';
 import "jsoneditor/dist/jsoneditor.min.css";
 const { ipcRenderer } = require('electron');
+const fs = require('fs');
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -86,6 +93,21 @@ export default function Modules(props){
 
     const classes = useStyles();
     var editor;
+
+    const [snackOpen, setSnackOpen] = React.useState(false);
+
+    const handleClickSnack = () => {
+        setSnackOpen(true);
+      };
+    
+      const handleCloseSnack = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setSnackOpen(false);
+      };
+
     const [Modules, setModules] = React.useState([
         // {
         //     key: "CBMDisturbanceListener",
@@ -288,6 +310,8 @@ export default function Modules(props){
     const save = ()=>
     {
         console.log("save from modules");
+        fs.writeFileSync(props.directory, JSON.stringify(tempLibrary, null, 2),{encoding: "utf-8"});
+        handleClickSnack();
     }
 
     return(
@@ -423,6 +447,13 @@ export default function Modules(props){
            <div id="jsonViewer"><pre>
           {JSON.stringify(tempLibrary, null, 2)}
         </pre></div>
+
+        <Snackbar open={snackOpen} autoHideDuration={2000} onClose={handleCloseSnack}>
+        <Alert onClose={handleCloseSnack} severity="success">
+            {props.directory+" Saved Successfully!"}
+        </Alert>
+        </Snackbar>
+
         </div>
     );
 }

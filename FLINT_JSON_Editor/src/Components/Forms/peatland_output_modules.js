@@ -20,6 +20,14 @@ import Typography from '@material-ui/core/Typography';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+const { ipcRenderer } = require('electron');
+const fs = require('fs');
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -56,6 +64,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function peatland(props){
+
+    ipcRenderer.on('title-reply', (event, arg) => {
+        console.log(arg+" "+props.directory);
+        if(arg==props.directory)
+        save();
+      })
+
     const classes = useStyles();
     console.log(props.json==undefined)
     const [Peatland, setPeatland] = React.useState({
@@ -63,6 +78,20 @@ export default function peatland(props){
             "order": props.json!=undefined ? props.json.Modules.WriteVariableGeotiff.order : "",
             "library": props.json!=undefined ? props.json.Modules.WriteVariableGeotiff.library : "",
     });
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickSnack = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+      };
 
     const [PeatlandItems,setPeatlandItems] = React.useState(
         // [{
@@ -208,6 +237,14 @@ export default function peatland(props){
         },)
         setPeatlandItems(temp);
     }
+
+    const save = ()=>
+    {
+        console.log("save from peatland");
+        fs.writeFileSync(props.directory, JSON.stringify(tempLibrary, null, 2),{encoding: "utf-8"});
+        handleClickSnack();
+    }
+    
     return(
         <div id="container">
             <div id="jsonEditor">
@@ -314,6 +351,13 @@ export default function peatland(props){
            <div id="jsonViewer"><pre>
           {JSON.stringify(tempLibrary, null, 2)}
         </pre></div>
+
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+            {props.directory+" Saved Successfully!"}
+        </Alert>
+        </Snackbar>
+
         </div>
     );
 }

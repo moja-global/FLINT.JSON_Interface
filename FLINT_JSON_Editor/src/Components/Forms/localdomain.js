@@ -14,6 +14,14 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import TextField from '@material-ui/core/TextField';
 import '../../css/form.css';
+const { ipcRenderer } = require('electron');
+const fs = require('fs');
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -50,6 +58,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function LocalDomain(props){
+    ipcRenderer.on('title-reply', (event, arg) => {
+        console.log(arg+" "+props.directory);
+        if(arg==props.directory)
+        save();
+      })
+    
+
     const classes = useStyles();
     console.log(props.json.LocalDomain);
 
@@ -78,6 +93,20 @@ function getLibraries(){
     }
     return tempL;
 }
+    
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickSnack = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+      };
 
     const [LocalDomain, setLocalDomain] = React.useState(
     //     {
@@ -146,8 +175,16 @@ function getLibraries(){
         console.log(LocalDomain);
     }
 
+    const save = ()=>
+    {
+        console.log("save from localdomain");
+        fs.writeFileSync(props.directory, JSON.stringify(tempLibrary, null, 2),{encoding: "utf-8"});
+        handleClickSnack();
+    }
+  
     return(
         <div id="container">
+            <button onClick={()=>save()}></button>
             <div id="jsonEditor">
                 <h1>Libraries:</h1>
                 <Paper elevation={5} className={classes.paper}>
@@ -285,6 +322,13 @@ function getLibraries(){
             <div id="jsonViewer"><pre>
           {JSON.stringify(tempLibrary, null, 2)}
         </pre></div>
+
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          {props.directory+" Saved Successfully!"}
+        </Alert>
+        </Snackbar>
+
         </div>
     );
 }

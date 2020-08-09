@@ -26,6 +26,12 @@ import Divider from '@material-ui/core/Divider';
 const { dialog } = require('electron').remote;
 const { ipcRenderer } = require('electron');
 const fs = require('fs');
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -88,6 +94,21 @@ export default function Variables(props){
       })
       
     const classes = useStyles();
+
+    const [snackOpen, setSnackOpen] = React.useState(false);
+
+    const handleClickSnack = () => {
+        setSnackOpen(true);
+      };
+    
+      const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setSnackOpen(false);
+      };
+
     const [open, setOpen] = React.useState(true);
 
     const [Transforms, setTransforms] = React.useState([
@@ -321,18 +342,9 @@ export default function Variables(props){
     const save = ()=>
     {
         console.log("save from variables");
-        fs.writeFile(props.directory, JSON.stringify(tempJSON, null, 2), function (err) {
-            if(err){
-              alert("An error occurred creating the file " + err.message);
-          }
-          else{
-            console.log("save");
-            // dialog.showMessageBoxSync({type: "info",title: "Saved!", message: props.directory+" saved successfully!", buttons: ["OK"]});
-          }
-          });
+        fs.writeFileSync(props.directory, JSON.stringify(tempJSON, null, 2),{encoding: "utf-8"});
+        handleClickSnack();
     }
-
-    
 
     return(
         <div id="container">
@@ -527,6 +539,13 @@ export default function Variables(props){
             <div id="jsonViewer"><pre>
           {JSON.stringify(tempJSON, null, 2)}
         </pre></div>
+
+        <Snackbar open={snackOpen} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+            {props.directory+" Saved Successfully!"}
+        </Alert>
+        </Snackbar>
+
         </div>
     );
 }
