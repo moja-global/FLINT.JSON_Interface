@@ -14,18 +14,27 @@ import Modules from './Forms/modules';
 import Peatland from './Forms/peatland_output_modules';
 import { Titlebar, Color } from 'custom-electron-titlebar'
 import { WebContents } from 'electron';
-// new Titlebar({
-// 	backgroundColor: Color.fromHex('#ECECEC')
-// });
+const { ipcRenderer } = require('electron');
+const { Menu } = require('electron').remote;
+
+
+const title=[...Menu.getApplicationMenu().items];
+title.push({
+  label: 'Save',
+  accelerator: 'Ctrl+S',
+  click: () => { ipcRenderer.send('title-message', 'ping') }
+})
+const menu = Menu.buildFromTemplate(title);
+Menu.setApplicationMenu(menu);
+
+ipcRenderer.on('title-reply', (event, arg) => {
+    console.log(arg) // prints "pong"
+  })
+  
 
 export default function EditorEntry(props) {
-  // const classes = useStyles();
-  // props={
-  //   files: ["standard_gcbm_variables.json","standard1.json","standard_gcbm_spinup.json","standard.json"],
-  //   directory:["/home/abhishek/Desktop/standard_gcbm_JSON/standard_gcbm_variables.json","/home/abhishek/Desktop/standard1.json","/home/abhishek/Desktop/standard_gcbm_JSON/standard_gcbm_spinup.json","/home/abhishek/Desktop/standard.json"]
-  // };
 
-  const [tabs,setTabs] = React.useState([]);
+const [tabs,setTabs] = React.useState([]);
 
 var map=new Map();
 const [view,setView] = React.useState(false);
@@ -86,6 +95,11 @@ function initiateTabs(ans)
       temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" id={i} />}</div>);
     // setCountTabs(countTabs+1);
     countTabs+=1;
+    if(i==0)
+    {
+      const titlebar=new Titlebar();titlebar.updateTitle(props.directory[0]+" - FLINT JSON Editor");
+      titlebar.dispose();
+    }
   }
   // ReactDOM.render(temp,document.getElementById("TabContainer"));
   setTabBody(temp);
@@ -100,7 +114,7 @@ function displayTab(num)
   for(var i=0;i<divs.length;i++)
   {
     document.getElementById("tab"+i).style.display=(num==i?"block":"none");
-    if(num==i){const titlebar=new Titlebar();titlebar.updateTitle(props.directory[i]+",FLINT");
+    if(num==i){const titlebar=new Titlebar();titlebar.updateTitle(props.directory[i]+" - FLINT JSON Editor");
     titlebar.dispose();}
   }
 }

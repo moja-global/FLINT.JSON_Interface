@@ -24,7 +24,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Divider from '@material-ui/core/Divider';
 const {Menu} = require('electron').remote;
-// const TopMenuItem = require('electron').remote.MenuItem;
 
 const useStyles = makeStyles((theme) => ({
     formControl: {

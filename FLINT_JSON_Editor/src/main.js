@@ -1,6 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
+const { ipcMain } = require('electron');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -92,11 +93,11 @@ const template = [
     label: 'Edit',
     id: 'edit',
     submenu: [
-      {
-        label: '',
-        accelerator: 'CmdOrCtrl+P',
-        click: () => { console.log(dupWin.webContents.getTitle()) }
-      },
+      // {
+      //   label: '',
+      //   accelerator: 'CmdOrCtrl+P',
+      //   click: () => { console.log((dupWin.webContents.getTitle()).split(' - ')) }
+      // },
       { role: 'undo' },
       { role: 'redo' },
       { type: 'separator' },
@@ -153,11 +154,14 @@ const template = [
       ])
     ]
   },
-  {
-    label: 'Save',
-    accelerator: 'Ctrl+S',
-    click: () => { console.log('time to print stuff') }
-  }
+  // {
+  //   label: 'Save',
+  //   accelerator: 'Ctrl+S',
+  //   click: () => { ipcMain.on('asynchronous-message', (event, arg) => {
+  //     console.log(arg) // prints "ping"
+  //     event.reply('asynchronous-reply', (dupWin.webContents.getTitle()).split(' - ')[0])
+  //   }) }
+  // }
   // {
   //   role: 'help',
   //   submenu: [
@@ -174,3 +178,9 @@ const template = [
 
 const menu = Menu.buildFromTemplate(template)
 Menu.setApplicationMenu(menu)
+
+
+ipcMain.on('title-message', (event, arg) => {
+  console.log(arg) // prints "ping"
+  event.reply('title-reply', (dupWin.webContents.getTitle()).split(' - ')[0])
+})
