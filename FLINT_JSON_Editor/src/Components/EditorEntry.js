@@ -7,15 +7,29 @@ const fs = require("fs");
 import MyDialog from './Dialog';
 const {dialog} = require('electron').remote;
 const {basename} = require('path');
+import Variables from './Forms/variables';
+import LocalDomain from './Forms/localdomain';
+import Pools from './Forms/pools';
+import Modules from './Forms/modules';
+import Peatland from './Forms/peatland_output_modules';
+import { Titlebar, Color } from 'custom-electron-titlebar'
+import { WebContents } from 'electron';
+const { ipcRenderer } = require('electron');
+const { Menu } = require('electron').remote;
+
+
+const title=[...Menu.getApplicationMenu().items];
+title.push({
+  label: 'Save',
+  accelerator: 'Ctrl+S',
+  click: () => { ipcRenderer.send('title-message', 'ping') }
+})
+const menu = Menu.buildFromTemplate(title);
+Menu.setApplicationMenu(menu);
 
 export default function EditorEntry(props) {
-  // const classes = useStyles();
-  // props={
-  //   files: ["standard_gcbm_variables.json","standard1.json","standard_gcbm_spinup.json","standard.json"],
-  //   directory:["/home/abhishek/Desktop/standard_gcbm_JSON/standard_gcbm_variables.json","/home/abhishek/Desktop/standard1.json","/home/abhishek/Desktop/standard_gcbm_JSON/standard_gcbm_spinup.json","/home/abhishek/Desktop/standard.json"]
-  // };
 
-  const [tabs,setTabs] = React.useState([]);
+const [tabs,setTabs] = React.useState([]);
 
 var map=new Map();
 const [view,setView] = React.useState(false);
@@ -41,6 +55,21 @@ fs.readdir('src/storage/templates/files',(err,files)=>{
   setdialogDisp(true);
 });
 
+function fetchComp(file, directory)
+{
+  const data= JSON.parse(fs.readFileSync(directory, "utf8"));
+  console.log(data);
+  if(file=="standard_gcbm_localdomain.json")
+  return <LocalDomain json={data} directory={directory} />;
+  else if(file=="peatland_variables.json"||file=="standard_gcbm_variables.json"||file=="a_n_partitioning_variables.json"||file=="standard_gcbm_internal_variables.json"||file=="a_n_partitioning_internal_variables.json")
+  return <Variables json={data} directory={directory} />;
+  else if(file=="peatland_modules.json"||file=="standard_gcbm_modules.json"||file=="a_n_partitioning_modules.json")
+  return <Modules json={data} directory={directory} />;
+  else if(file=="peatland_pools.json"||file=="standard_gcbm_pools.json")
+  return <Pools json={data} directory={directory} />;
+  else if(file=="peatland_output_modules.json"||file=="standard_gcbm_output_modules.json")
+  return <Peatland json={data} directory={directory} />
+}
 function initiateTabs(ans)
 {
   var temp=[];
@@ -56,11 +85,16 @@ function initiateTabs(ans)
     // console.log(tabs);
     // addTab(props.files[i]);
     if(map.get(props.files[i]))
-      temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{ans ? props.files[i]+"template":<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" id={i} />}</div>);
+      temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{ans ? fetchComp(props.files[i],props.directory[i]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" id={i} />}</div>);
     else
       temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" id={i} />}</div>);
     // setCountTabs(countTabs+1);
     countTabs+=1;
+    if(i==0)
+    {
+      const titlebar=new Titlebar();titlebar.updateTitle(props.directory[0]+" - FLINT JSON Editor");
+      titlebar.dispose();
+    }
   }
   // ReactDOM.render(temp,document.getElementById("TabContainer"));
   setTabBody(temp);
@@ -75,6 +109,8 @@ function displayTab(num)
   for(var i=0;i<divs.length;i++)
   {
     document.getElementById("tab"+i).style.display=(num==i?"block":"none");
+    if(num==i){const titlebar=new Titlebar();titlebar.updateTitle(props.directory[i]+" - FLINT JSON Editor");
+    titlebar.dispose();}
   }
 }
 
@@ -128,23 +164,24 @@ function addTab(){
           tabBody: newTab
       })
     setTabs(newTabs);
-
-    <MyDialog message="Choose a type of operation"
-                heading="New Tab"
-                positive="Open File"
-                negative="Create New File"
-                reply={(ans)=>{ans?
-                  setTabBody([...tabBody, 
-                  <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?basename(result.filePaths[0])+"template":<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" />}</div>
-                  ])
-                :
-                setTabBody([...tabBody, 
-                  <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?basename(result.filePaths[0])+"template":<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="new" />}</div>
-                  ])}} />  
+    props.directory.push(result.filePaths[0]);
+    setCustomDisp(true);
+    // <MyDialog message="Choose a type of operation"
+    //             heading="New Tab"
+    //             positive="Open File"
+    //             negative="Create New File"
+    //             reply={(ans)=>{ans?
+    //               setTabBody([...tabBody, 
+    //               <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?fetchComp(basename(result.filePaths[0]),result.filePaths[0]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" />}</div>
+    //               ])
+    //             :
+    //             setTabBody([...tabBody, 
+    //               <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?fetchComp(basename(result.filePaths[0]),result.filePaths[0]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="new" />}</div>
+    //               ])}} />  
 
 
     setTabBody([...tabBody, 
-    <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?basename(result.filePaths[0])+"template":<ScratchJSoNEditor Editor="true" path="" mode="new" />}</div>
+    <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?fetchComp(basename(result.filePaths[0]),result.filePaths[0]):<ScratchJSoNEditor Editor="true" path="" mode="new" />}</div>
     ]);
     setNewTab(newTab+1);
     }).catch(err => {
@@ -165,7 +202,7 @@ return (
                 reply={(ans)=>{initiateTabs(ans);}} />}
       { showTab && <Tabs moveTab={moveTab} selectTab={selectTab} closeTab={closedTab} tabs={tabs}>
         <button onClick={()=>{
-          // addTab()
+          addTab()
           }}>+</button>
       </Tabs>}
       {/* {activeTab.length !== 0 ? activeTab[0].display : ""}  */}

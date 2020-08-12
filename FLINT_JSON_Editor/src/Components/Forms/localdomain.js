@@ -14,6 +14,14 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import TextField from '@material-ui/core/TextField';
 import '../../css/form.css';
+const { ipcRenderer } = require('electron');
+const fs = require('fs');
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -49,38 +57,78 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function LocalDomain(){
-    const classes = useStyles();
+export default function LocalDomain(props){
+    ipcRenderer.on('title-reply', (event, arg) => {
+        console.log(arg+" "+props.directory);
+        if(arg==props.directory)
+        save();
+      })
+    
 
-    const [Libraries, setLibraries] = React.useState([
-        {
-            libraryName : "moja.modules.cbm",
-            libraryType: "external"
-        },
-        {
-            libraryName : "",
-            libraryType: ""
+    const classes = useStyles();
+    console.log(props.json.LocalDomain);
+
+    const [Libraries, setLibraries] = React.useState(
+    //     [{
+    //         libraryName : "moja.modules.cbm",
+    //         libraryType: "external"
+    //     },
+    //     {
+    //         libraryName : "",
+    //         libraryType: ""
+    //     }
+    // ]
+    getLibraries()
+    );
+    
+function getLibraries(){
+    const tempL=[];
+    for (const [key, value] of Object.entries(props.json.Libraries)) {
+        tempL.push(
+            {
+                libraryName: key,
+                libraryType: value
+            }
+        )
+    }
+    return tempL;
+}
+    
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickSnack = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
         }
-    ]);
-    const [LocalDomain, setLocalDomain] = React.useState({
-        start_date : new Date('2014-08-18T21:11:54'),
-        end_date : new Date('2014-08-19T21:11:54'),
-        landUnitBuildSuccess: "landUnitBuildSuccess",
-        simulateLandUnit: "simulateLandUnit",
-        sequencer_library: "moja.modules.cbm",
-        sequencer: "CBMSequencer",
-        timing: "annual",
-        type: "spatial_tiled",
-        landscape: {
-            "provider": "RasterTiled",
-            "num_threads": 4,
-            "tiles": [],
-            "x_pixels": 1000,
-            "y_pixels": 1000,
-            "tile_size_x": 1.0,
-            "tile_size_y": 1.0
-        }
-    }); 
+    
+        setOpen(false);
+      };
+
+    const [LocalDomain, setLocalDomain] = React.useState(
+    //     {
+    //     start_date : new Date('2014-08-18T21:11:54'),
+    //     end_date : new Date('2014-08-19T21:11:54'),
+    //     landUnitBuildSuccess: "landUnitBuildSuccess",
+    //     simulateLandUnit: "simulateLandUnit",
+    //     sequencer_library: "moja.modules.cbm",
+    //     sequencer: "CBMSequencer",
+    //     timing: "annual",
+    //     type: "spatial_tiled",
+    //     landscape: {
+    //         "provider": "RasterTiled",
+    //         "num_threads": 4,
+    //         "tiles": [],
+    //         "x_pixels": 1000,
+    //         "y_pixels": 1000,
+    //         "tile_size_x": 1.0,
+    //         "tile_size_y": 1.0
+    //     }
+    props.json.LocalDomain
+    ); 
     const [tempLibrary, setTempLibrary] = React.useState({});
 
     useEffect(()=>{console.log(Libraries);
@@ -127,8 +175,16 @@ export default function LocalDomain(){
         console.log(LocalDomain);
     }
 
+    const save = ()=>
+    {
+        console.log("save from localdomain");
+        fs.writeFileSync(props.directory, JSON.stringify(tempLibrary, null, 2),{encoding: "utf-8"});
+        handleClickSnack();
+    }
+  
     return(
         <div id="container">
+            <button onClick={()=>save()}></button>
             <div id="jsonEditor">
                 <h1>Libraries:</h1>
                 <Paper elevation={5} className={classes.paper}>
@@ -141,8 +197,8 @@ export default function LocalDomain(){
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 className={classes.libraryName}
-                                value={inputField.libraryName}
-                                onChange={event => {if(event.target.value=="other"){handleChangeLibrary(index, event.target.value, "");document.getElementById("other"+index).style.display="block";} else {document.getElementById("other"+index).style.display="none";handleChangeLibrary(index, event.target.value, "")}}}
+                                value={(inputField.libraryName=="" || inputField.libraryName=="moja.modules.cbm" || inputField.libraryName=="moja.modules.zipper" || inputField.libraryName=="moja.modules.gdal")?inputField.libraryName : "other"}
+                                onChange={event => {if(event.target.value=="other"){handleChangeLibrary(index, event.target.value, "");document.getElementById("other"+index).style.display="block";document.getElementById("other-val"+index).value=""} else {document.getElementById("other"+index).style.display="none";handleChangeLibrary(index, event.target.value, "")}}}
                                 >
                                 <MenuItem value={"moja.modules.cbm"}>moja.modules.cbm</MenuItem>
                                 <MenuItem value={"moja.modules.zipper"}>moja.modules.zipper</MenuItem>
@@ -151,7 +207,7 @@ export default function LocalDomain(){
                             </Select>
                             </FormControl>
                             <FormControl className={classes.formControl}>
-                                <div id={"other"+index} style={{display: "none"}}><TextField label="library name" onChange={event => handleChangeLibrary(index, event.target.value, "")} /></div>
+                                <div id={"other"+index} style={{display: "none"}}><TextField id={"other-val"+index} label="library name" onChange={event => handleChangeLibrary(index, event.target.value, "")} /></div>
                             </FormControl>
                             <FormControl className={classes.formControl}>
                             <InputLabel id="demo-simple-select-label">Library Type</InputLabel>
@@ -266,6 +322,13 @@ export default function LocalDomain(){
             <div id="jsonViewer"><pre>
           {JSON.stringify(tempLibrary, null, 2)}
         </pre></div>
+
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          {props.directory+" Saved Successfully!"}
+        </Alert>
+        </Snackbar>
+
         </div>
     );
 }

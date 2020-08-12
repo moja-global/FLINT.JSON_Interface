@@ -10,6 +10,15 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import '../../css/form.css';
 import ReactDOM from 'react-dom';
+const { ipcRenderer } = require('electron');
+const fs = require('fs');
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -44,20 +53,43 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Pools(){
+export default function Pools(props){
+
+    ipcRenderer.on('title-reply', (event, arg) => {
+        console.log(arg+" "+props.directory);
+        if(arg==props.directory)
+        save();
+      })
+
     const classes = useStyles();
 
-    const [Pools, setPools] = React.useState([
-        {
-            poolName: "Acrotelm_A",
-            poolValue: "0.0"
-        },
-        {
-            poolName: "Acrotelm_B",
-            poolValue: "0.0"
+    // const [Pools, setPools] = React.useState([
+    //     {
+    //         poolName: "Acrotelm_A",
+    //         poolValue: "0.0"
+    //     },
+    //     {
+    //         poolName: "Acrotelm_B",
+    //         poolValue: "0.0"
+    //     }
+    // ]);
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickSnack = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
         }
-    ]);
-    const [PoolsDup, setPoolsDup] = React.useState(Pools);
+    
+        setOpen(false);
+      };
+
+    const [Pools, setPools] = React.useState([...fetchJSON()]);
+
+    // const [PoolsDup, setPoolsDup] = React.useState(Pools);
     const [tempLibrary, setTempLibrary] = React.useState({});
 
     useEffect(()=>{
@@ -74,7 +106,7 @@ export default function Pools(){
         const temp = [...Pools];
         temp[index][type]=value;
         setPools(temp);
-        setPoolsDup(temp);
+        // setPoolsDup(temp);
         console.log(Pools);
     }
 
@@ -86,7 +118,7 @@ export default function Pools(){
             poolValue: ""
         });
         setPools(temp);
-        setPoolsDup(temp);
+        // setPoolsDup(temp);
         console.log(Pools);
     }
 
@@ -97,23 +129,45 @@ export default function Pools(){
         temp.splice(index,1);
         setPools(temp);
         console.log(Pools);
-        document.getElementById("pool"+index).style.display="none";
+        // document.getElementById("pool"+index).style.display="none";
     }
     
+    function fetchJSON()
+    {
+        const temp=[];
+        // console.log(props.json.Pools)
+        console.log(props.json!=undefined)
+        if(props.json!=undefined)
+        for (const [key, value] of Object.entries(props.json.Pools)) {
+            temp.push({
+                poolName: key,
+                poolValue: value
+            })
+        }
+        return temp;
+    }
+
+    const save = ()=>
+    {
+        console.log("save from pools");
+        fs.writeFileSync(props.directory, JSON.stringify(tempLibrary, null, 2),{encoding: "utf-8"});
+        handleClickSnack();
+    }
+
     return(
         <div id="container">
             <div id="jsonEditor">
                 <h1>Pools:</h1>
                 <Paper elevation={5} className={classes.paper}>
                 {
-                    PoolsDup.map((inputField, index) => (
-                        <div id={"pool"+index}>
+                    Pools.map((inputField, index) => (
+                        <div>
                             <FormControl className={classes.formControl}>
-                                <TextField id="name" label="Pool Name" variant="filled" defaultValue={inputField.poolName} onChange={event => handleChangePool(index, "poolName", event.target.value)} />
+                                <TextField id="name" label="Pool Name" variant="filled" value={inputField.poolName} onChange={event => handleChangePool(index, "poolName", event.target.value)} />
                             </FormControl>
 
                             <FormControl className={classes.formControl}>
-                                <TextField id="name" label="Pool Value" variant="filled" defaultValue={inputField.poolValue} onChange={event => handleChangePool(index, "poolValue", event.target.value)} />
+                                <TextField id="name" label="Pool Value" variant="filled" value={inputField.poolValue} onChange={event => handleChangePool(index, "poolValue", event.target.value)} />
                             </FormControl>
                             <IconButton color="primary" aria-label="add library" style={{marginTop: "10px"}} onClick={()=>{deletePool(index)}}>
                                 <CancelIcon />
@@ -133,6 +187,13 @@ export default function Pools(){
            <div id="jsonViewer"><pre>
           {JSON.stringify(tempLibrary, null, 2)}
         </pre></div>
+
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+            {props.directory+" Saved Successfully!"}
+        </Alert>
+        </Snackbar>
+
         </div>
     );
 }

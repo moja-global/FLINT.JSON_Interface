@@ -1,12 +1,13 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
+const { ipcMain } = require('electron');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
 }
-
+var dupWin;
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -17,6 +18,7 @@ const createWindow = () => {
       enableRemoteModule: true
     },
   });
+  dupWin=mainWindow;
   mainWindow.maximize();
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
@@ -56,3 +58,9 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+
+ipcMain.on('title-message', (event, arg) => {
+  // console.log(arg) // prints "ping"
+  event.reply('title-reply', (dupWin.webContents.getTitle()).split(' - ')[0])
+})

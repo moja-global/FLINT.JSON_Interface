@@ -23,6 +23,15 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Divider from '@material-ui/core/Divider';
+const { dialog } = require('electron').remote;
+const { ipcRenderer } = require('electron');
+const fs = require('fs');
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -77,8 +86,29 @@ const useStyles = makeStyles((theme) => ({
       },
 }));
 
-export default function LocalDomain(){
+export default function Variables(props){
+
+    ipcRenderer.on('title-reply', (event, arg) => {
+        if(arg==props.directory)
+        save();
+      })
+      
     const classes = useStyles();
+
+    const [snackOpen, setSnackOpen] = React.useState(false);
+
+    const handleClickSnack = () => {
+        setSnackOpen(true);
+      };
+    
+      const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setSnackOpen(false);
+      };
+
     const [open, setOpen] = React.useState(true);
 
     const [Transforms, setTransforms] = React.useState([
@@ -94,32 +124,72 @@ export default function LocalDomain(){
                     vars: ["sss","aa"],
                     custom: [
                         {
-                            key: "abc",
-                            value: "def"
+                            key: "",
+                            value: ""
                         }
                     ]
                 }
             }
         }
+        , ...fetchData(2)
     ]);
-    const [TransformsDup, setTransformsDup] = React.useState(Transforms);
 
-    const [Initial, setInitial] = React.useState({
-        enable_peatland : false,
-        enable_moss : false,
-        admin_boundary : "British Columbia",
-        eco_boundary : "Taiga Plains",
-        initial_age : 0,
-        initial_historic_land_class : "FL",
-        initial_current_land_class : "FL",
-        age_class_range : 20,
-        age_maximum : 300,
-        slow_ag_to_bg_mixing_rate : 0.006,
-    }); 
-    
+    const [Initial, setInitial] = React.useState(
+        // {
+        // enable_peatland : false,
+        // enable_moss : false,
+        // admin_boundary : "British Columbia",
+        // eco_boundary : "Taiga Plains",
+        // initial_age : 0,
+        // initial_historic_land_class : "FL",
+        // initial_current_land_class : "FL",
+        // age_class_range : 20,
+        // age_maximum : 300,
+        // slow_ag_to_bg_mixing_rate : 0.006,
+        // }
+        // props.json.
+        fetchData(1)
+    // }
+    ); 
+    // fetchData(2);
+        function fetchData(type)
+        {
+            //1 for initial values and 2 for transforms
+            if(type==1)
+            {
+                const temp={};
+                if(props.json!=undefined)
+                for (const [key, value] of Object.entries(props.json.Variables)) {
+                    if(typeof(value)!="object"||Array.isArray(value))
+                    temp[key]=value;
+                }
+                return temp;
+            }
+            else if(type==2)
+            {
+                const temp=[];
+                if(props.json!=undefined)
+                for (const [key, value] of Object.entries(props.json.Variables)) {
+                    if(typeof(value)=="object"&&!Array.isArray(value))
+                    {
+                        const temp1=value;
+                        temp1.transform.custom=[{key: "aa", value: "ab"}];
+                        temp.push(
+                            {
+                                key: key,
+                                value: temp1
+                            }
+                        )
+                    }
+                }
+                return temp;
+            }
+        }
+        // console.log(typeof(props.json.Variables.forest_peatland_leading_species));
     const [tempJSON, setTempJSON] = React.useState({});
 
     useEffect(()=>{
+       // console.log("aa");
         const temp={};
         for (const [key, value] of Object.entries(Initial))
         {
@@ -129,13 +199,61 @@ export default function LocalDomain(){
         Transforms.map((inputfield)=>
         {
             // temp[key]=value;
-            temp[inputfield.key]=inputfield.value;
-        })
-        setTempJSON(temp);
+            // temp[inputfield.key]=inputfield.value;
+            const temp1={}
+            if(inputfield.value.transform.type=="SQLQueryTransform")
+                {
+                    temp1["type"]=inputfield.value.transform.type;
+                    temp1["queryString"]=inputfield.value.transform.queryString;
+                    temp1["library"]=inputfield.value.transform.library;
+                    temp1["provider"]=inputfield.value.transform.provider;
+                    inputfield.value.transform.custom.map(field=>{
+                        temp1[field.key]=field.value;
+                    })
+                    const temp2={};
+                    temp2["transform"]=temp1;
+                    temp[inputfield.key]=temp2;
+                }
+            else if(inputfield.value.transform.type=="LocationIdxFromFlintDataTransform")
+                {
+                    temp1["type"]=inputfield.value.transform.type;
+                    temp1["data_id"]=inputfield.value.transform.data_id;
+                    temp1["library"]=inputfield.value.transform.library;
+                    temp1["provider"]=inputfield.value.transform.provider;
+                    inputfield.value.transform.custom.map(field=>{
+                        temp1[field.key]=field.value;
+                    })
+                    const temp2={};
+                    temp2["transform"]=temp1;
+                    temp[inputfield.key]=temp2;
+                }
+            else if(inputfield.value.transform.type=="CompositeTransform")
+                {
+                    temp1["type"]=inputfield.value.transform.type;
+                    temp1["library"]=inputfield.value.transform.library;
+                    temp1["vars"]=inputfield.value.transform.vars;
+                    inputfield.value.transform.custom.map(field=>{
+                        temp1[field.key]=field.value;
+                    })
+                    const temp2={};
+                    temp2["transform"]=temp1;
+                    temp[inputfield.key]=temp2;
+                }
+            else
+                {
+                    const temp2={}, temp1={};
+                    inputfield.value.transform.custom.map(field=>{
+                        temp1[field.key]=field.value;
+                    })
+                    temp2["transform"]=temp1;
+                    temp[inputfield.key]=temp2;
+                }
+        });
+        const temp1={};
+        temp1["Variables"]=temp;
+        setTempJSON(temp1);
     },[Initial, Transforms]);
-
-    // useEffect(()=>console.log(Initial),[Initial])
-
+    
     function handleChangeInitial(key, value)
     {
         const temp = {...Initial};
@@ -153,8 +271,7 @@ export default function LocalDomain(){
         else
         temp[index].value.transform[type]=value;
         setTransforms(temp);
-        setTransformsDup(temp);
-        console.log(Transforms);
+       // console.log(Transforms);
     }
 
     function addField(index)
@@ -164,20 +281,20 @@ export default function LocalDomain(){
             key:"",
             value:""
         });
+        console.log(temp);
         setTransforms(temp);
-        setTransformsDup(temp);
-        console.log(Transforms[index].value.transform.custom);
+      //  console.log(Transforms[index].value.transform.custom);
     }
 
     function deleteField(index, index1)
     {
-        console.log(index);
+       // console.log(index);
         const temp=[...Transforms];
         temp[index].value.transform.custom.splice(index1,1);
         // console.log
         setTransforms(temp);
-        document.getElementById("transform"+index+index1).style.display="none";
-        console.log(Transforms[index].value.transform.custom);
+        // document.getElementById("transform"+index+index1).style.display="none";
+      //  console.log(Transforms[index].value.transform.custom);
     }
 
     function handleChangeField(index, index1, params, value) {
@@ -188,8 +305,7 @@ export default function LocalDomain(){
         //     temp[key].transform.custom[index].value=value;
         temp[index].value.transform.custom[index1][params]=value;
         setTransforms(temp);
-        setTransformsDup(temp);
-        console.log(Transforms[index].value.transform.custom);
+      //  console.log(Transforms[index].value.transform.custom);
     }
 
     function addTransform(){
@@ -204,13 +320,14 @@ export default function LocalDomain(){
                 provider: "",
                 data_id: "",
                 vars: [],
-                custom: []
+                custom: [
+                    {key: "",
+                    value: ""}
+                ]
             }
         }
     })
     setTransforms(temp); 
-    setTransformsDup(temp);
-
 }
 
     function deleteTransform(index)
@@ -219,7 +336,14 @@ export default function LocalDomain(){
         temp.splice(index,1);
         setTransforms(temp);
         // setTransformsDup(temp);
-        document.getElementById("transform"+index).style.display="none";
+        // document.getElementById("transform"+index).style.display="none";
+    }
+
+    const save = ()=>
+    {
+        console.log("save from variables");
+        fs.writeFileSync(props.directory, JSON.stringify(tempJSON, null, 2),{encoding: "utf-8"});
+        handleClickSnack();
     }
 
     return(
@@ -230,7 +354,7 @@ export default function LocalDomain(){
 
                     <FormControlLabel className={classes.formControl} label = "enable_peatland" control=
                     {<Switch
-                        checked={Initial.enable_peatland}
+                        checked={Initial.enable_peatland || false}
                         onChange={event => handleChangeInitial("enable_peatland", event.target.checked)}
                         color="primary"
                         name="checkedB"
@@ -239,11 +363,20 @@ export default function LocalDomain(){
                     />
                     <FormControlLabel className={classes.formControl} label = "enable_moss" control=
                     {<Switch
-                        checked={Initial.enable_moss}
+                        checked={Initial.enable_moss || false}
                         onChange={event => handleChangeInitial("enable_moss", event.target.checked)}
                         color="primary"
                         name="checkedB"
                         label="aa"
+                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                    />}
+                    />
+                    <FormControlLabel className={classes.formControl} label = "inventory_over_peatland" control=
+                    {<Switch
+                        checked={Initial.inventory_over_peatland || false}
+                        onChange={event => handleChangeInitial("inventory_over_peatland", event.target.checked)}
+                        color="primary"
+                        name="checkedB"
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     />}
                     />
@@ -271,13 +404,38 @@ export default function LocalDomain(){
                     <FormControl className={classes.formControl}>
                         <TextField id="filled-basic" label="slow_ag_to_bg_mixing_rate" variant="filled" defaultValue={Initial.slow_ag_to_bg_mixing_rate} onChange={event => handleChangeInitial("slow_ag_to_bg_mixing_rate",event.target.value)} />
                     </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="applied_growth_curve_id" variant="filled" defaultValue={Initial.applied_growth_curve_id} onChange={event => handleChangeInitial("applied_growth_curve_id",event.target.value)} />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="default_fire_return_interval" variant="filled" defaultValue={Initial.default_fire_return_interval} onChange={event => handleChangeInitial("default_fire_return_interval",event.target.value)} />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="default_last_fire_year" variant="filled" defaultValue={Initial.default_last_fire_year} onChange={event => handleChangeInitial("default_last_fire_year",event.target.value)} />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="default_mean_annual_temperature" variant="filled" defaultValue={Initial.default_mean_annual_temperature} onChange={event => handleChangeInitial("default_mean_annual_temperature",event.target.value)} />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="default_spinup_drought_class" variant="filled" defaultValue={Initial.default_spinup_drought_class} onChange={event => handleChangeInitial("default_spinup_drought_class",event.target.value)} />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="default_forward_drought_class" variant="filled" defaultValue={Initial.default_forward_drought_class} onChange={event => handleChangeInitial("default_forward_drought_class",event.target.value)} />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <TextField id="filled-basic" label="default_annual_drought_class" variant="filled" defaultValue={Initial.default_annual_drought_class} onChange={event => handleChangeInitial("default_annual_drought_class",event.target.value)} />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                    forest_peatland_leading_species
+                        <TextareaAutosize style={{height: "50px", width: "40vw"}} id="filled-basic" label="forest_peatland_leading_species" variant="filled" defaultValue={Initial.forest_peatland_leading_species || ""} onChange={(event)=>handleChangeInitial("forest_peatland_leading_species",event.target.value)} />
+                    </FormControl>
                 </Paper>
                         
                 <h1>Transforms:</h1>
                     
                     {
                         // const [disp, setDisp]=React.useState("SQLQueryTransform");
-                        TransformsDup.map((inputfield, index) => (
+                        Transforms.map((inputfield, index) => (
                             <Accordion id={"transform"+index}>
                                 <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
@@ -291,7 +449,7 @@ export default function LocalDomain(){
                                 </IconButton>}
                                 />
                                 <Typography className={classes.heading}>
-                                <TextField id="filled-basic" label="Transform Name: " defaultValue={inputfield.key} onChange={(event)=>handleChange(index, "key", event.target.value)} />
+                                <TextField id="filled-basic" label="Transform Name: " value={inputfield.key} onChange={(event)=>handleChange(index, "key", event.target.value)} />
                                 </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
@@ -336,7 +494,7 @@ export default function LocalDomain(){
                                     <TextField id="filled-basic" label="vars" placeholder="comma seperated array elements" variant="filled" defaultValue={inputfield.value.transform.vars} onChange={(event)=>handleChange(index, "vars", event.target.value)} />
                                 </FormControl>}
                                 
-                                {TransformsDup[index].value.transform.custom.map((inputfield1, index1)=>(
+                                {inputfield.value.transform.custom && inputfield.value.transform.custom.map((inputfield1, index1)=>(
                                     
                                     
                                     // return(
@@ -345,24 +503,24 @@ export default function LocalDomain(){
                                     <TextField
                                       className={classes.input}
                                       label="key"
-                                      defaultValue={inputfield1.key}
+                                      value={inputfield1.key}
                                       onChange={(event)=>handleChangeField(index, index1, "key", event.target.value)}
                                     />
                                     <TextField
                                       className={classes.input}
                                       label="value"
-                                      defaultValue={inputfield1.value}
+                                      value={inputfield1.value}
                                       onChange={(event)=>handleChangeField(index, index1, "value", event.target.value)}
                                     />
                                     <Divider className={classes.divider} orientation="vertical" />
-                                    {/* <IconButton color="primary" className={classes.iconButton} aria-label="directions" onClick={()=>{console.log(index);deleteField(index, index1)}}>
+                                    <IconButton color="primary" className={classes.iconButton} aria-label="directions" onClick={()=>{console.log(index);deleteField(index, index1)}}>
                                         <CancelIcon />
-                                    </IconButton> */}
+                                    </IconButton>
                                   </Paper>
                                   </div>
                                 ))
                                 } 
-                                <IconButton color="primary" aria-label="add library" style={{marginLeft: "16vw"}} onClick={()=>addField(index)}>
+                                <IconButton color="primary" aria-label="add library" style={{marginLeft: "16vw"}} onClick={()=>{console.log("1");addField(index)}}>
                                     <AddCircleIcon />
                                 </IconButton>
                                 </Paper>
@@ -381,6 +539,13 @@ export default function LocalDomain(){
             <div id="jsonViewer"><pre>
           {JSON.stringify(tempJSON, null, 2)}
         </pre></div>
+
+        <Snackbar open={snackOpen} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+            {props.directory+" Saved Successfully!"}
+        </Alert>
+        </Snackbar>
+
         </div>
     );
 }
