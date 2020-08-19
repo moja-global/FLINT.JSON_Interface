@@ -27,16 +27,11 @@ export default function App() {
   const classes = useStyles();
   const [disp,setDisp] = React.useState(true);
   const [SnackDisp,setSnackDisp] = React.useState(false);
-  const [component,setComponent] = React.useState(false);
   const [dispScratch,setDispScratch] = React.useState(false);
   const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
   const [Files,setFiles]=React.useContext(EditorEntryFiles);
 
-  if(component)
-  {
-    if(component=="ScratchJSONEditor")
-    {
-      setComponent(false);
+    function LoadEditor(){
       ReactDOM.render(<ThemeProvider theme={theme}>
         <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{
           setDisp(false);
@@ -45,7 +40,6 @@ export default function App() {
         }} >Next</Button>
       </ThemeProvider>,document.getElementById("buttonContainer"));
     }
-  }
 
   function resetApp() {
     setDisp(true);
@@ -61,7 +55,7 @@ export default function App() {
 
   const Comp = () =>{
     return(<>
-    { disp && <AppComponent onRadioChange3={(val)=>{setComponent(val)}} showSnack2={(val1)=>{resetBtn()}}/> }
+    { disp && <AppComponent onRadioChange3={(val)=>{LoadEditor()}} showSnack2={(val1)=>{resetBtn()}}/> }
         
         <div id="AppContainer">
           { dispScratch && <ScratchJSONEditor onHome={(val)=>{resetApp();setDispScratch(false);}} /> }
@@ -78,7 +72,7 @@ export default function App() {
   return(
       <div>
         
-       {
+        {
           dispEditorEntry?<EditorEntry files={Files.files} directory={Files.directory} />: <Comp />
         }
         
