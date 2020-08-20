@@ -31,14 +31,27 @@ export default function App() {
   const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
   const [Files,setFiles]=React.useContext(EditorEntryFiles);
 
-    function LoadEditor(){
-      ReactDOM.render(<ThemeProvider theme={theme}>
-        <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{
-          setDisp(false);
-          document.body.style.backgroundImage='none';
-          setDispScratch(true);
-        }} >Next</Button>
-      </ThemeProvider>,document.getElementById("buttonContainer"));
+    function LoadEditor(val){
+      if(val=="ScratchJSONEditor")
+      {
+        ReactDOM.render(<ThemeProvider theme={theme}>
+          <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{
+            setDisp(false);
+            document.body.style.backgroundImage='none';
+            setDispScratch(true);
+          }} >Next</Button>
+        </ThemeProvider>,document.getElementById("buttonContainer"));
+      }
+      else if(val=="FormEditor")
+      {
+        ReactDOM.render(<ThemeProvider theme={theme}>
+          <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{
+            setDisp(false);
+            document.body.style.backgroundImage='none';
+            setDispEditorEntry(true);
+          }} >Next</Button>
+        </ThemeProvider>,document.getElementById("buttonContainer"));
+      }
     }
 
   function resetApp() {
@@ -55,7 +68,7 @@ export default function App() {
 
   const Comp = () =>{
     return(<>
-    { disp && <AppComponent onRadioChange3={(val)=>{LoadEditor()}} showSnack2={(val1)=>{resetBtn()}}/> }
+    { disp && <AppComponent onRadioChange3={(val)=>{LoadEditor(val)}} showSnack2={(val1)=>{resetBtn()}}/> }
         
         <div id="AppContainer">
           { dispScratch && <ScratchJSONEditor onHome={(val)=>{resetApp();setDispScratch(false);}} /> }
