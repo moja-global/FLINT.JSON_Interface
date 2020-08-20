@@ -31,6 +31,7 @@ export default function App() {
   const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
   const [Files,setFiles]=React.useContext(EditorEntryFiles);
 
+  //used to switch b/w two types of editors and dynamically adjust the UI
     function LoadEditor(val){
       if(val=="ScratchJSONEditor")
       {
@@ -38,7 +39,7 @@ export default function App() {
           <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{
             setDisp(false);
             document.body.style.backgroundImage='none';
-            setDispScratch(true);
+            setDispScratch(true);//Hook handling the display of ScratchJSONEditor
           }} >Next</Button>
         </ThemeProvider>,document.getElementById("buttonContainer"));
       }
@@ -48,24 +49,28 @@ export default function App() {
           <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{
             setDisp(false);
             document.body.style.backgroundImage='none';
-            setDispEditorEntry(true);
+            setDispEditorEntry(true);//Context handling the display of Form like Editor
           }} >Next</Button>
         </ThemeProvider>,document.getElementById("buttonContainer"));
       }
     }
 
+  //Reset the background image
   function resetApp() {
     setDisp(true);
     document.body.style.backgroundImage=`url(${bgImg})`;
     // document.getElementById("AppContainer").innerHTML="";
   }
 
+  //Reset the Next Button to its normal behaviour
   function resetBtn(){
     ReactDOM.render(<ThemeProvider theme={theme}>
       <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>setSnackDisp(true)} >Next</Button>
     </ThemeProvider>,document.getElementById("buttonContainer"));
   }
 
+  //Driver Component to load the upcoming Components and UI
+  //involves prop drilling to communicate over components, have a scope to consider Context messaging in future
   const Comp = () =>{
     return(<>
     { disp && <AppComponent onRadioChange3={(val)=>{LoadEditor(val)}} showSnack2={(val1)=>{resetBtn()}}/> }
@@ -84,7 +89,7 @@ export default function App() {
 
   return(
       <div>
-        
+    
         {
           dispEditorEntry?<EditorEntry files={Files.files} directory={Files.directory} />: <Comp />
         }

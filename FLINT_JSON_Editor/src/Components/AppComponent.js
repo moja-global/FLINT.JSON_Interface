@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AppComponent(props) {
   const classes = useStyles();
-
+//StartupWizard will be used to load the swipeable AppBar
     return(
         <div className="background" id="main">
         <div id="container">
