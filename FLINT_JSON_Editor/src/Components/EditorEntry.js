@@ -13,9 +13,10 @@ import Pools from './Forms/pools';
 import Modules from './Forms/modules';
 import Peatland from './Forms/peatland_output_modules';
 import { Titlebar, Color } from 'custom-electron-titlebar'
-import { WebContents } from 'electron';
+import { WebContents, remote } from 'electron';
 const { ipcRenderer } = require('electron');
 const { Menu } = require('electron').remote;
+const path=require('path');
 
 
 const title=[...Menu.getApplicationMenu().items];
@@ -43,7 +44,11 @@ var theme=React.createContext({disp: true,changeDisp:()=>{disp=false;}});
 console.log(React.useContext(theme).disp);
 
 setTimeout(()=>{theme.changeDisp;},5000)
-fs.readdir('./src/storage/templates/files',(err,files)=>{
+// fs.readdir(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window/src/storage'),(err1,files1)=>{if(err1) throw err1;console.log(files1)});
+
+fs.readdir(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/src/storage/templates/files'),(err,files)=>{
+  console.log(path.resolve(__dirname));
+  // fs.readdir(path.resolve(__dirname),(err1,files1)=>{if(err1) throw err;console.log(files1)});
   if(err) throw err;
   // console.log(files);
   for(var i=0;i<files.length;i++)

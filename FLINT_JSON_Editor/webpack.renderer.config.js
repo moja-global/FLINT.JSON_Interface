@@ -13,12 +13,12 @@ module.exports = {
   module: {
     rules,
   },
-  // plugins: assets.map(asset => {
-  //   return new CopyWebpackPlugin({
-  //     patterns: [{
-  //       from: path.resolve(__dirname, 'src', asset),
-  //       to: path.resolve(__dirname, '.webpack/renderer/main_window', asset)
-  //     }],
-  //   });
-  // })
+  plugins: assets.map(asset => {
+    return new CopyWebpackPlugin({
+      patterns: [{
+        from: path.resolve(__dirname, 'src', asset),
+        to: path.resolve(__dirname, '.webpack/renderer/main_window/src', asset)
+      }],
+    });
+  })
 };
