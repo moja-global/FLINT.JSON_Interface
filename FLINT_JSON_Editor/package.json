@@ -1,6 +1,6 @@
 {
   "name": "flint_json_editor",
-  "productName": "flint_json_editor",
+  "productName": "FLINT JSON Editor",
   "version": "1.0.0",
   "description": "FLINT JSON User Interface",
   "main": ".webpack/main",
@@ -11,7 +11,9 @@
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
-  "keywords": [],
+  "keywords": [
+    "FLINT","moja global","electron","react","desktop app", "JSON Editor"
+  ],
   "author": {
     "name": "Abhishek Garain",
     "email": "abhi211199@gmail.com"

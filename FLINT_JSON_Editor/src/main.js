@@ -17,6 +17,7 @@ const createWindow = () => {
       nodeIntegration: true,
       enableRemoteModule: true
     },
+    icon: './src/Images/logo.png',
   });
   dupWin=mainWindow;
   mainWindow.maximize();

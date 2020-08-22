@@ -8,6 +8,7 @@ rules.push({
   use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
 });
 
+//plugins are used to copy static files to .webpack
 module.exports = {
   // Put your normal webpack config below here
   module: {

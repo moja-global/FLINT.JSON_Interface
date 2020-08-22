@@ -33,6 +33,7 @@ module.exports = [
   //     },
   //   ],
   // },
+  // url-loader is used instead of file-loader to smoothen packaging of app 
   {
     test: /\.(png|jpg|gif|svg)$/i,
     use: [
