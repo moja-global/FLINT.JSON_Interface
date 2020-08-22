@@ -38,10 +38,9 @@ const [dialogDisp, setdialogDisp] = React.useState(false);
 const [notFound, setNotFound] = React.useState([]);
 const [showTab, setShowTab] = React.useState(false);
 const [newTab, setNewTab] = React.useState(0);
-const [tabBody, setTabBody] = React.useState([]);
+const [tabBodies, setTabBodies] = React.useState([]);
 var countTabs=0;
 var theme=React.createContext({disp: true,changeDisp:()=>{disp=false;}});
-console.log(React.useContext(theme).disp);
 
 setTimeout(()=>{theme.changeDisp;},5000)
 // fs.readdir(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window/src/storage'),(err1,files1)=>{if(err1) throw err1;console.log(files1)});
@@ -63,7 +62,6 @@ fs.readdir(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/s
 function fetchComp(file, directory)
 {
   const data= JSON.parse(fs.readFileSync(directory, "utf8"));
-  console.log(data);
   if(file=="standard_gcbm_localdomain.json")
   return <LocalDomain json={data} directory={directory} />;
   else if(file=="peatland_variables.json"||file=="standard_gcbm_variables.json"||file=="a_n_partitioning_variables.json"||file=="standard_gcbm_internal_variables.json"||file=="a_n_partitioning_internal_variables.json")
@@ -90,9 +88,9 @@ function initiateTabs(ans)
     // console.log(tabs);
     // addTab(props.files[i]);
     if(map.get(props.files[i]))   
-      temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{ans ? fetchComp(props.files[i],props.directory[i]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" id={i} />}</div>);
+      temp.push(<div id={"tab"+countTabs} className="bodyTabs" style={i==0?{display: "block"}:{display: "none"}}>{ans ? fetchComp(props.files[i],props.directory[i]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" id={i} />}</div>);
     else
-      temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" id={i} />}</div>);
+      temp.push(<div id={"tab"+countTabs} className="bodyTabs" style={i==0?{display: "block"}:{display: "none"}}>{<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" id={i} />}</div>);
     // setCountTabs(countTabs+1);
     countTabs+=1;
     if(i==0)
@@ -102,7 +100,7 @@ function initiateTabs(ans)
     }
   }
   // ReactDOM.render(temp,document.getElementById("TabContainer"));
-  setTabBody(temp);
+  setTabBodies(temp);
   setShowTab(true);
   setNewTab(countTabs);
   // console.log(map);
@@ -110,7 +108,8 @@ function initiateTabs(ans)
 
 function displayTab(num)
 {
-  var divs=document.getElementById("TabContainer").getElementsByTagName("div");
+  var divs=document.getElementById("TabContainer").getElementsByClassName("bodyTabs");
+  // console.log(divs.length);
   for(var i=0;i<divs.length;i++)
   {
     document.getElementById("tab"+i).style.display=(num==i?"block":"none");
@@ -140,15 +139,15 @@ function closedTab(removedIndex, removedID) {
   // console.log(removedIndex);
       var temp=newTabs.splice(removedIndex, 1);
       document.getElementById("tab"+temp[0].tabBody).style.display="none";
-      console.log(temp[0].tabBody);
-      console.log(temp);
+      // console.log(temp[0].tabBody);
+      // console.log(temp);
       if (tabs[removedIndex].active && newTabs.length !== 0) { // automatically select another tab if needed
           const newActive = (removedIndex === 0 ? 0: removedIndex - 1);
           newTabs[newActive].active = true;
-          console.log(newTabs[newActive].tabBody);
+          // console.log(newTabs[newActive].tabBody);
           // document.getElementById("tab"+temp[0].id).style.display="none";
           document.getElementById("tab"+newTabs[newActive].tabBody).style.display="block";
-          console.log(newActive);
+          // console.log(newActive);
       }
   setTabs(newTabs);
 }
@@ -170,24 +169,12 @@ function addTab(){
       })
     setTabs(newTabs);
     props.directory.push(result.filePaths[0]);
-    setCustomDisp(true);
-    // <MyDialog message="Choose a type of operation"
-    //             heading="New Tab"
-    //             positive="Open File"
-    //             negative="Create New File"
-    //             reply={(ans)=>{ans?
-    //               setTabBody([...tabBody, 
-    //               <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?fetchComp(basename(result.filePaths[0]),result.filePaths[0]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" />}</div>
-    //               ])
-    //             :
-    //             setTabBody([...tabBody, 
-    //               <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?fetchComp(basename(result.filePaths[0]),result.filePaths[0]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="new" />}</div>
-    //               ])}} />  
+    // setCustomDisp(true);
 
-
-    setTabBody([...tabBody, 
-    <div id={"tab"+newTab} style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?fetchComp(basename(result.filePaths[0]),result.filePaths[0]):<ScratchJSoNEditor Editor="true" path="" mode="new" />}</div>
+    setTabBodies([...tabBodies, 
+    <div id={"tab"+newTab} className="bodyTabs" style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?fetchComp(basename(result.filePaths[0]),result.filePaths[0]):<ScratchJSoNEditor Editor="true" path="" mode="new" />}</div>
     ]);
+    // console.log(tabBodies);
     setNewTab(newTab+1);
     }).catch(err => {
       console.log(err)
@@ -211,7 +198,7 @@ return (
           }}>+</button>
       </Tabs>}
       {/* {activeTab.length !== 0 ? activeTab[0].display : ""}  */}
-      <div id="TabContainer">{tabBody}</div>
+      <div id="TabContainer">{tabBodies}</div>
     </div>
   );
 }
