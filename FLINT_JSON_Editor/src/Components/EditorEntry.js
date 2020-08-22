@@ -43,7 +43,7 @@ var theme=React.createContext({disp: true,changeDisp:()=>{disp=false;}});
 console.log(React.useContext(theme).disp);
 
 setTimeout(()=>{theme.changeDisp;},5000)
-fs.readdir('src/storage/templates/files',(err,files)=>{
+fs.readdir('./src/storage/templates/files',(err,files)=>{
   if(err) throw err;
   // console.log(files);
   for(var i=0;i<files.length;i++)
@@ -84,7 +84,7 @@ function initiateTabs(ans)
     });
     // console.log(tabs);
     // addTab(props.files[i]);
-    if(map.get(props.files[i]))
+    if(map.get(props.files[i]))   
       temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{ans ? fetchComp(props.files[i],props.directory[i]):<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" id={i} />}</div>);
     else
       temp.push(<div id={"tab"+countTabs} style={i==0?{display: "block"}:{display: "none"}}>{<ScratchJSoNEditor Editor="true" path={props.directory[i]} mode="open" id={i} />}</div>);
