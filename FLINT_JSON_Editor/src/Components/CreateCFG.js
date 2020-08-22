@@ -17,6 +17,8 @@ import Switch from '@material-ui/core/Switch';
 import Input from '@material-ui/core/Input';
 import { green } from '@material-ui/core/colors';
 const { dialog } = require('electron').remote;
+import {remote} from 'electron';
+const Path=require('path');
 const fs = require("fs");
 
 const theme = createMuiTheme({
@@ -102,7 +104,7 @@ function copyFiles(files, choice)
   {
     for(var i in files)
     {
-      fs.copyFile('src/storage/templates/files/'+files[i], path+'/'+files[i], (err) => {
+      fs.copyFile(Path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/src/storage/templates/files/')+files[i], path+'/'+files[i], (err) => {
         if (err) throw err;
         console.log('source.txt was copied to destination.txt');
       });
