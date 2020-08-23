@@ -92,3 +92,4 @@ firebase.json
 
 # Electron-Forge
 out/
+dist/

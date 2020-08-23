@@ -1,6 +1,6 @@
 {
   "name": "flint_json_editor",
-  "productName": "FLINT JSON Editor",
+  "productName": "flint_json_editor",
   "version": "1.0.0",
   "description": "FLINT JSON User Interface",
   "main": ".webpack/main",
@@ -11,9 +11,7 @@
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
-  "keywords": [
-    "FLINT","moja global","electron","react","desktop app", "JSON Editor"
-  ],
+  "keywords": [],
   "author": {
     "name": "Abhishek Garain",
     "email": "abhi211199@gmail.com"
@@ -22,6 +20,14 @@
   "config": {
     "forge": {
       "packagerConfig": {},
+      "make_targets": {
+        "win32": ["squirrel"], 
+        "darwin": ["zip", "dmg"], 
+        "linux": ["deb", "rpm", "flatpak", "snap"] 
+      },
+      "electronPackagerConfig": {
+        "icon": "src/Images/logo.png"
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
@@ -37,7 +43,11 @@
         },
         {
           "name": "@electron-forge/maker-deb",
-          "config": {}
+          "config": {
+            "options": {
+              "icon": "./src/Images/logo.png"
+            }
+          }
         },
         {
           "name": "@electron-forge/maker-rpm",
