@@ -77,11 +77,11 @@ export default function TitlebarGridList(props) {
               subtitle={<span>This option will help you to create a JSON File, just by choosing values for the keys</span>}
               actionIcon={
                 <Radio
-                  checked={selectedValue === 'b'}
+                  checked={selectedValue === 'FormEditor'}
                   onChange={handleChange}
-                  value="b"
+                  value="FormEditor"
                   name="radio-button-demo"
-                  inputProps={{ 'aria-label': 'B' }}
+                  inputProps={{ 'aria-label': 'FormEditor' }}
                 />
               }
             /></Tooltip>

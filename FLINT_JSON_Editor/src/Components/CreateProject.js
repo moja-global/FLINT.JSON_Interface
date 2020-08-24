@@ -6,13 +6,14 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import Radio from '@material-ui/core/Radio';
 import Tooltip from '@material-ui/core/Tooltip';
-const folder = "./src/storage/templates/";
 const fs = require("fs");
 import jsonw from '../storage/packages_metadata.json';
 import Button from '@material-ui/core/Button';
 import { green } from '@material-ui/core/colors';
 import Input from '@material-ui/core/Input';
 const { dialog } = require('electron').remote;
+import {remote} from 'electron';
+const path = require('path');
 import MyDialog from './Dialog';
 import SnackBar from './SnackBar';
 
@@ -79,11 +80,11 @@ function createProject(selectedPath)
   console.log("create proj");
   fs.mkdir(document.getElementById("projectPath").value, { recursive: true }, (err) => {
     if (err) throw err;
-    fs.readdir('src/storage/templates/'+selectedPath,(err,files)=>{
+    fs.readdir(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/src/storage/templates/') +selectedPath,(err,files)=>{
       if(err) throw err; 
       console.log(files);
       for(var i in files)
-      fs.copyFile('src/storage/templates/' + selectedPath +'/' + files[i],document.getElementById("projectPath").value+"/"+files[i],(err)=>{console.log(err)});
+      fs.copyFile(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/src/storage/templates/') + selectedPath +'/' + files[i],document.getElementById("projectPath").value+"/"+files[i],(err)=>{console.log(err)});
       dialog.showMessageBox({
         type: "info",
         title: "Success",

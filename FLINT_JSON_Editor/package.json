@@ -9,7 +9,9 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "make:win": "electron-packager . flint_json_editor --platform win32 --arch x64 --out dist/ && electron-installer-windows --src dist/flint_json_editor-win32-x64/ --dest dist/installers/",
+    "make:darwin": "electron-packager . flint_json_editor --platform darwin --arch x64 --out dist/ && electron-installer-dmg dist/flint_json_editor-darwin-x64/flint_json_editor.app FLINT_JSON_Editor --icon src/Images/logo.png"
   },
   "keywords": [],
   "author": {
@@ -20,6 +22,24 @@
   "config": {
     "forge": {
       "packagerConfig": {},
+      "make_targets": {
+        "win32": [
+          "squirrel"
+        ],
+        "darwin": [
+          "zip",
+          "dmg"
+        ],
+        "linux": [
+          "deb",
+          "rpm",
+          "flatpak",
+          "snap"
+        ]
+      },
+      "electronPackagerConfig": {
+        "icon": "src/Images/logo.png"
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
@@ -35,7 +55,11 @@
         },
         {
           "name": "@electron-forge/maker-deb",
-          "config": {}
+          "config": {
+            "options": {
+              "icon": "./src/Images/logo.png"
+            }
+          }
         },
         {
           "name": "@electron-forge/maker-rpm",
@@ -74,12 +98,16 @@
     "@electron-forge/plugin-webpack": "6.0.0-beta.51",
     "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
     "babel-loader": "^8.1.0",
+    "copy-webpack-plugin": "^6.0.3",
     "css-loader": "^3.0.0",
     "electron": "9.0.0",
+    "electron-installer-dmg": "^3.0.0",
+    "electron-installer-windows": "^3.0.0",
     "electron-packager": "^15.0.0",
     "file-loader": "^6.0.0",
     "node-loader": "^0.6.0",
-    "style-loader": "^0.23.1"
+    "style-loader": "^0.23.1",
+    "url-loader": "^4.1.0"
   },
   "dependencies": {
     "@date-io/date-fns": "v1",

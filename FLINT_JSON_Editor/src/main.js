@@ -1,7 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
-const { ipcMain } = require('electron');
+const { ipcMain, remote } = require('electron');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -17,6 +17,8 @@ const createWindow = () => {
       nodeIntegration: true,
       enableRemoteModule: true
     },
+    //mainWindow icon 
+    icon: path.join(require('electron').app.getAppPath(),'.webpack/main/logo.png'),
   });
   dupWin=mainWindow;
   mainWindow.maximize();
