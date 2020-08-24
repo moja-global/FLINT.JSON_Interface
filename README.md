@@ -1,16 +1,25 @@
 # FLINT JSON Editor 
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
-Google Summer of Code'20 code repository for the project ["Develop FLINT JSON User Interface"](https://summerofcode.withgoogle.com/projects/#5965933887094784)
+Google Summer of Code'20 code repository for the project ["Develop FLINT JSON User Interface"](https://summerofcode.withgoogle.com/projects/#5965933887094784).
+
+More interested to know about the project, visit my [wiki](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/wiki/Google-Summer-of-Code%2720-documentation-by-Abhishek-Garain)!
 
 ## Test the development verson
-- Clone this project
+- Clone the project
 - `cd GSoC.FLINT.JSON_Interface/FLINT_JSON_Editor`
-- Make sure latest version of `node` and `npm` are installed.
+- Make sure latest version of `node`, `npm` and `yarn` are installed.
 - `npm install`
 - `npm start`
+
 ## Test a packaged version
-- You can find packaged versions at `FLINT_JSON_Editor/out/make/`
+The app is built on Electron which explains that the app is meant to be platform independent. The v1 app can be found at [GitHub Releases](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/releases/tag/v1.0.0).
+
+| [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Windows_logo_-_2012.svg/480px-Windows_logo_-_2012.svg.png" width=100 />](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/releases/download/v1.0.0/flint_json_editor-1.0.0.Setup.exe) | [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Logo-ubuntu_cof-orange-hex.svg/1024px-Logo-ubuntu_cof-orange-hex.svg.png" width=100 />](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/releases/download/v1.0.0/flint-json-editor_1.0.0_amd64.deb)  | [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fedora_logo.svg/1024px-Fedora_logo.svg.png" width=100 />](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/releases/download/v1.0.0/flint_json_editor-1.0.0-1.x86_64.rpm)  | [<img src="https://upload.wikimedia.org/wikipedia/commons/7/71/Finder_icon_macOS_Yosemite.png" width=100 /> ](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/releases/download/v1.0.0/FLINT_JSON_Editor.dmg) | [<img src="https://cdn.pixabay.com/photo/2018/09/12/02/52/file-icon-3671167_960_720.png" width=100 />](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/releases/download/v1.0.0/flint_json_editor-darwin-x64-1.0.0.zip) |
+|---|---|---|---|---|
+
+## Issues
+Found a bug? Please raise an issue with a screenshot explaining the steps to reproduce the bug!
 
 ## How to Get Involved?  
 
