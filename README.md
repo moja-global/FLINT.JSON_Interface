@@ -19,7 +19,7 @@ The app is built on Electron which explains that the app is meant to be platform
 |---|---|---|---|---|
 
 ## Issues
-Found a bug? Please raise an issue with a screenshot explaining the steps to reproduce the bug!
+Found a bug? Please raise an issue with a screenshot(It would be great if you can open the devtools(Ctrl+Shift+I or View->Toogle Developer Tools in the App Bar)) explaining the steps to reproduce the bug!
 
 ## How to Get Involved?  
 
