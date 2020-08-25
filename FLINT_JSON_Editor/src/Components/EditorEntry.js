@@ -35,7 +35,7 @@ const [tabs,setTabs] = React.useState([]);
 var map=new Map();
 const [view,setView] = React.useState(false);
 const [dialogDisp, setdialogDisp] = React.useState(false);
-const [notFound, setNotFound] = React.useState([]);
+var notFound=[];
 const [showTab, setShowTab] = React.useState(false);
 const [newTab, setNewTab] = React.useState(0);
 const [tabBodies, setTabBodies] = React.useState([]);
@@ -55,6 +55,7 @@ fs.readdir(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/s
   for(var i=0;i<props.files.length;i++)
     if(!(map.get(props.files[i])))
       notFound.push(props.files[i]);
+  console.log(notFound);
   // console.log(notFound.length==0);
   setdialogDisp(true);
 });
@@ -64,7 +65,7 @@ function fetchComp(file, directory)
   const data= JSON.parse(fs.readFileSync(directory, "utf8"));
   if(file=="standard_gcbm_localdomain.json")
   return <LocalDomain json={data} directory={directory} />;
-  else if(file=="peatland_variables.json"||file=="standard_gcbm_variables.json"||file=="a_n_partitioning_variables.json"||file=="standard_gcbm_internal_variables.json"||file=="a_n_partitioning_internal_variables.json")
+  else if(file=="peatland_variables.json"||file=="standard_gcbm_variables.json"||file=="a_n_partitioning_variables.json"||file=="a_n_partitioning_internal_variables.json")
   return <Variables json={data} directory={directory} />;
   else if(file=="peatland_modules.json"||file=="standard_gcbm_modules.json"||file=="a_n_partitioning_modules.json")
   return <Modules json={data} directory={directory} />;
@@ -73,6 +74,7 @@ function fetchComp(file, directory)
   else if(file=="peatland_output_modules.json"||file=="standard_gcbm_output_modules.json")
   return <Peatland json={data} directory={directory} />
 }
+
 function initiateTabs(ans)
 {
   var temp=[];
@@ -136,18 +138,12 @@ function selectTab(selectedIndex, selectedID) {
 
 function closedTab(removedIndex, removedID) {
   let newTabs = [...tabs];
-  // console.log(removedIndex);
       var temp=newTabs.splice(removedIndex, 1);
       document.getElementById("tab"+temp[0].tabBody).style.display="none";
-      // console.log(temp[0].tabBody);
-      // console.log(temp);
       if (tabs[removedIndex].active && newTabs.length !== 0) { // automatically select another tab if needed
           const newActive = (removedIndex === 0 ? 0: removedIndex - 1);
           newTabs[newActive].active = true;
-          // console.log(newTabs[newActive].tabBody);
-          // document.getElementById("tab"+temp[0].id).style.display="none";
           document.getElementById("tab"+newTabs[newActive].tabBody).style.display="block";
-          // console.log(newActive);
       }
   setTabs(newTabs);
 }
@@ -169,12 +165,9 @@ function addTab(){
       })
     setTabs(newTabs);
     props.directory.push(result.filePaths[0]);
-    // setCustomDisp(true);
-
     setTabBodies([...tabBodies, 
     <div id={"tab"+newTab} className="bodyTabs" style={newTabs.length==1 ? {display: "block"}:{display: "none"}}>{map.get(basename(result.filePaths[0]))?fetchComp(basename(result.filePaths[0]),result.filePaths[0]):<ScratchJSoNEditor Editor="true" path="" mode="new" />}</div>
     ]);
-    // console.log(tabBodies);
     setNewTab(newTab+1);
     }).catch(err => {
       console.log(err)
@@ -187,7 +180,7 @@ document.body.style.backgroundImage='none';
 
 return (
     <div>
-      {  React.useContext(theme).disp && <MyDialog message={notFound.length==0 ? "You have chosen "+props.files+" to open in the editor. Choose mode!" : "You have chosen "+props.files+" to open in the editor. Choose mode!(Templates for "+notFound+" were not found so they will be automatically opened in ScratchJSONEditor regardless of chosen option)" }
+      {  React.useContext(theme).disp && <MyDialog message={notFound.length==-1 ? "You have chosen "+props.files+" to open in the editor. Choose mode!" : "You have chosen "+props.files+" to open in the editor. Choose mode!(Templates for "+notFound+" were not found so they will be automatically opened in ScratchJSONEditor regardless of chosen option)" }
                 heading="JSON Editor"
                 positive="Template Editor"
                 negative="Scratch JSON Editor!"

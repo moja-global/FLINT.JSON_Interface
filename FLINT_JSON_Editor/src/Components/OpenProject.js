@@ -79,7 +79,7 @@ export default function ChipsArray(props) {
             }
             setChipData([...new Set(chipData.concat(temp))]);
             // console.log(chipData);
-            renderBtn(temp,temp1);
+            // renderBtn(temp,temp1);
             // setDisp(true);
             // ReactDOM.render(<ThemeProvider theme={theme}>
             //   <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{setPropFiles({files: temp1,directory: temp});setDispEditorEntry(true);console.log(dispEditorEntry)}} >Next</Button>
@@ -92,8 +92,20 @@ export default function ChipsArray(props) {
 
   function renderBtn(temp, temp1)
   {
+    // console.log(temp);
+    // console.log(temp1);
+    const tempObj={...propFiles};
+
+    if(tempObj["files"]==undefined)
+    {
+      tempObj["files"]=[];
+      tempObj["directory"]=[];
+    }
+    
+    tempObj["files"]=tempObj["files"].concat(temp1);
+    tempObj["directory"]=tempObj["directory"].concat(temp);
     ReactDOM.render(<ThemeProvider theme={theme}>
-      <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{setPropFiles({files: temp1,directory: temp});setDispEditorEntry(true);console.log(dispEditorEntry)}} >Next</Button>
+      <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{setPropFiles(tempObj);setDispEditorEntry(true);console.log(dispEditorEntry)}} >Next</Button>
     </ThemeProvider>,document.getElementById("buttonContainer"));
   }
 
