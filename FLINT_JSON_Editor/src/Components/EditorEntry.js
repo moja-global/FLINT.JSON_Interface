@@ -77,6 +77,7 @@ function fetchComp(file, directory)
 
 function initiateTabs(ans)
 {
+  console.log(ans);
   var temp=[];
   for(var i=0;i<props.files.length;i++)
   {
@@ -180,7 +181,7 @@ document.body.style.backgroundImage='none';
 
 return (
     <div>
-      {  React.useContext(theme).disp && <MyDialog message={notFound.length==-1 ? "You have chosen "+props.files+" to open in the editor. Choose mode!" : "You have chosen "+props.files+" to open in the editor. Choose mode!(Templates for "+notFound+" were not found so they will be automatically opened in ScratchJSONEditor regardless of chosen option)" }
+      {  React.useContext(theme).disp && <MyDialog message={notFound.length==0 ? "You have chosen "+props.files+" to open in the editor. Choose mode!" : "You have chosen "+props.files+" to open in the editor. Choose mode!(Templates for "+notFound+" were not found so they will be automatically opened in ScratchJSONEditor regardless of chosen option)" }
                 heading="JSON Editor"
                 positive="Template Editor"
                 negative="Scratch JSON Editor!"
