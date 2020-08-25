@@ -20,11 +20,21 @@ const path=require('path');
 
 
 const title=[...Menu.getApplicationMenu().items];
+if(title[title.length-1].label=="Home")
+{
+  title.splice(title.length-2,2);
+}
 title.push({
   label: 'Save',
   accelerator: 'Ctrl+S',
   click: () => { ipcRenderer.send('title-message', 'ping') }
-})
+},
+{
+  label: 'Home',
+  accelerator: 'Ctrl+Home',
+  click: ()=> require('electron').remote.getCurrentWindow().reload()
+});
+
 const menu = Menu.buildFromTemplate(title);
 Menu.setApplicationMenu(menu);
 
