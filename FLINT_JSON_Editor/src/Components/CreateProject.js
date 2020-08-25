@@ -15,8 +15,7 @@ const { dialog } = require('electron').remote;
 import {remote} from 'electron';
 const path = require('path');
 import MyDialog from './Dialog';
-import SnackBar from './SnackBar';
-
+import {ToggleEditorEntry, EditorEntryFiles} from './ContextManager';
 const theme = createMuiTheme({
   palette: {
     primary: green,
@@ -75,36 +74,58 @@ function getPath(json_value){
   })
 }
 
-function createProject(selectedPath)
-{
-  console.log("create proj");
-  fs.mkdir(document.getElementById("projectPath").value, { recursive: true }, (err) => {
-    if (err) throw err;
-    fs.readdir(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/src/storage/templates/') +selectedPath,(err,files)=>{
-      if(err) throw err; 
-      console.log(files);
-      for(var i in files)
-      fs.copyFile(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/src/storage/templates/') + selectedPath +'/' + files[i],document.getElementById("projectPath").value+"/"+files[i],(err)=>{console.log(err)});
-      dialog.showMessageBox({
-        type: "info",
-        title: "Success",
-        message: "Your project has been created",
-        buttons: ["OK"]
-      });
-    });
-  });
-  
-}
+
+
 export default function TitlebarGridList() {
   const classes = useStyles();
   const [selectedValue, setSelectedValue] = React.useState(false);
   const [dialogDisp,setDialogDisp] = React.useState(false);
+  const [propFiles,setPropFiles] = React.useContext(EditorEntryFiles);
+  const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
 
   const handleChange = (event) => {
     console.log(selectedValue);
     setSelectedValue(event.target.value);
     console.log(event.target.value);
   };
+
+  function createProject(selectedPath)
+{
+  console.log("create proj");
+  var temp=[],temp1=[];//temp1 is for filenames and temp is for the whole path
+  fs.mkdir(document.getElementById("projectPath").value, { recursive: true }, (err) => {
+    if (err) throw err;
+    fs.readdir(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/src/storage/templates/') +selectedPath,(err,files)=>{
+      if(err) throw err; 
+      // console.log(files);
+      for(var i in files)
+      {
+        fs.copyFile(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/src/storage/templates/') + selectedPath +'/' + files[i],document.getElementById("projectPath").value+"/"+files[i],(err)=>{console.log(err)});
+        temp1.push(files[i]);
+        temp.push(document.getElementById("projectPath").value+"/"+files[i]);
+      }
+      dialog.showMessageBox({
+        type: "info",
+        title: "Success",
+        message: "Your project has been created",
+        buttons: ["OK"]
+      }).then(result=>{
+        dialog.showMessageBox({
+          type: "question",
+          title: "Open Project",
+          message: "Do you want to open the project",
+          buttons: ["Cancel", "Yes"]
+        }).then(res=>{
+          if(res.response==1)
+          {
+            // console.log(temp1);console.log(temp);
+            setPropFiles({files: temp1, directory: temp});setDispEditorEntry(true);
+          }
+        })
+      });
+    });
+  });
+}
 
   var temp=[];
   var i=0;
