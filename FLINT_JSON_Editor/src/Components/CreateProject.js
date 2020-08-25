@@ -60,8 +60,8 @@ function getPath(json_value){
   dialog.showOpenDialog({
     properties: ['openDirectory']
   }).then(result => {
-    console.log(result.canceled)
-    console.log(result.filePaths)
+    // console.log(result.canceled)
+    // console.log(result.filePaths)
     if(result.canceled)
     {
       dialog.showErrorBox("Path Error", "You haven't chosen a Path! Press OK to continue!");
@@ -84,9 +84,9 @@ export default function TitlebarGridList() {
   const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
 
   const handleChange = (event) => {
-    console.log(selectedValue);
+    // console.log(selectedValue);
     setSelectedValue(event.target.value);
-    console.log(event.target.value);
+    // console.log(event.target.value);
   };
 
   function createProject(selectedPath)

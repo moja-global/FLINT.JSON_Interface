@@ -10,6 +10,7 @@ import bgImg from './Images/green.jpg';
 import SnackBar from './Components/SnackBar';
 import {ToggleEditorEntry, EditorEntryFiles, EditorEntryDirectory, EditorEntryFilesProvider} from './Components/ContextManager';
 import EditorEntry from './Components/EditorEntry';
+const isDev = require('electron-is-dev');
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -30,6 +31,9 @@ export default function App() {
   const [dispScratch,setDispScratch] = React.useState(false);
   const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
   const [Files,setFiles]=React.useContext(EditorEntryFiles);
+
+  if(isDev)// hacky fix to remove console clutter in production(speeds up the app)
+  console.log = function() {}
 
   //used to switch b/w two types of editors and dynamically adjust the UI
     function LoadEditor(val){

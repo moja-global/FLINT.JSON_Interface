@@ -66,14 +66,14 @@ function union(a, b) {
   dialog.showOpenDialog({
     properties: ['openDirectory']
   }).then(result => {
-    console.log(result.canceled)
-    console.log(result.filePaths)
+    // console.log(result.canceled)
+    // console.log(result.filePaths)
     if(result.canceled)
     {
       dialog.showErrorBox("Path Error", "You haven't chosen a Path! Press OK to continue!");
       return;
     }
-    console.log(result.filePaths[0]);
+    // console.log(result.filePaths[0]);
     if(choice)
     document.getElementById("path").value=result.filePaths[0]+"/"+document.getElementById("projectName").value;
     else

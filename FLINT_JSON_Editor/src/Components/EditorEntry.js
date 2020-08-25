@@ -186,7 +186,7 @@ function addTab(){
 }
 
 // const activeTab = tabs.filter(tab => tab.active === true);
-console.log(tabs);
+// console.log(tabs);
 document.body.style.backgroundImage='none';
 
 return (

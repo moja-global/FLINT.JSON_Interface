@@ -35,7 +35,9 @@ export default function AppComponent(props) {
             </div>
 
             <div id="wizard">
-              <StartupWizard onRadioChange2={(val1)=>{console.log("AppComponent#"+val1);props.onRadioChange3(val1)}} showSnack={(val2)=>{props.showSnack2(val2)}} />
+              <StartupWizard onRadioChange2={(val1)=>{
+                // console.log("AppComponent#"+val1);
+                props.onRadioChange3(val1)}} showSnack={(val2)=>{props.showSnack2(val2)}} />
             </div>
           </div>
 	    	</div>
