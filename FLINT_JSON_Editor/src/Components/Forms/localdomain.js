@@ -184,7 +184,6 @@ function getLibraries(){
   
     return(
         <div id="container">
-            <button onClick={()=>save()}></button>
             <div id="jsonEditor">
                 <h1>Libraries:</h1>
                 <Paper elevation={5} className={classes.paper}>
