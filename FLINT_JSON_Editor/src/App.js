@@ -32,7 +32,7 @@ export default function App() {
   const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
   const [Files,setFiles]=React.useContext(EditorEntryFiles);
 
-  if(isDev)// hacky fix to remove console clutter in production(speeds up the app)
+  if(!isDev)// hacky fix to remove console clutter in production(speeds up the app)
   console.log = function() {}
 
   //used to switch b/w two types of editors and dynamically adjust the UI
