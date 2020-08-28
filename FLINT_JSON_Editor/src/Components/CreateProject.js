@@ -16,6 +16,8 @@ import {remote} from 'electron';
 const path = require('path');
 import MyDialog from './Dialog';
 import {ToggleEditorEntry, EditorEntryFiles} from './ContextManager';
+const process = require('process');
+
 const theme = createMuiTheme({
   palette: {
     primary: green,
@@ -67,8 +69,7 @@ function getPath(json_value){
       dialog.showErrorBox("Path Error", "You haven't chosen a Path! Press OK to continue!");
       return;
     }
-    document.getElementById("projectPath").value=result.filePaths+"/"+json_value
-    // ReactDOM.render(<Input id="projectPath" style={{width:"500px"}} value={result.filePaths+"/"+json_value} disabled inputProps={{ 'aria-label': 'description' }} />,document.getElementById("path_input"));
+    document.getElementById("projectPath").value=result.filePaths+ (process.platform!="win32"? "/" : "\\") +json_value
   }).catch(err => {
     console.log(err)
   })
@@ -100,9 +101,9 @@ export default function TitlebarGridList() {
       // console.log(files);
       for(var i in files)
       {
-        fs.copyFile(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/src/storage/templates/') + selectedPath +'/' + files[i],document.getElementById("projectPath").value+"/"+files[i],(err)=>{console.log(err)});
+        fs.copyFile(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/src/storage/templates/') + selectedPath +'/' + files[i],document.getElementById("projectPath").value+ (process.platform!="win32"? "/" : "\\") +files[i],(err)=>{console.log(err)});
         temp1.push(files[i]);
-        temp.push(document.getElementById("projectPath").value+"/"+files[i]);
+        temp.push(document.getElementById("projectPath").value+ (process.platform!="win32"? "/" : "\\") +files[i]);
       }
       dialog.showMessageBox({
         type: "info",

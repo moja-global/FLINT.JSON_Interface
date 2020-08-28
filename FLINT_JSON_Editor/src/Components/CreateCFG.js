@@ -20,6 +20,7 @@ const { dialog } = require('electron').remote;
 import {remote} from 'electron';
 const Path=require('path');
 const fs = require("fs");
+const process = require("process");
 
 const theme = createMuiTheme({
   palette: {
@@ -75,7 +76,7 @@ function union(a, b) {
     }
     // console.log(result.filePaths[0]);
     if(choice)
-    document.getElementById("path").value=result.filePaths[0]+"/"+document.getElementById("projectName").value;
+    document.getElementById("path").value=result.filePaths[0]+ (process.platform!="win32"? "/" : "\\") + document.getElementById("projectName").value;
     else
     document.getElementById("path").value=result.filePaths[0];
     ReactDOM.render(<ThemeProvider theme={theme}>
@@ -104,7 +105,7 @@ function copyFiles(files, choice)
   {
     for(var i in files)
     {
-      fs.copyFile(Path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/src/storage/templates/files/')+files[i], path+'/'+files[i], (err) => {
+      fs.copyFile(Path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/src/storage/templates/files/')+files[i], path+  (process.platform!="win32"? "/" : "\\") +files[i], (err) => {
         if (err) throw err;
         console.log('source.txt was copied to destination.txt');
       });

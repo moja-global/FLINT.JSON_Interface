@@ -62,6 +62,11 @@ fs.readdir(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/s
   // console.log(files);
   for(var i=0;i<files.length;i++)
     map.set(files[i],true);
+  
+  map.delete("standard_gcbm_internal_variables.json"); //delete this statement once the file's template is created
+  map.delete("standard_gcbm_provider_config.json"); //delete this statement once the file's template is created
+  map.delete("standard_gcbm_spinup.json"); //delete this statement once the file's template is created
+
   for(var i=0;i<props.files.length;i++)
     if(!(map.get(props.files[i])))
       notFound.push(props.files[i]);

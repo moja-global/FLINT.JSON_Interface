@@ -10,6 +10,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 const fs = require("fs");
 import ReactDOM from 'react-dom';
 import {ToggleEditorEntry, EditorEntryFiles} from './ContextManager';
+const process = require("process");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,7 +75,7 @@ export default function ChipsArray(props) {
             var temp=[],temp1=[];//temp1 is for filenames and temp is for the whole path
             for(var i in files)
             {
-              temp.push(result.filePaths+"/"+files[i]);
+              temp.push(result.filePaths+  (process.platform!="win32"? "/" : "\\") +files[i]);
               temp1.push(files[i]);
             }
             setChipData([...new Set(chipData.concat(temp))]);
