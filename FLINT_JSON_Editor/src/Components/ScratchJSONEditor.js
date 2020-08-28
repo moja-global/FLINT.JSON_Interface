@@ -49,7 +49,7 @@ function openFile(){
   }).then(result => {
     readFile(result.filePaths[0])
     openFileName=result.filePaths[0];
-    console.log(result.filePaths[0]);
+    // console.log(result.filePaths[0]);
   }).catch(err => {
     console.log(err)
   })
@@ -75,7 +75,7 @@ function saveFile() {
     dialog.showSaveDialog(require('electron').remote.BrowserWindow, {
     }).then(result => {
       writeFile(result.filePath);
-      console.log(result.filePath)
+      // console.log(result.filePath)
     }).catch(err => {
       console.log(err)
     })
@@ -92,7 +92,7 @@ function readFile(filepath){
 	  alert("An error occurred reading the file: " + err.message);
 	  return;
 	}
-	console.log(data);
+	// console.log(data);
   parsedJson = JSON.parse(data);
   document.getElementById("jsonEditor").innerHTML=""
   editor = new JSONEditor(document.getElementById("jsonEditor"), {});
@@ -100,7 +100,7 @@ function readFile(filepath){
   });
 }
 
-console.log(newFile);
+// console.log(newFile);
 
 export default function LabelBottomNavigation(props) {
   const classes = useStyles();

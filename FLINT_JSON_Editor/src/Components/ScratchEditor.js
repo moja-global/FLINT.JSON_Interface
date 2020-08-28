@@ -17,6 +17,13 @@ const dialog = require('electron').remote.dialog;
 import Button from '@material-ui/core/Button';
 import MyDialog from './Dialog';
 import TransformIcon from '@material-ui/icons/Transform';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+const { ipcRenderer } = require('electron');
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme)=>({
   root: {
@@ -43,6 +50,26 @@ export default function LabelBottomNavigation(props) {
 const handleChange = (event, newValue) => {
     setValue(newValue);
 };
+
+ipcRenderer.on('title-reply', (event, arg) => {
+  // console.log(arg+ " " +props.path);
+  // if(arg==props.directory) //oly file whwre condition not checked(the else case may be in if else cases :) 
+  saveFile();
+});
+
+const [open, setOpen] = React.useState(false);
+
+    const handleClickSnack = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+      };
 
 var editor,openFileName,parsedJson,data;
 
@@ -82,6 +109,7 @@ function writeFile(fileName){
 }
 
 function saveFile() {
+  console.log("saved");
   parsedJson = editor.get();
   data = JSON.stringify(parsedJson, null, 2);
   console.log(data);
@@ -90,7 +118,8 @@ function saveFile() {
     dialog.showSaveDialog(require('electron').remote.BrowserWindow, {
     }).then(result => {
       writeFile(result.filePath);
-      console.log(result.filePath)
+      console.log(result.filePath);
+      handleClickSnack();
     }).catch(err => {
       console.log(err)
     })
@@ -98,6 +127,7 @@ function saveFile() {
   else
   {
     writeFile(openFileName);
+    handleClickSnack();
   }
 }
 
@@ -144,6 +174,13 @@ return (
         {/* {props.mode==="open"?initializeEditor(false):{}} */}
         {/* {props.mode==="open"?openFile(props.path):{}} */}
         {/* {initializeEditor} */}
+
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          {props.path+" Saved Successfully!"}
+        </Alert>
+        </Snackbar>
+
     </div>
   );
 }

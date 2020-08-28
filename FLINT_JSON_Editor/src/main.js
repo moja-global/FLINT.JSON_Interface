@@ -2,6 +2,7 @@ const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
 const { ipcMain, remote } = require('electron');
+const process = require('process');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -66,3 +67,5 @@ ipcMain.on('title-message', (event, arg) => {
   // console.log(arg) // prints "ping"
   event.reply('title-reply', (dupWin.webContents.getTitle()).split(' - ')[0])
 })
+
+console.log("Platform: " + process.platform);

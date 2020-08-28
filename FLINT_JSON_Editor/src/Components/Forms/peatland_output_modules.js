@@ -132,13 +132,31 @@ export default function peatland(props){
         //     },
         //     "item_type": ""
         // },]
-        props.json!=undefined? [...props.json.Modules.WriteVariableGeotiff.settings.items] : []
+        // props.json!=undefined? [...props.json.Modules.WriteVariableGeotiff.settings.items] : []
+        assignJSON()
     )
     const [tempLibrary, setTempLibrary] = React.useState({});
     // const [PeatlandItemsDup,setPeatlandItemsDup]=React.useState(PeatlandItems);
 
+    function assignJSON()//function to explicitly assign item_type key for all setings
+    {
+        const temp = props.json!=undefined? [...props.json.Modules.WriteVariableGeotiff.settings.items] : [];
+        for(var i=0;i<temp.length;i++)
+            {
+                if(temp[i]["variable_name"]!=undefined)
+                temp[i]["item_type"]="variable_name";
+                else if(temp[i]["pool_name"]!=undefined)
+                temp[i]["item_type"]="pool_name";
+                else if(temp[i]["flux"]!=undefined)
+                temp[i]["item_type"]="flux";
+                else 
+                temp[i]["item_type"]="";
+            }
+            return temp;
+    }
+    
     useEffect(()=>{
-        console.log("aaa");
+        // console.log("aaa");
         const temp={};
         // setPeatlandItemsDup(PeatlandItems);
         const temp2=JSON.parse(JSON.stringify(PeatlandItems));
@@ -183,7 +201,7 @@ export default function peatland(props){
         setTempLibrary(temp1);
     },[PeatlandItems, Peatland]);
 
-    useEffect(()=>console.log(Peatland),[Peatland]);
+    // useEffect(()=>console.log(Peatland),[Peatland]);
     useEffect(()=>console.log(PeatlandItems),[PeatlandItems]);
 
     function handleChange(key, value)
@@ -268,6 +286,7 @@ export default function peatland(props){
                 </Paper>
                 
                 <h1>settings:</h1>
+                {/* {console.log(PeatlandItems)} */}
                 {
                     PeatlandItems.map((inputfield, index)=>(
                             <Accordion>

@@ -15,7 +15,8 @@ const { dialog } = require('electron').remote;
 import {remote} from 'electron';
 const path = require('path');
 import MyDialog from './Dialog';
-import SnackBar from './SnackBar';
+import {ToggleEditorEntry, EditorEntryFiles} from './ContextManager';
+const process = require('process');
 
 const theme = createMuiTheme({
   palette: {
@@ -61,50 +62,71 @@ function getPath(json_value){
   dialog.showOpenDialog({
     properties: ['openDirectory']
   }).then(result => {
-    console.log(result.canceled)
-    console.log(result.filePaths)
+    // console.log(result.canceled)
+    // console.log(result.filePaths)
     if(result.canceled)
     {
       dialog.showErrorBox("Path Error", "You haven't chosen a Path! Press OK to continue!");
       return;
     }
-    document.getElementById("projectPath").value=result.filePaths+"/"+json_value
-    // ReactDOM.render(<Input id="projectPath" style={{width:"500px"}} value={result.filePaths+"/"+json_value} disabled inputProps={{ 'aria-label': 'description' }} />,document.getElementById("path_input"));
+    document.getElementById("projectPath").value=result.filePaths+ (process.platform!="win32"? "/" : "\\") +json_value
   }).catch(err => {
     console.log(err)
   })
 }
 
-function createProject(selectedPath)
+
+
+export default function TitlebarGridList() {
+  const classes = useStyles();
+  const [selectedValue, setSelectedValue] = React.useState(false);
+  const [dialogDisp,setDialogDisp] = React.useState(false);
+  const [propFiles,setPropFiles] = React.useContext(EditorEntryFiles);
+  const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
+
+  const handleChange = (event) => {
+    // console.log(selectedValue);
+    setSelectedValue(event.target.value);
+    // console.log(event.target.value);
+  };
+
+  function createProject(selectedPath)
 {
   console.log("create proj");
+  var temp=[],temp1=[];//temp1 is for filenames and temp is for the whole path
   fs.mkdir(document.getElementById("projectPath").value, { recursive: true }, (err) => {
     if (err) throw err;
     fs.readdir(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/src/storage/templates/') +selectedPath,(err,files)=>{
       if(err) throw err; 
-      console.log(files);
+      // console.log(files);
       for(var i in files)
-      fs.copyFile(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/src/storage/templates/') + selectedPath +'/' + files[i],document.getElementById("projectPath").value+"/"+files[i],(err)=>{console.log(err)});
+      {
+        fs.copyFile(path.join(remote.app.getAppPath(),'.webpack/renderer/main_window','/src/storage/templates/') + selectedPath +'/' + files[i],document.getElementById("projectPath").value+ (process.platform!="win32"? "/" : "\\") +files[i],(err)=>{console.log(err)});
+        temp1.push(files[i]);
+        temp.push(document.getElementById("projectPath").value+ (process.platform!="win32"? "/" : "\\") +files[i]);
+      }
       dialog.showMessageBox({
         type: "info",
         title: "Success",
         message: "Your project has been created",
         buttons: ["OK"]
+      }).then(result=>{
+        dialog.showMessageBox({
+          type: "question",
+          title: "Open Project",
+          message: "Do you want to open the project",
+          buttons: ["Cancel", "Yes"]
+        }).then(res=>{
+          if(res.response==1)
+          {
+            // console.log(temp1);console.log(temp);
+            setPropFiles({files: temp1, directory: temp});setDispEditorEntry(true);
+          }
+        })
       });
     });
   });
-  
 }
-export default function TitlebarGridList() {
-  const classes = useStyles();
-  const [selectedValue, setSelectedValue] = React.useState(false);
-  const [dialogDisp,setDialogDisp] = React.useState(false);
-
-  const handleChange = (event) => {
-    console.log(selectedValue);
-    setSelectedValue(event.target.value);
-    console.log(event.target.value);
-  };
 
   var temp=[];
   var i=0;

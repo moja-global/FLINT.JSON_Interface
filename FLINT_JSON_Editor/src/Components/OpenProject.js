@@ -10,6 +10,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 const fs = require("fs");
 import ReactDOM from 'react-dom';
 import {ToggleEditorEntry, EditorEntryFiles} from './ContextManager';
+const process = require("process");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,10 +48,21 @@ export default function ChipsArray(props) {
   const [propFiles,setPropFiles] = React.useContext(EditorEntryFiles);
   const [dispEditorEntry, setDispEditorEntry] = React.useContext(ToggleEditorEntry);
   
-  console.log(chipData);
+  // console.log(chipData);
   const handleDelete = (chipToDelete) => () => {
     setChipData((chips) => chips.filter((chip) => chip !== chipToDelete));
   };
+
+  React.useEffect(()=>{
+    var temp=[],temp1=[];
+    for(var i=0;i<chipData.length;i++)
+    {
+      temp1.push(basename(chipData[i]));
+      temp.push((chipData[i]));
+    }
+    if(chipData.length>0)
+    renderBtn(temp,temp1);
+  },[chipData])
 
   function selectFiles() {
     dialog.showOpenDialog({
@@ -63,20 +75,40 @@ export default function ChipsArray(props) {
             var temp=[],temp1=[];//temp1 is for filenames and temp is for the whole path
             for(var i in files)
             {
-              temp.push(result.filePaths+"/"+files[i]);
+              temp.push(result.filePaths+  (process.platform!="win32"? "/" : "\\") +files[i]);
               temp1.push(files[i]);
             }
             setChipData([...new Set(chipData.concat(temp))]);
-            console.log(chipData);
+            // console.log(chipData);
+            // renderBtn(temp,temp1);
             // setDisp(true);
-            ReactDOM.render(<ThemeProvider theme={theme}>
-              <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{setPropFiles({files: temp1,directory: temp});setDispEditorEntry(true);console.log(dispEditorEntry)}} >Next</Button>
-            </ThemeProvider>,document.getElementById("buttonContainer"));
+            // ReactDOM.render(<ThemeProvider theme={theme}>
+            //   <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{setPropFiles({files: temp1,directory: temp});setDispEditorEntry(true);console.log(dispEditorEntry)}} >Next</Button>
+            // </ThemeProvider>,document.getElementById("buttonContainer"));
         });
       }).catch(err => {
         console.log(err)
       })
     }
+
+  function renderBtn(temp, temp1)
+  {
+    // console.log(temp);
+    // console.log(temp1);
+    const tempObj={...propFiles};
+
+    if(tempObj["files"]==undefined)
+    {
+      tempObj["files"]=[];
+      tempObj["directory"]=[];
+    }
+    
+    tempObj["files"]=tempObj["files"].concat(temp1);
+    tempObj["directory"]=tempObj["directory"].concat(temp);
+    ReactDOM.render(<ThemeProvider theme={theme}>
+      <Button id="next_btn" variant="contained" color="primary" className={classes.margin} style={{float: "right"}} onClick={()=>{setPropFiles(tempObj);setDispEditorEntry(true);console.log(dispEditorEntry)}} >Next</Button>
+    </ThemeProvider>,document.getElementById("buttonContainer"));
+  }
 
   return (
     <div>
