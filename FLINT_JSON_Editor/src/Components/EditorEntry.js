@@ -26,12 +26,12 @@ if(title[title.length-1].label=="Home")
 }
 title.push({
   label: 'Save',
-  accelerator: 'Ctrl+S',
+  accelerator: 'CmdOrCtrl+S',
   click: () => { ipcRenderer.send('title-message', 'ping') }
 },
 {
   label: 'Home',
-  accelerator: 'Ctrl+Home',
+  accelerator: 'CmdOrCtrl+Home',
   click: ()=> require('electron').remote.getCurrentWindow().reload()
 });
 
