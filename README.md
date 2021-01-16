@@ -19,6 +19,9 @@ More interested to know about the project, visit the [wiki](https://github.com/m
     npm start
     ```
 
+## Usage
+To know about the features which this editor provides, please visit the [project wiki](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/wiki/Google-Summer-of-Code%2720-documentation-by-Abhishek-Garain)!
+
 ## Test a packaged version
 The app is built on Electron which explains that the app is meant to be platform independent. The v1 app can be found at [GitHub Releases](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/releases/tag/v1.0.0).
 
