@@ -1,16 +1,23 @@
 # FLINT JSON Editor 
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
-Google Summer of Code'20 code repository for the project ["Develop FLINT JSON User Interface"](https://summerofcode.withgoogle.com/projects/#5965933887094784).
+More interested to know about the project, visit the [wiki](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/wiki/Google-Summer-of-Code%2720-documentation-by-Abhishek-Garain)!
 
-More interested to know about the project, visit my [wiki](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/wiki/Google-Summer-of-Code%2720-documentation-by-Abhishek-Garain)!
-
-## Test the development verson
-- Clone the project
-- `cd GSoC.FLINT.JSON_Interface/FLINT_JSON_Editor`
-- Make sure latest version of `node`, `npm` and `yarn` are installed.
-- `npm install`
-- `npm start`
+## Test the development version
+1. Clone the project and enter into the directory
+    ```
+    git clone https://github.com/moja-global/FLINT-JSON-Interface
+    cd FLINT-JSON-Interface
+    ```
+2. Make sure, latest version of [node](https://nodejs.org/), [npm](https://www.npmjs.com/) and [yarn](https://yarnpkg.com/) are installed!
+3. Install the project dependencies
+    ```
+    npm install
+    ```
+4. Start the project!
+    ```
+    npm start
+    ```
 
 ## Test a packaged version
 The app is built on Electron which explains that the app is meant to be platform independent. The v1 app can be found at [GitHub Releases](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/releases/tag/v1.0.0).
