@@ -7,7 +7,7 @@ More interested to know about the project, visit the [wiki](https://github.com/m
 1. Clone the project and enter into the directory
     ```
     git clone https://github.com/moja-global/FLINT-JSON-Interface
-    cd FLINT-JSON-Interface
+    cd FLINT-JSON-Interface/FLINT_JSON_Editor
     ```
 2. Make sure, latest version of [node](https://nodejs.org/), [npm](https://www.npmjs.com/) and [yarn](https://yarnpkg.com/) are installed!
 3. Install the project dependencies
