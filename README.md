@@ -1,42 +1,62 @@
-# FLINT JSON Editor 
+# FLINT JSON Editor
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
-More interested to know about the project, visit the [wiki](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/wiki/Google-Summer-of-Code%2720-documentation-by-Abhishek-Garain)!
+The `FLINT JSON Editor` is a platform-independent desktop app built on [`Electron`](https://www.electronjs.org/), [`React`](https://reactjs.org/) and [`Webpack`](https://webpack.js.org/). It is mainly used to create projects from pre-defined packages/set of JSON files. It can be used to create a CFG file by choosing a set of JSON files, or to open a project or set of JSON files either in a scratch based JSON editor or in a form-based editor. It is then used to power FLINT and its models.
 
-## Test the development version
-1. Clone the project and enter into the directory
-    ```
-    git clone https://github.com/moja-global/FLINT-JSON-Interface
+## Key Features 
+
+-   Users can choose a specific type of project and the application would create a set of JSON templates, which can then be easily edited by users. FLINT uses JSON files for a particular type of project like `Standard GCBM Project`, `GCBM + Peatland Project` and more, thus easing the process for users.
+-   Users can choose the files for a project and choose to create a CFG file that points to the JSON files which are used for a particular project. It is aided by a `transfer-list` implementation where a CFG file can be created along with the corresponding JSON files. 
+-   With the Open Project feature, Users won't need to select JSON files multiple times. We can now open a project which consists of multiple JSON files at one go and the users will also have the flexibility to remove JSON files from the dashboard before launching the editor.
+-   A **ScratchJSONEditor** and **Form-like Editors** has been built from scratch to create/edit JSON files.
+-   From a UI/UX perspective, a drag-and-drop feature has been added to drag a tab from one position to another.. The directory of the currently opened file is also shown at the title bar of the application.     
+
+Have a look at the [Wiki Section](https://github.com/moja-global/FLINT-JSON-Interface/wiki/Google-Summer-of-Code%2720-documentation-by-Abhishek-Garain) of the Project to get a deep dive into the whole project and understand it from a user perspective.
+
+## Development Setup
+
+Before setting up the local dependenices, make sure that the latest version of [NodeJS](https://nodejs.org/), [NPM](https://www.npmjs.com/) and [Yarn](https://yarnpkg.com/) are installed. Follow the below mentioned steps to get started: 
+
+1. Clone the repository and enter into the directory: 
+	```
+	git clone https://github.com/moja-global/FLINT-JSON-Interface
     cd FLINT-JSON-Interface/FLINT_JSON_Editor
     ```
-2. Make sure, latest version of [node](https://nodejs.org/), [npm](https://www.npmjs.com/) and [yarn](https://yarnpkg.com/) are installed!
-3. Install the project dependencies
-    ```
-    npm install
-    ```
-4. Start the project!
-    ```
-    npm start
-    ```
+2. Install the dependenices: 
+	```
+	npm install
+	```
+3. Start the Project: 
+	```
+	npm start
+	```
+## Installation
 
-## Usage
-To know about the features which this editor provides, please visit the [project wiki](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/wiki/Google-Summer-of-Code%2720-documentation-by-Abhishek-Garain)!
-
-## Test a packaged version
-The app is built on Electron which explains that the app is meant to be platform independent. The v1 app can be found at [GitHub Releases](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/releases/tag/v1.0.0).
+The app is built on ElectronJS which explains that the application is meant to be platform independent. The `v1` release can be found on the [GitHub Releases](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/releases/tag/v1.0.0).
 
 | [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Windows_logo_-_2012.svg/480px-Windows_logo_-_2012.svg.png" width=100 />](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/releases/download/v1.0.0/flint_json_editor-1.0.0.Setup.exe) | [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Logo-ubuntu_cof-orange-hex.svg/1024px-Logo-ubuntu_cof-orange-hex.svg.png" width=100 />](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/releases/download/v1.0.0/flint-json-editor_1.0.0_amd64.deb)  | [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fedora_logo.svg/1024px-Fedora_logo.svg.png" width=100 />](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/releases/download/v1.0.0/flint_json_editor-1.0.0-1.x86_64.rpm)  | [<img src="https://upload.wikimedia.org/wikipedia/commons/7/71/Finder_icon_macOS_Yosemite.png" width=100 /> ](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/releases/download/v1.0.0/FLINT_JSON_Editor.dmg) | [<img src="https://cdn.pixabay.com/photo/2018/09/12/02/52/file-icon-3671167_960_720.png" width=100 />](https://github.com/moja-global/GSoC.FLINT.JSON_Interface/releases/download/v1.0.0/flint_json_editor-darwin-x64-1.0.0.zip) |
 |---|---|---|---|---|
 
 [Reduced file size for .dmg setup (98MB)](https://drive.google.com/file/d/16a2WeVGKa04LnAL9ZQ2zzFgFkyc5Yl1L/view?usp=sharing "Download link for .dmg file")
-## Issues
-Found a bug? Please raise an issue with a screenshot(It would be great if you can open the devtools(Ctrl+Shift+I or View->Toogle Developer Tools in the App Bar)) explaining the steps to reproduce the bug!
+
+## Reporting Issues
+
+Have a look at the below steps to get started with reporting bugs as a user or developer:
+
+1. Navigate to the main page of the repository where you found the bug.
+2. Under the repository name, click **Issues**.
+3. Click the green **New Issue** button
+4. Click the green button **Get Started** in the Bug Report box.
+5. Use a clear and descriptive title.
+6. Follow the template and provide as much information as possible.
+7. Add ways through which the bug can be reproduced by the maintainer.
+8. Attach files, screenshots and/or animated GIFs.
+9. Click the green button **Submit New Issue** at the bottom right corner.
 
 ## How to Get Involved?  
 
 moja global welcomes a wide range of contributions as explained in [Contributing document](https://github.com/moja-global/About-moja-global/blob/master/CONTRIBUTING.md) and in the [About moja-global Wiki](https://github.com/moja-global/.github/wiki).  
 
-  
 ## FAQ and Other Questions  
 
 * You can find FAQs on the [Wiki](https://github.com/moja.global/.github/wiki).  
