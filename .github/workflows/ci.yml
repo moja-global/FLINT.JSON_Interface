@@ -1,0 +1,50 @@
+name: Building the Electron App
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ${{matrix.os}}
+    defaults:
+      run:
+        working-directory: FLINT_JSON_Editor
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        node-version:
+          - 14.x
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: setup node ${{matrix.node-version}}
+        uses: actions/setup-node@v1.4.4
+        with:
+          node-version: ${{matrix.node-version}}
+
+      - name: Cache node modules
+        id: myCacheStep
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install packages
+        if: steps.myCacheStep.outputs.cache-hit != 'true'
+        run: |
+          npm install
+
+      - name: Build packages
+        run: |
+          npm run package
